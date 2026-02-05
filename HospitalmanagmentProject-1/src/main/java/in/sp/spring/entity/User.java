@@ -36,10 +36,7 @@ public class User {
     
      //login with google and facebook 
       
-    private String provider;     // google / facebook / local
-    private String providerId;   // OAuth provider ID
-
-
+  
     
     // ===== getters & setters =====
 
@@ -107,17 +104,5 @@ public class User {
         this.enabled = enabled;
     } 
      
-    public String getProvider() {
-    	return provider;
-    }
-    public void setProvider(String provider) {
-    	this.provider = provider;
-    }
-     
-    public String getProviderId() {
-    	return providerId;
-    }
-    public void setProviderId(String providerId) {
-    	this.providerId = providerId;
-    }
+   
 }
