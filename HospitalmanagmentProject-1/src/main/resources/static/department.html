@@ -1,0 +1,2242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Departments - Lucknow Hospital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ==================== BASE STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #12c7b7;
+            --primary-dark: #0fa89a;
+            --primary-light: #e0f7f5;
+            --secondary-color: #3f51b5;
+            --accent-color: #ff4081;
+            --success-color: #4CAF50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-color: #2c3e50;
+            --light-color: #f8f9fa;
+            --text-color: #333;
+            --text-light: #666;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 12px;
+            --border-radius-sm: 8px;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==================== HEADER & NAVIGATION ==================== */
+        .departments-header {
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.9)), 
+                        url('https://images.unsplash.com/photo-1586773860418-dc22f8b874bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        .departments-header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, #f5f7fa);
+        }
+
+        .departments-header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .departments-header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        /* ==================== MAIN NAVIGATION ==================== */
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .main-nav.scrolled {
+            padding: 15px 40px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo-text h2 {
+            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 80%;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 12px 28px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(18, 199, 183, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(18, 199, 183, 0.4);
+        }
+
+        /* ==================== FILTER SECTION ==================== */
+        .filter-section {
+            max-width: 1400px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+        }
+
+        .filter-container {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 2;
+            margin-top: -30px;
+        }
+
+        .filter-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .filter-header h2 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+
+        .filter-header p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 12px 24px;
+            background: var(--light-color);
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-tab:hover {
+            background: var(--primary-light);
+            color: var(--primary-color);
+        }
+
+        .filter-tab.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            box-shadow: 0 5px 20px rgba(18, 199, 183, 0.3);
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 18px 25px 18px 55px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 16px;
+            transition: var(--transition);
+            background: white;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(18, 199, 183, 0.2);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        /* ==================== DEPARTMENTS GRID ==================== */
+        .departments-container {
+            max-width: 1400px;
+            margin: 0 auto 100px;
+            padding: 0 20px;
+        }
+
+        .departments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .department-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .department-card:hover {
+            transform: translateY(-20px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .department-card.featured {
+            border: 3px solid var(--primary-color);
+            position: relative;
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .department-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .department-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .department-card:hover .department-image img {
+            transform: scale(1.1);
+        }
+
+        .department-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+        }
+
+        .department-overlay h3 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .department-overlay p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .department-content {
+            padding: 30px;
+        }
+
+        .department-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .department-services {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .department-services li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .department-services li:last-child {
+            border-bottom: none;
+        }
+
+        .department-services i {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+
+        .department-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .department-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(18, 199, 183, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--light-color);
+            color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* ==================== DEPARTMENT DETAILS MODAL ==================== */
+        .department-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 40px 20px;
+        }
+
+        .department-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: var(--border-radius);
+            position: relative;
+            animation: slideUp 0.5s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--danger-color);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-header {
+            padding: 40px 40px 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z" fill="white" fill-opacity="0.1"/></svg>');
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .modal-tabs {
+            display: flex;
+            border-bottom: 2px solid #eee;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .modal-tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .modal-tab.active {
+            color: var(--primary-color);
+        }
+
+        .modal-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .department-overview h3,
+        .department-services-list h3,
+        .department-doctors h3,
+        .department-facilities h3 {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .overview-text p {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .overview-stats {
+            background: var(--primary-light);
+            padding: 30px;
+            border-radius: var(--border-radius);
+        }
+
+        .overview-stats h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .service-item {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius-sm);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-item h4 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .doctor-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .doctor-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .doctor-info {
+            padding: 25px;
+        }
+
+        .doctor-info h4 {
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            font-size: 1.3rem;
+        }
+
+        .doctor-info p {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .doctor-qualifications {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .facilities-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .facility-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--primary-light);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .facility-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        /* ==================== FAQ SECTION ==================== */
+        .faq-section {
+            background: white;
+            padding: 80px 20px;
+            margin-bottom: 60px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            max-width: 1400px;
+            margin: 0 auto 60px;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-question {
+            padding: 20px 30px;
+            background: var(--light-color);
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            background: var(--primary-light);
+        }
+
+        .faq-answer {
+            padding: 0 30px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            background: white;
+        }
+
+        .faq-answer p {
+            padding: 20px 0;
+            line-height: 1.8;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-toggle {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+
+        /* ==================== CTA SECTION ==================== */
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            margin-bottom: 60px;
+            border-radius: var(--border-radius);
+            max-width: 1400px;
+            margin: 0 auto 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z" fill="white" fill-opacity="0.1"/></svg>');
+        }
+
+        .cta-section h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            padding: 16px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-light {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-light:hover {
+            background: #f8f9fa;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 80px 20px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        .footer-grid {
+            max-width: 1400px;
+            margin: 0 auto 60px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 50px;
+        }
+
+        .footer-col h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+        }
+
+        .footer-col p,
+        .footer-col a {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 15px;
+            display: block;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+
+        /* ==================== BACK TO TOP ==================== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(18, 199, 183, 0.3);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(18, 199, 183, 0.4);
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==================== RESPONSIVE DESIGN ==================== */
+        @media (max-width: 1200px) {
+            .departments-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .departments-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .main-nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .filter-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .departments-header {
+                padding: 100px 20px 60px;
+            }
+            
+            .departments-header h1 {
+                font-size: 2rem;
+            }
+            
+            .header-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .overview-grid,
+            .services-grid,
+            .doctors-grid,
+            .facilities-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-tabs {
+                flex-direction: column;
+            }
+            
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .departments-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-container {
+                padding: 20px;
+            }
+            
+            .department-actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-header {
+                padding: 30px 20px 15px;
+            }
+            
+            .modal-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* ==================== SCROLL ANIMATIONS ==================== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== LOADING STATES ==================== */
+        .loading {
+            position: relative;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid var(--primary-color);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="departments-header">
+        <h1>Medical Departments</h1>
+        <p>Explore our world-class medical departments equipped with cutting-edge technology and staffed by expert healthcare professionals</p>
+        
+        <div class="header-stats">
+            <div class="stat-item">
+                <span class="stat-number">24</span>
+                <span class="stat-label">Departments</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">200+</span>
+                <span class="stat-label">Expert Doctors</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">500+</span>
+                <span class="stat-label">Surgeries Monthly</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">95%</span>
+                <span class="stat-label">Success Rate</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="main-nav" id="mainNav">
+        <a href="index.html" class="logo">
+            <div class="logo-img">
+                <i class="fas fa-hospital"></i>
+            </div>
+            <div class="logo-text">
+                <h2>LUCKNOW HOSPITAL</h2>
+                <p>Institute of Nursing & Paramedical Science</p>
+            </div>
+        </a>
+        
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="#" class="active">Departments</a></li>
+            <li><a href="doctor.html">Doctors</a></li>
+            <li><a href="bookAppoitment.html">Appointment</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+        
+        <a href="bookAppoitment.html" class="cta-button">
+            <i class="fas fa-calendar-check"></i> Book Appointment
+        </a>
+    </nav>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-header">
+                <h2>Find Your Department</h2>
+                <p>Browse through our specialized departments or use the filters below to find exactly what you need</p>
+            </div>
+            
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-filter="all">
+                    <i class="fas fa-th-large"></i> All Departments
+                </button>
+                <button class="filter-tab" data-filter="surgical">
+                    <i class="fas fa-syringe"></i> Surgical
+                </button>
+                <button class="filter-tab" data-filter="medical">
+                    <i class="fas fa-stethoscope"></i> Medical
+                </button>
+                <button class="filter-tab" data-filter="diagnostic">
+                    <i class="fas fa-microscope"></i> Diagnostic
+                </button>
+                <button class="filter-tab" data-filter="specialty">
+                    <i class="fas fa-star"></i> Speciality
+                </button>
+            </div>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="departmentSearch" placeholder="Search departments by name or specialty...">
+            </div>
+        </div>
+    </section>
+
+    <!-- Departments Grid -->
+    <section class="departments-container">
+        <div class="departments-grid" id="departmentsGrid">
+            <!-- Departments will be loaded by JavaScript -->
+        </div>
+        
+        <div class="no-results" id="noResults" style="display: none; text-align: center; padding: 60px;">
+            <i class="fas fa-search" style="font-size: 4rem; color: #ccc; margin-bottom: 20px;"></i>
+            <h3 style="color: var(--text-light); margin-bottom: 10px;">No Departments Found</h3>
+            <p style="color: var(--text-light);">Try adjusting your search or filter criteria</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="faq-container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Common questions about our departments and services</p>
+            </div>
+            
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I choose the right department for my condition?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our hospital reception and online consultation service can help guide you to the appropriate department. You can also use our online symptom checker or speak with our general physician who will refer you to the right specialist department based on your condition.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do departments work 24/7?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Emergency, Critical Care, and Trauma departments operate 24/7. Other departments have specific working hours but maintain emergency on-call services. Please check individual department pages for specific timings.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Can I get treatment from multiple departments?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer integrated multi-disciplinary care. Our departments collaborate through the Hospital Information System to provide comprehensive treatment plans. Complex cases are managed through our Multi-Disciplinary Team (MDT) approach.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I book appointments for specialized departments?</span>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can book appointments online through our website, mobile app, or by calling our centralized appointment helpline. For specialized departments requiring referrals, please consult with a general physician first.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Need Specialized Care?</h2>
+        <p>Our expert doctors and state-of-the-art facilities are ready to provide you with the best medical care. Schedule your consultation today.</p>
+        
+        <div class="cta-buttons">
+            <a href="bookAppoitment.jsp" class="btn btn-light">
+                <i class="fas fa-calendar-check"></i> Book Appointment
+            </a>
+            <a href="contact.jsp" class="btn btn-outline">
+                <i class="fas fa-phone-alt"></i> Contact Us Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h3>Lucknow Hospital</h3>
+                <p>Institute of Nursing & Paramedical Science</p>
+                <p>Providing world-class healthcare services with compassion and excellence since 1992.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="index.jsp">Home</a>
+                <a href="about.jsp">About Us</a>
+                <a href="#">Departments</a>
+                <a href="doctor.jsp">Doctors</a>
+                <a href="bookAppointment.jsp">Appointment</a>
+                <a href="contact.jsp">Contact</a>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Top Departments</h3>
+                <a href="#" data-department="cardiology">Cardiology</a>
+                <a href="#" data-department="neurology">Neurology</a>
+                <a href="#" data-department="orthopedics">Orthopedics</a>
+                <a href="#" data-department="oncology">Oncology</a>
+                <a href="#" data-department="pediatrics">Pediatrics</a>
+                <a href="#" data-department="emergency">Emergency Medicine</a>
+            </div>
+            
+            <div class="footer-col">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> B 1, Behind Krishna Nagar Metro Station, Sindhu Nagar, Manas Nagar, Kanpur Road, Krishna Nagar, Lucknow, Uttar Pradesh 226005</p>
+                <p><i class="fas fa-phone"></i> +91 9682957154</p>
+                <p><i class="fas fa-envelope"></i> contact@lucknowhospital.com</p>
+                <p><i class="fas fa-clock"></i> 24/7 Emergency Services</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p><i class="fas fa-copyright"></i> 2025 Lucknow Hospital. All Rights Reserved. | Designed with <i class="fas fa-heart" style="color: #ff4081;"></i> for better healthcare</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <!-- Department Details Modal -->
+    <div class="department-modal" id="departmentModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Department Name</h2>
+                <p class="modal-subtitle" id="modalSubtitle">Specialty Description</p>
+            </div>
+            
+            <div class="modal-body">
+                <div class="modal-tabs">
+                    <button class="modal-tab active" data-tab="overview">Overview</button>
+                    <button class="modal-tab" data-tab="services">Services</button>
+                    <button class="modal-tab" data-tab="doctors">Doctors</button>
+                    <button class="modal-tab" data-tab="facilities">Facilities</button>
+                </div>
+                
+                <div class="tab-content active" id="overviewTab">
+                    <div class="department-overview">
+                        <h3>Department Overview</h3>
+                        <div class="overview-grid">
+                            <div class="overview-text">
+                                <p id="overviewText">Loading department overview...</p>
+                            </div>
+                            <div class="overview-stats">
+                                <h4>Department Statistics</h4>
+                                <div id="departmentStats">
+                                    <!-- Stats will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="servicesTab">
+                    <div class="department-services-list">
+                        <h3>Services & Treatments</h3>
+                        <div class="services-grid" id="servicesGrid">
+                            <!-- Services will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="doctorsTab">
+                    <div class="department-doctors">
+                        <h3>Our Expert Doctors</h3>
+                        <div class="doctors-grid" id="doctorsGrid">
+                            <!-- Doctors will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="facilitiesTab">
+                    <div class="department-facilities">
+                        <h3>Department Facilities</h3>
+                        <div class="facilities-list" id="facilitiesList">
+                            <!-- Facilities will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== DATA ====================
+        const departments = [
+            {
+                id: 1,
+                name: "Cardiology",
+                category: "medical",
+                featured: true,
+                description: "Heart care specialists",
+                fullDescription: "Our Cardiology Department is equipped with state-of-the-art technology for comprehensive heart care. We provide advanced treatments for all cardiac conditions including coronary artery disease, heart failure, arrhythmias, and congenital heart defects.",
+                image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 15,
+                beds: 50,
+                successRate: 98,
+                services: [
+                    "Angiography & Angioplasty",
+                    "Cardiac Bypass Surgery",
+                    "Pacemaker Implantation",
+                    "Echocardiography",
+                    "Stress Tests",
+                    "24-hour Holter Monitoring"
+                ]
+            },
+            {
+                id: 2,
+                name: "Neurology",
+                category: "medical",
+                featured: true,
+                description: "Brain and nervous system care",
+                fullDescription: "Our Neurology Department specializes in diagnosing and treating disorders of the nervous system including brain, spinal cord, nerves, and muscles. We have advanced neuroimaging and neurophysiology facilities.",
+                image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 12,
+                beds: 40,
+                successRate: 95,
+                services: [
+                    "EEG & EMG",
+                    "Brain MRI & CT Scan",
+                    "Stroke Management",
+                    "Epilepsy Treatment",
+                    "Parkinson's Disease Care",
+                    "Migraine Clinic"
+                ]
+            },
+            {
+                id: 3,
+                name: "Orthopedics",
+                category: "surgical",
+                featured: true,
+                description: "Bone and joint specialists",
+                fullDescription: "The Orthopedics Department provides comprehensive care for musculoskeletal conditions including fractures, joint disorders, sports injuries, and spinal problems. We specialize in joint replacement surgeries and minimally invasive procedures.",
+                image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 18,
+                beds: 60,
+                successRate: 96,
+                services: [
+                    "Joint Replacement Surgery",
+                    "Arthroscopic Surgery",
+                    "Spinal Surgery",
+                    "Fracture Management",
+                    "Sports Injury Clinic",
+                    "Pediatric Orthopedics"
+                ]
+            },
+            {
+                id: 4,
+                name: "Oncology",
+                category: "specialty",
+                description: "Cancer care and treatment",
+                fullDescription: "Our Oncology Department offers comprehensive cancer care including medical oncology, radiation oncology, and surgical oncology. We provide personalized treatment plans using the latest chemotherapy and radiation therapy techniques.",
+                image: "https://images.unsplash.com/photo-1559757149-e9b2c7e8fc5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 20,
+                beds: 80,
+                successRate: 85,
+                services: [
+                    "Chemotherapy",
+                    "Radiation Therapy",
+                    "Surgical Oncology",
+                    "Palliative Care",
+                    "Cancer Screening",
+                    "Immunotherapy"
+                ]
+            },
+            {
+                id: 5,
+                name: "Pediatrics",
+                category: "medical",
+                description: "Child healthcare",
+                fullDescription: "Our Pediatrics Department provides comprehensive healthcare for children from birth through adolescence. We have specialized units for neonatology, pediatric cardiology, and pediatric surgery.",
+                image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 16,
+                beds: 45,
+                successRate: 97,
+                services: [
+                    "Vaccination Clinic",
+                    "Neonatal Intensive Care",
+                    "Pediatric Surgery",
+                    "Growth & Development",
+                    "Child Psychology",
+                    "Pediatric Emergency"
+                ]
+            },
+            {
+                id: 6,
+                name: "Gastroenterology",
+                category: "medical",
+                description: "Digestive system care",
+                fullDescription: "The Gastroenterology Department specializes in diagnosing and treating disorders of the digestive system including liver, pancreas, gallbladder, and intestines. We offer advanced endoscopic procedures.",
+                image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 10,
+                beds: 35,
+                successRate: 94,
+                services: [
+                    "Endoscopy & Colonoscopy",
+                    "Liver Disease Management",
+                    "Inflammatory Bowel Disease",
+                    "GI Cancer Screening",
+                    "ERCP",
+                    "Capsule Endoscopy"
+                ]
+            },
+            {
+                id: 7,
+                name: "Urology",
+                category: "surgical",
+                description: "Urinary system care",
+                fullDescription: "Our Urology Department provides comprehensive care for urinary tract and male reproductive system disorders. We specialize in minimally invasive surgeries and robotic-assisted procedures.",
+                image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 8,
+                beds: 30,
+                successRate: 96,
+                services: [
+                    "Kidney Stone Treatment",
+                    "Prostate Surgery",
+                    "Urological Cancer Care",
+                    "Female Urology",
+                    "Pediatric Urology",
+                    "Andrology"
+                ]
+            },
+            {
+                id: 8,
+                name: "Radiology",
+                category: "diagnostic",
+                description: "Advanced imaging services",
+                fullDescription: "The Radiology Department provides state-of-the-art diagnostic imaging services including MRI, CT Scan, Ultrasound, X-Ray, and Interventional Radiology procedures.",
+                image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 12,
+                beds: 0,
+                successRate: 99,
+                services: [
+                    "MRI & CT Scan",
+                    "Ultrasound",
+                    "X-Ray & Fluoroscopy",
+                    "Mammography",
+                    "Interventional Radiology",
+                    "Nuclear Medicine"
+                ]
+            },
+            {
+                id: 9,
+                name: "Emergency Medicine",
+                category: "specialty",
+                description: "24/7 emergency care",
+                fullDescription: "Our Emergency Department operates 24/7 with a team of emergency medicine specialists, trauma surgeons, and critical care experts. We have dedicated trauma bays and resuscitation rooms.",
+                image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 25,
+                beds: 20,
+                successRate: 92,
+                services: [
+                    "Trauma Care",
+                    "Cardiac Emergency",
+                    "Stroke Emergency",
+                    "Pediatric Emergency",
+                    "Toxicology",
+                    "Disaster Management"
+                ]
+            },
+            {
+                id: 10,
+                name: "Dermatology",
+                category: "medical",
+                description: "Skin care specialists",
+                fullDescription: "The Dermatology Department provides comprehensive care for skin, hair, and nail disorders. We offer advanced treatments including laser therapy, cosmetic procedures, and skin cancer management.",
+                image: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+                doctors: 6,
+                beds: 10,
+                successRate: 98,
+                services: [
+                    "Skin Cancer Screening",
+                    "Laser Therapy",
+                    "Cosmetic Dermatology",
+                    "Acne Treatment",
+                    "Psoriasis Clinic",
+                    "Hair Disorder Treatment"
+                ]
+            }
+        ];
+
+        const doctorsByDepartment = {
+            1: [
+                { name: "Dr. Rajesh Sharma", specialization: "Interventional Cardiologist", experience: "20 years", image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" },
+                { name: "Dr. Priya Singh", specialization: "Cardiac Electrophysiologist", experience: "15 years", image: "https://images.unsplash.com/photo-1594824434340-7e7dfc37cabb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" },
+                { name: "Dr. Amit Verma", specialization: "Cardiothoracic Surgeon", experience: "18 years", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" }
+            ],
+            2: [
+                { name: "Dr. Neha Gupta", specialization: "Neurologist", experience: "12 years", image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" },
+                { name: "Dr. Sunil Kumar", specialization: "Neurosurgeon", experience: "22 years", image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" }
+            ]
+        };
+
+        const facilitiesByDepartment = {
+            1: [
+                "24/7 Cardiac ICU",
+                "Cath Lab with Latest Imaging",
+                "Cardiac Rehabilitation Unit",
+                "Non-invasive Cardiology Lab",
+                "Cardiac Surgery Theaters"
+            ],
+            2: [
+                "Advanced Neuroimaging Suite",
+                "EEG & EMG Lab",
+                "Neuro ICU",
+                "Neuro Rehabilitation",
+                "Stroke Unit"
+            ]
+        };
+
+        // ==================== DOM ELEMENTS ====================
+        const departmentsGrid = document.getElementById('departmentsGrid');
+        const noResults = document.getElementById('noResults');
+        const departmentSearch = document.getElementById('departmentSearch');
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const departmentModal = document.getElementById('departmentModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalTabs = document.querySelectorAll('.modal-tab');
+        const backToTop = document.getElementById('backToTop');
+        const mainNav = document.getElementById('mainNav');
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDepartments();
+            setupEventListeners();
+            setupScrollAnimations();
+            
+            // Set current year in footer
+            document.querySelector('.copyright p').innerHTML = document.querySelector('.copyright p').innerHTML.replace('2025', new Date().getFullYear());
+        });
+
+        // ==================== LOAD DEPARTMENTS ====================
+        function loadDepartments(filter = 'all', search = '') {
+            departmentsGrid.innerHTML = '';
+            
+            let filteredDepartments = departments.filter(dept => {
+                const matchesFilter = filter === 'all' || dept.category === filter;
+                const matchesSearch = search === '' || 
+                    dept.name.toLowerCase().includes(search.toLowerCase()) ||
+                    dept.description.toLowerCase().includes(search.toLowerCase()) ||
+                    dept.fullDescription.toLowerCase().includes(search.toLowerCase());
+                
+                return matchesFilter && matchesSearch;
+            });
+            
+            if (filteredDepartments.length === 0) {
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            noResults.style.display = 'none';
+            
+            filteredDepartments.forEach(department => {
+                const card = createDepartmentCard(department);
+                departmentsGrid.appendChild(card);
+            });
+            
+            // Add animation class to cards
+            setTimeout(() => {
+                document.querySelectorAll('.department-card').forEach((card, index) => {
+                    setTimeout(() => {
+                        card.classList.add('fade-in', 'visible');
+                    }, index * 100);
+                });
+            }, 100);
+        }
+
+        // ==================== CREATE DEPARTMENT CARD ====================
+        function createDepartmentCard(department) {
+            const card = document.createElement('div');
+            card.className = `department-card ${department.featured ? 'featured' : ''} fade-in`;
+            card.dataset.id = department.id;
+            card.dataset.category = department.category;
+            
+            card.innerHTML = `
+                ${department.featured ? '<div class="featured-badge">Featured</div>' : ''}
+                <div class="department-image">
+                    <img src="${department.image}" alt="${department.name}">
+                    <div class="department-overlay">
+                        <div>
+                            <h3>${department.name}</h3>
+                            <p><i class="fas fa-stethoscope"></i> ${department.description}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="department-content">
+                    <div class="department-stats">
+                        <div class="stat">
+                            <span class="stat-number">${department.doctors}</span>
+                            <span class="stat-label">Doctors</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">${department.beds}</span>
+                            <span class="stat-label">Beds</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">${department.successRate}%</span>
+                            <span class="stat-label">Success Rate</span>
+                        </div>
+                    </div>
+                    <ul class="department-services">
+                        ${department.services.slice(0, 3).map(service => `
+                            <li><i class="fas fa-check"></i> ${service}</li>
+                        `).join('')}
+                        ${department.services.length > 3 ? '<li><i class="fas fa-plus"></i> More services...</li>' : ''}
+                    </ul>
+                    <div class="department-actions">
+                        <button class="department-btn btn-primary view-details">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </button>
+                        <button class="department-btn btn-secondary book-appointment">
+                            <i class="fas fa-calendar-check"></i> Book Now
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners to buttons
+            card.querySelector('.view-details').addEventListener('click', (e) => {
+                e.stopPropagation();
+                showDepartmentDetails(department.id);
+            });
+            
+            card.querySelector('.book-appointment').addEventListener('click', (e) => {
+                e.stopPropagation();
+                window.location.href = `appointment.html?department=${encodeURIComponent(department.name)}`;
+            });
+            
+            card.addEventListener('click', () => {
+                showDepartmentDetails(department.id);
+            });
+            
+            return card;
+        }
+
+        // ==================== SHOW DEPARTMENT DETAILS ====================
+        function showDepartmentDetails(departmentId) {
+            const department = departments.find(d => d.id === departmentId);
+            if (!department) return;
+            
+            // Update modal title and subtitle
+            document.getElementById('modalTitle').textContent = department.name;
+            document.getElementById('modalSubtitle').textContent = department.description;
+            
+            // Update overview text
+            document.getElementById('overviewText').textContent = department.fullDescription;
+            
+            // Update department stats
+            const statsHTML = `
+                <div class="stat-item">
+                    <span>Department Type</span>
+                    <span>${department.category.charAt(0).toUpperCase() + department.category.slice(1)}</span>
+                </div>
+                <div class="stat-item">
+                    <span>Expert Doctors</span>
+                    <span>${department.doctors}</span>
+                </div>
+                <div class="stat-item">
+                    <span>Available Beds</span>
+                    <span>${department.beds}</span>
+                </div>
+                <div class="stat-item">
+                    <span>Success Rate</span>
+                    <span>${department.successRate}%</span>
+                </div>
+                <div class="stat-item">
+                    <span>Services Offered</span>
+                    <span>${department.services.length}+</span>
+                </div>
+            `;
+            document.getElementById('departmentStats').innerHTML = statsHTML;
+            
+            // Update services
+            const servicesHTML = department.services.map(service => `
+                <div class="service-item">
+                    <h4>${service}</h4>
+                    <p>Comprehensive diagnosis and treatment services</p>
+                </div>
+            `).join('');
+            document.getElementById('servicesGrid').innerHTML = servicesHTML;
+            
+            // Update doctors
+            const doctors = doctorsByDepartment[departmentId] || [
+                { name: "Dr. Expert Specialist", specialization: "Senior Consultant", experience: "15+ years", image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" },
+                { name: "Dr. Senior Consultant", specialization: "Head of Department", experience: "20+ years", image: "https://images.unsplash.com/photo-1594824434340-7e7dfc37cabb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" }
+            ];
+            
+            const doctorsHTML = doctors.map(doctor => `
+                <div class="doctor-card">
+                    <div class="doctor-image">
+                        <img src="${doctor.image}" alt="${doctor.name}">
+                    </div>
+                    <div class="doctor-info">
+                        <h4>${doctor.name}</h4>
+                        <p>${doctor.specialization}</p>
+                        <div class="doctor-qualifications">Experience: ${doctor.experience}</div>
+                        <button class="btn btn-primary" onclick="window.location.href='bookAppoitment.jsp?doctor=${encodeURIComponent(doctor.name)}'">
+                            <i class="fas fa-calendar-check"></i> Book Consultation
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('doctorsGrid').innerHTML = doctorsHTML;
+            
+            // Update facilities
+            const facilities = facilitiesByDepartment[departmentId] || [
+                "State-of-the-art Equipment",
+                "24/7 Emergency Services",
+                "Advanced Diagnostic Labs",
+                "Specialized Care Units",
+                "Rehabilitation Services"
+            ];
+            
+            const facilitiesHTML = facilities.map(facility => `
+                <div class="facility-item">
+                    <div class="facility-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div>
+                        <h4>${facility}</h4>
+                        <p>Available in this department</p>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('facilitiesList').innerHTML = facilitiesHTML;
+            
+            // Show modal
+            departmentModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // ==================== SETUP EVENT LISTENERS ====================
+        function setupEventListeners() {
+            // Filter tabs
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const filter = tab.dataset.filter;
+                    loadDepartments(filter, departmentSearch.value);
+                });
+            });
+            
+            // Search functionality
+            departmentSearch.addEventListener('input', (e) => {
+                const activeFilter = document.querySelector('.filter-tab.active').dataset.filter;
+                loadDepartments(activeFilter, e.target.value);
+            });
+            
+            // Modal close
+            modalClose.addEventListener('click', () => {
+                departmentModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Modal tab switching
+            modalTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    modalTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    const tabId = tab.dataset.tab;
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`${tabId}Tab`).classList.add('active');
+                });
+            });
+            
+            // Close modal when clicking outside
+            departmentModal.addEventListener('click', (e) => {
+                if (e.target === departmentModal) {
+                    departmentModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Back to top button
+            backToTop.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Header scroll effect
+            window.addEventListener('scroll', () => {
+                // Sticky header
+                if (window.scrollY > 100) {
+                    mainNav.classList.add('scrolled');
+                } else {
+                    mainNav.classList.remove('scrolled');
+                }
+                
+                // Back to top button
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+                
+                // Scroll animations
+                checkScrollAnimations();
+            });
+            
+            // FAQ toggle
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', () => {
+                    const item = question.parentElement;
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Department links in footer
+            document.querySelectorAll('.footer-col a[data-department]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const deptName = link.dataset.department;
+                    const department = departments.find(d => d.name.toLowerCase() === deptName.toLowerCase());
+                    if (department) {
+                        showDepartmentDetails(department.id);
+                    }
+                });
+            });
+        }
+
+        // ==================== SCROLL ANIMATIONS ====================
+        function setupScrollAnimations() {
+            checkScrollAnimations();
+            window.addEventListener('scroll', checkScrollAnimations);
+        }
+
+        function checkScrollAnimations() {
+            document.querySelectorAll('.fade-in:not(.visible)').forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
+                color: white;
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 3000;
+                animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Escape to close modal
+            if (e.key === 'Escape' && departmentModal.classList.contains('active')) {
+                departmentModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Ctrl/Cmd + F to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                e.preventDefault();
+                departmentSearch.focus();
+            }
+        });
+
+        // Print department information
+        function printDepartmentInfo(departmentId) {
+            const department = departments.find(d => d.id === departmentId);
+            if (department) {
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>${department.name} - Lucknow Hospital</title>
+                            <style>
+                                body { font-family: Arial, sans-serif; padding: 20px; }
+                                h1 { color: #12c7b7; }
+                                .services { margin: 20px 0; }
+                                .service { margin: 5px 0; }
+                            </style>
+                        </head>
+                        <body>
+                            <h1>${department.name}</h1>
+                            <p><strong>Description:</strong> ${department.description}</p>
+                            <p><strong>Full Description:</strong> ${department.fullDescription}</p>
+                            <div class="services">
+                                <strong>Services:</strong>
+                                ${department.services.map(service => `<div class="service">• ${service}</div>`).join('')}
+                            </div>
+                            <p><strong>Expert Doctors:</strong> ${department.doctors}</p>
+                            <p><strong>Available Beds:</strong> ${department.beds}</p>
+                            <p><strong>Success Rate:</strong> ${department.successRate}%</p>
+                            <br><br>
+                            <p>Generated from Lucknow Hospital Departments Page</p>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.print();
+            }
+        }
+
+        // Share department
+        function shareDepartment(departmentId) {
+            const department = departments.find(d => d.id === departmentId);
+            if (department && navigator.share) {
+                navigator.share({
+                    title: `${department.name} - Lucknow Hospital`,
+                    text: department.description,
+                    url: window.location.href + `?department=${departmentId}`
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const shareUrl = window.location.href + `?department=${departmentId}`;
+                navigator.clipboard.writeText(shareUrl).then(() => {
+                    showNotification('Link copied to clipboard!', 'success');
+                });
+            }
+        }
+
+        // Expose functions to global scope
+        window.printDepartmentInfo = printDepartmentInfo;
+        window.shareDepartment = shareDepartment;
+
+
+
+        
+    </script>
+
+    <style>
+        /* Additional animations */
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        /* Print styles */
+        @media print {
+            .main-nav,
+            .filter-section,
+            .cta-section,
+            .footer,
+            .back-to-top,
+            .department-actions,
+            .modal-close {
+                display: none !important;
+            }
+            
+            .departments-header {
+                padding: 40px 20px !important;
+                background: none !important;
+                color: black !important;
+            }
+            
+            .departments-header h1 {
+                color: black !important;
+            }
+            
+            .department-card {
+                break-inside: avoid;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+        }
+    </style>
+</body>
+</html>

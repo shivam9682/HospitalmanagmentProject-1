@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe, #fef3c7);
+            padding: 30px;
+        }
+
+        .dashboard {
+            background: #ffffffcc;
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 950px;
+            margin: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            transition: transform 0.3s;
+            position: relative;
+        }
+
+        .dashboard:hover { transform: translateY(-5px); }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1e3a8a;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        thead {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            color: #fff;
+        }
+
+        th, td {
+            padding: 14px 10px;
+            text-align: center;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        tbody tr { transition: background 0.2s, transform 0.2s; }
+        tbody tr:hover { background: #f1f5f9; transform: scale(1.02); }
+        tr:nth-child(even) { background: #f9fafb; }
+
+        .status {
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .PENDING { background: #fef3c7; color: #b45309; }
+        .CONFIRMED { background: #bbf7d0; color: #065f46; }
+
+        #noData {
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .deleteBtn {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .deleteBtn:hover { background: #b91c1c; }
+
+        .backBtn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .backBtn:hover { background: #2563eb; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+   <button class="backBtn" onclick="window.location.href='/ind'">⬅ Back</button>
+
+    <h2>👤 My Appointments</h2>
+
+    <table id="appointmentTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Doctor</th>
+                <th>Department</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will come from JS -->
+        </tbody>
+    </table>
+
+    <p id="noData" class="hidden">No appointments found.</p>
+</div>
+
+<script>
+const apiUrl = "http://localhost:8080/api/appoitment/my";
+
+function loadAppointments() {
+    fetch(apiUrl, { method: "GET", credentials: "include" })
+    .then(res => {
+        if (!res.ok) throw new Error("Not logged in");
+        return res.json();
+    })
+    .then(data => {
+        const tbody = document.querySelector("#appointmentTable tbody");
+        const noData = document.getElementById("noData");
+        tbody.innerHTML = "";
+
+        if (data.length === 0) {
+            noData.classList.remove("hidden");
+            return;
+        } else {
+            noData.classList.add("hidden");
+        }
+
+        data.forEach((app, index) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${app.doctorId}</td>
+                <td>${app.department}</td>
+                <td>${app.date}</td>
+                <td>${app.time}</td>
+                <td><span class="status ${app.status}">${app.status}</span></td>
+                <td><button class="deleteBtn">Delete</button></td>
+            `;
+            // Add delete functionality
+            row.querySelector(".deleteBtn").addEventListener("click", () => {
+                if (confirm("Are you sure you want to delete this appointment?")) {
+                    fetch(`http://localhost:8080/api/appoitment/${app.id}`, {
+                        method: "DELETE",
+                        credentials: "include"
+                    })
+                    .then(res => {
+                        if (!res.ok) throw new Error("Delete failed");
+                        row.remove();
+                        if (tbody.children.length === 0) {
+                            document.getElementById("noData").classList.remove("hidden");
+                        }
+                    })
+                    .catch(err => alert("Error deleting appointment: " + err));
+                }
+            });
+
+            tbody.appendChild(row);
+        });
+    })
+    .catch(err => {
+        alert("Please login first!");
+        window.location.href = "/log";
+    });
+}
+
+
+// Load appointments on page load
+loadAppointments();
+</script>
+
+</body>
+</html>

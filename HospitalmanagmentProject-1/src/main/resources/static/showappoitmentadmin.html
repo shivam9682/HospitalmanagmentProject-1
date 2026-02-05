@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+:root {
+    --primary:#6c5ce7;
+    --success:#00b894;
+    --warning:#fdcb6e;
+    --danger:#ff7675;
+    --dark:#2d3436;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    padding: 25px;
+}
+
+/* HEADER */
+.header {
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+/* DASHBOARD CARDS */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.card {
+    padding: 20px;
+    border-radius: 18px;
+    color: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.total { background: linear-gradient(135deg,#6c5ce7,#a29bfe); }
+.confirmed { background: linear-gradient(135deg,#00b894,#55efc4); }
+.pending { background: linear-gradient(135deg,#fdcb6e,#ffeaa7); color:#333; }
+
+.card h3 {
+    font-size: 28px;
+    margin-top: 8px;
+}
+
+/* FILTER BAR */
+.filters {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filters input,
+.filters select {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+/* TABLE */
+.table-box {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: var(--dark);
+    color: white;
+    padding: 14px;
+}
+
+td {
+    padding: 14px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #f4f6ff;
+}
+
+/* STATUS */
+.status {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 12px;
+    color: white;
+}
+
+.CONFIRMED { background: var(--success); }
+.PENDING { background: var(--warning); color:#333; }
+
+/* BUTTONS */
+.actions button {
+    padding: 7px 14px;
+    margin: 2px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.confirm { background: var(--success); color:white; }
+.pendingBtn { background: var(--warning); }
+.delete { background: var(--danger); color:white; }
+
+/* LOGOUT AND DOCTOR BUTTONS */
+.logout-btn {
+    background: linear-gradient(135deg,#ff416c,#ff4b2b);
+    border:none;
+    padding:10px 25px;
+    border-radius:25px;
+    color:white;
+    cursor:pointer;
+}
+
+.doctor-btn {
+    background: linear-gradient(135deg,#00b894,#55efc4);
+    border:none;
+    padding:10px 25px;
+    border-radius:25px;
+    color:white;
+    cursor:pointer;
+    margin-right: 10px;
+}
+
+.show-doctor-btn {
+    background: linear-gradient(135deg,#6c5ce7,#a29bfe);
+    border:none;
+    padding:10px 25px;
+    border-radius:25px;
+    color:white;
+    cursor:pointer;
+    margin-right: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2>🏥 Admin Dashboard</h2>
+    <div>
+        <button class="doctor-btn" onclick="addDoctor()">Add Doctor</button>
+        <button class="show-doctor-btn" onclick="showAllDoctors()">Show All Doctor</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<!-- DASHBOARD CARDS -->
+<div class="cards">
+    <div class="card total">
+        <p>Total Appointments</p>
+        <h3 id="totalCount">0</h3>
+    </div>
+    <div class="card confirmed">
+        <p>Confirmed</p>
+        <h3 id="confirmedCount">0</h3>
+    </div>
+    <div class="card pending">
+        <p>Pending</p>
+        <h3 id="pendingCount">0</h3>
+    </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+    <input type="text" id="doctorFilter" placeholder="Search Doctor">
+    <input type="date" id="dateFilter">
+    <select id="statusFilter">
+        <option value="">All Status</option>
+        <option value="CONFIRMED">Confirmed</option>
+        <option value="PENDING">Pending</option>
+    </select>
+</div>
+
+<!-- TABLE -->
+<div class="table-box">
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="data"></tbody>
+</table>
+</div>
+
+<script>
+let appointments = [];
+
+async function loadData() {
+    const res = await fetch("http://localhost:8080/api/appoitment/admin");
+    appointments = await res.json();
+    updateDashboard();
+    renderTable(appointments);
+}
+
+function updateDashboard() {
+    document.getElementById("totalCount").innerText = appointments.length;
+    document.getElementById("confirmedCount").innerText =
+        appointments.filter(a => a.status === "CONFIRMED").length;
+    document.getElementById("pendingCount").innerText =
+        appointments.filter(a => a.status === "PENDING").length;
+}
+
+function renderTable(list) {
+    let rows = "";
+    list.forEach(a => {
+        rows += `
+        <tr>
+            <td>${a.id}</td>
+            <td>${a.fullname}</td>
+            <td>${a.doctorId}</td>
+            <td>${a.date} ${a.time}</td>
+            <td><span class="status ${a.status}">${a.status}</span></td>
+            <td class="actions">
+                <button class="confirm" onclick="updateStatus(${a.id},'CONFIRMED')">Confirm</button>
+                <button class="pendingBtn" onclick="updateStatus(${a.id},'PENDING')">Pending</button>
+                <button class="delete" onclick="removeAppointment(${a.id})">Delete</button>
+            </td>
+        </tr>`;
+    });
+    document.getElementById("data").innerHTML = rows || "<tr><td colspan='6'>No Data</td></tr>";
+}
+
+/* FILTER LOGIC */
+document.querySelectorAll("#doctorFilter,#dateFilter,#statusFilter")
+.forEach(el => el.addEventListener("input", applyFilters));
+
+function applyFilters() {
+    const doctor = doctorFilter.value.toLowerCase();
+    const date = dateFilter.value;
+    const status = statusFilter.value;
+
+    const filtered = appointments.filter(a =>
+        (!doctor || a.doctorId.toLowerCase().includes(doctor)) &&
+        (!date || a.date === date) &&
+        (!status || a.status === status)
+    );
+    renderTable(filtered);
+}
+
+async function updateStatus(id, status) {
+    await fetch(`http://localhost:8080/api/appoitment/${id}/status?status=${status}`, {
+        method:"PATCH"
+    });
+    loadData();
+}
+
+async function removeAppointment(id) {
+    if(confirm("Delete this appointment?")) {
+        await fetch(`http://localhost:8080/api/appoitment/${id}`, {
+            method:"DELETE"
+        });
+        loadData();
+    }
+}
+
+function logout() {
+    window.location.href="/index.html";
+     
+}
+
+function addDoctor() {
+     
+	window.location.href="/add-doctor.html";
+}
+
+function showAllDoctors() {
+	window.location.href="/show-doctors.html";
+}
+
+loadData();
+</script>
+
+</body>
+</html>

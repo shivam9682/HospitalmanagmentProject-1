@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Stylish Form</title>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .illustration {
+            flex: 1;
+            background: linear-gradient(to bottom right, #6a11cb, #2575fc);
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .illustration h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .illustration p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .features {
+            list-style: none;
+        }
+        
+        .features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .features i {
+            margin-right: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .form-container {
+            flex: 1;
+            padding: 50px 40px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-header h2 {
+            color: #333;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .form-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 5px solid #28a745;
+        }
+        
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .alert i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95rem;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6a11cb;
+            font-size: 1.1rem;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f9f9f9;
+        }
+        
+        .form-control:focus {
+            border-color: #6a11cb;
+            background-color: white;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+        }
+        
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(to right, #5a0cb9, #1c68f0);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .login-link a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        
+        .login-link a:hover {
+            color: #2575fc;
+            text-decoration: underline;
+        }
+        
+        .password-match {
+            display: none;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        
+        .password-match.valid {
+            color: #28a745;
+        }
+        
+        .password-match.invalid {
+            color: #dc3545;
+        }
+        
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                max-width: 600px;
+            }
+            
+            .illustration {
+                padding: 30px 25px;
+            }
+            
+            .form-container {
+                padding: 40px 30px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .illustration h1 {
+                font-size: 2.2rem;
+            }
+            
+            .form-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left side with illustration and features -->
+        <div class="illustration">
+            <h1>Join Our Community</h1>
+            <p>Create an account to access exclusive features, personalized content, and connect with like-minded people.</p>
+            
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i> Secure & encrypted data storage</li>
+                <li><i class="fas fa-check-circle"></i> Personalized dashboard experience</li>
+                <li><i class="fas fa-check-circle"></i> 24/7 customer support</li>
+                <li><i class="fas fa-check-circle"></i> Access to premium features</li>
+                <li><i class="fas fa-check-circle"></i> Regular updates and improvements</li>
+            </ul>
+        </div>
+        
+        <!-- Right side with form -->
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Create Account</h2>
+                <p>Fill in your details to get started</p>
+            </div>
+            
+            <!-- Success Message -->
+            <div class="alert alert-success" th:if="${success}">
+                <i class="fas fa-check-circle"></i>
+                <span th:text="${success}"></span>
+            </div>
+            
+            <!-- Error Message -->
+            <div class="alert alert-error" th:if="${errMsg}">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span th:text="${errMsg}"></span>
+            </div>
+            
+            <form th:action="@{/regForm}" method="post" th:object="${user}" id="registrationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Enter your first name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-user"></i>
+                            <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Enter your last name" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-control" id="email" th:field="*{email}" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-phone"></i>
+                        <input type="number" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" placeholder="Enter your phone number" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-home"></i>
+                        <textarea class="form-control" id="address" th:field="*{address}" placeholder="Enter your full address" required></textarea>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Enter your confirm password" required>
+                        <button type="button" class="password-toggle" id="toggleConfirmPassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-match" id="passwordMatchMessage"></div>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+            
+            <div class="login-link">
+                Already have an account? <a href="log">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Password visibility toggle
+            const togglePassword = document.getElementById('togglePassword');
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const passwordMatchMessage = document.getElementById('passwordMatchMessage');
+            const form = document.getElementById('registrationForm');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+            
+            // Toggle confirm password visibility
+            toggleConfirmPassword.addEventListener('click', function() {
+                const type = confirmPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPassword.setAttribute('type', type);
+                this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+            });
+            
+            // Validate password match
+            function validatePassword() {
+                if (password.value && confirmPassword.value) {
+                    if (password.value === confirmPassword.value) {
+                        passwordMatchMessage.textContent = 'Passwords match!';
+                        passwordMatchMessage.className = 'password-match valid';
+                        passwordMatchMessage.style.display = 'block';
+                        return true;
+                    } else {
+                        passwordMatchMessage.textContent = 'Passwords do not match!';
+                        passwordMatchMessage.className = 'password-match invalid';
+                        passwordMatchMessage.style.display = 'block';
+                        return false;
+                    }
+                } else {
+                    passwordMatchMessage.style.display = 'none';
+                    return false;
+                }
+            }
+            
+            // Real-time password validation
+            password.addEventListener('input', validatePassword);
+            confirmPassword.addEventListener('input', validatePassword);
+            
+            // Form submission validation
+            form.addEventListener('submit', function(e) {
+                // Clear previous error styling
+                const inputs = form.querySelectorAll('.form-control');
+                inputs.forEach(input => {
+                    input.style.borderColor = '#e1e1e1';
+                });
+                
+                let isValid = true;
+                
+                // Check all required fields
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        input.style.borderColor = '#dc3545';
+                        isValid = false;
+                    }
+                });
+                
+                // Validate password match
+                if (!validatePassword()) {
+                    password.style.borderColor = '#dc3545';
+                    confirmPassword.style.borderColor = '#dc3545';
+                    isValid = false;
+                }
+                
+                // Validate email format
+                const email = document.getElementById('email');
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email.value && !emailRegex.test(email.value)) {
+                    email.style.borderColor = '#dc3545';
+                    isValid = false;
+                }
+                
+                // If not valid, prevent form submission
+                if (!isValid) {
+                    e.preventDefault();
+                    submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please fix errors above';
+                    submitBtn.style.background = 'linear-gradient(to right, #dc3545, #c82333)';
+                    
+                    // Reset button after 2 seconds
+                    setTimeout(() => {
+                        submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+                        submitBtn.style.background = 'linear-gradient(to right, #6a11cb, #2575fc)';
+                    }, 2000);
+                } else {
+                    // Change button to loading state
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                    submitBtn.disabled = true;
+                }
+            });
+            
+            // Real-time input validation styling
+            const inputs = form.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        this.style.borderColor = '#28a745';
+                    } else {
+                        this.style.borderColor = '#e1e1e1';
+                    }
+                });
+            });
+            
+            // Add animation to form elements
+            const formGroups = document.querySelectorAll('.form-group');
+            formGroups.forEach((group, index) => {
+                group.style.opacity = '0';
+                group.style.transform = 'translateY(20px)';
+                group.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+                
+                setTimeout(() => {
+                    group.style.opacity = '1';
+                    group.style.transform = 'translateY(0)';
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>

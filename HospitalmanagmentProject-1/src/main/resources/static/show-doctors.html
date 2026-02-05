@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Doctors - Hospital Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+            margin-bottom: 30px;
+        }
+        
+        .card-header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .doctor-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.4);
+        }
+        
+        .btn-outline-primary {
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.2);
+        }
+        
+        .btn-success, .btn-warning, .btn-danger, .btn-info {
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.875rem;
+            margin: 2px;
+        }
+        
+        .badge {
+            font-size: 0.85em;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        
+        .badge-active {
+            background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .badge-inactive {
+            background: linear-gradient(90deg, #6c757d 0%, #495057 100%);
+        }
+        
+        .status-active {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-inactive {
+            color: #6c757d;
+            font-weight: bold;
+        }
+        
+        .doctor-card {
+            border-left: 5px solid #4b6cb7;
+            transition: transform 0.3s;
+        }
+        
+        .doctor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .doctor-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .filter-badge {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-badge:hover {
+            transform: scale(1.05);
+        }
+        
+        .dataTables_wrapper {
+            padding: 0;
+        }
+        
+        table.dataTable {
+            border-collapse: collapse !important;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        table.dataTable thead th {
+            background-color: #4b6cb7;
+            color: white;
+            border: none;
+            font-weight: 600;
+        }
+        
+        table.dataTable tbody tr {
+            transition: background-color 0.3s;
+        }
+        
+        table.dataTable tbody tr:hover {
+            background-color: rgba(75, 108, 183, 0.1);
+        }
+        
+        .action-buttons {
+            min-width: 180px;
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            border: none;
+        }
+        
+        .modal-header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .search-box {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+        
+        .search-box:focus {
+            border-color: #4b6cb7;
+            box-shadow: 0 0 0 0.25rem rgba(75, 108, 183, 0.25);
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .stats-card.total {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+        }
+        
+        .stats-card.active {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+        
+        .stats-card.inactive {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+        
+        .stats-card.cardiologist {
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stats-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h1 class="display-5 fw-bold text-primary">
+                        <i class="fas fa-hospital-alt doctor-icon"></i>Hospital Management System
+                    </h1>
+                    <div class="text-end">
+                        <p class="mb-1 text-muted">Doctor Management Module</p>
+                         <button type="button" class="btn btn-outline-primary" id="adminBtn">Admin Pannel</button>
+                        <a href="add-doctor.html" class="btn btn-outline-primary">
+                            <i class="fas fa-user-plus"></i> Add New Doctor
+                        </a>
+                    </div>
+                </div>
+                <hr class="my-3">
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-sm-6">
+                <div class="stats-card total">
+                    <div class="stats-number" id="totalDoctors">0</div>
+                    <div class="stats-label">Total Doctors</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stats-card active">
+                    <div class="stats-number" id="activeDoctors">0</div>
+                    <div class="stats-label">Active Doctors</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stats-card inactive">
+                    <div class="stats-number" id="inactiveDoctors">0</div>
+                    <div class="stats-label">Inactive Doctors</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="stats-card cardiologist">
+                    <div class="stats-number" id="cardiologists">0</div>
+                    <div class="stats-label">Cardiologists</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters and Search -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <h5 class="card-title mb-0">Filter Doctors</h5>
+                                <div class="d-flex flex-wrap mt-2">
+                                    <span class="badge filter-badge bg-primary me-2 mb-2" data-filter="all">All</span>
+                                    <span class="badge filter-badge bg-success me-2 mb-2" data-filter="active">Active</span>
+                                    <span class="badge filter-badge bg-secondary me-2 mb-2" data-filter="inactive">Inactive</span>
+                                    <span class="badge filter-badge bg-danger me-2 mb-2" data-filter="Cardiology">Cardiology</span>
+                                    <span class="badge filter-badge bg-warning me-2 mb-2" data-filter="Neurology">Neurology</span>
+                                    <span class="badge filter-badge bg-info me-2 mb-2" data-filter="Orthopedics">Orthopedics</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control search-box" id="searchInput" placeholder="Search by name, email, specialization...">
+                                    <button class="btn btn-primary" type="button" id="searchButton">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary" type="button" id="resetFilters">
+                                        <i class="fas fa-redo"></i> Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-user-md"></i> All Doctors Information
+                        </div>
+                        <div>
+                            <button class="btn btn-light" id="refreshButton">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="message" class="alert d-none"></div>
+                        
+                        <!-- Loading Spinner -->
+                        <div id="loadingSpinner" class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-3">Loading doctors data...</p>
+                        </div>
+                        
+                        <!-- No Data Message -->
+                        <div id="noDataMessage" class="text-center py-5 d-none">
+                            <i class="fas fa-user-md fa-3x text-muted mb-3"></i>
+                            <h4 class="text-muted">No Doctors Found</h4>
+                            <p class="text-muted">There are no doctors in the system yet.</p>
+                            <a href="add-doctor.html" class="btn btn-primary mt-2">
+                                <i class="fas fa-user-plus"></i> Add First Doctor
+                            </a>
+                        </div>
+                        
+                        <!-- Doctors Table -->
+                        <div id="doctorsTableContainer" class="d-none">
+                            <table id="doctorsTable" class="table table-hover table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Specialization</th>
+                                        <th>Department</th>
+                                        <th>Contact</th>
+                                        <th>Experience</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="doctorsTableBody">
+                                    <!-- Doctors data will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <hr>
+                <p class="text-muted">
+                    <i class="fas fa-code"></i> Developed for Hospital Management System | 
+                    <i class="fas fa-envelope"></i> support@hospital.com
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Doctor Modal -->
+    <div class="modal fade" id="editDoctorModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit"></i> Edit Doctor Information</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="editMessage" class="alert d-none"></div>
+                    <form id="editDoctorForm">
+                        <input type="hidden" id="editDoctorId">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="editName" name="name" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="editEmail" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="editEmail" name="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editPhone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="editPhone" name="phone" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="editSpecialization" class="form-label">Specialization</label>
+                                <select class="form-select" id="editSpecialization" name="specialization" required>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Orthopedics">Orthopedics</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Oncology">Oncology</option>
+                                    <option value="Gynecology">Gynecology</option>
+                                    <option value="Psychiatry">Psychiatry</option>
+                                    <option value="General Surgery">General Surgery</option>
+                                    <option value="ENT">ENT</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editDepartment" class="form-label">Department</label>
+                                <select class="form-select" id="editDepartment" name="department" required>
+                                    <option value="Heart Care">Heart Care</option>
+                                    <option value="Neuro Science">Neuro Science</option>
+                                    <option value="Bone & Joint">Bone & Joint</option>
+                                    <option value="Child Care">Child Care</option>
+                                    <option value="Skin Care">Skin Care</option>
+                                    <option value="Cancer Care">Cancer Care</option>
+                                    <option value="Women's Health">Women's Health</option>
+                                    <option value="Mental Health">Mental Health</option>
+                                    <option value="Surgery">Surgery</option>
+                                    <option value="ENT Care">ENT Care</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="editQualification" class="form-label">Qualification</label>
+                                <input type="text" class="form-control" id="editQualification" name="qualification" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editExperience" class="form-label">Experience (Years)</label>
+                                <input type="number" class="form-control" id="editExperience" name="experience" min="0" max="50" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="editConsultingHours" class="form-label">Consulting Hours</label>
+                                <input type="text" class="form-control" id="editConsultingHours" name="consultingHours" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editRoomNumber" class="form-label">Room Number</label>
+                                <input type="text" class="form-control" id="editRoomNumber" name="roomNumber">
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="editStatus" class="form-label">Status</label>
+                                <select class="form-select" id="editStatus" name="status">
+                                    <option value="ACTIVE">ACTIVE</option>
+                                    <option value="INACTIVE">INACTIVE</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesBtn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteDoctorModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Confirm Delete</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong id="doctorToDeleteName"></strong>?</p>
+                    <p class="text-danger"><i class="fas fa-exclamation-circle"></i> This action cannot be undone.</p>
+                    <input type="hidden" id="doctorToDeleteId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        // Base URL for API - Change this to match your backend URL
+        const API_BASE_URL = 'http://localhost:8080/api/doctors';
+        
+        // Global variables
+        let doctorsData = [];
+        let dataTable = null;
+        
+        // DOM elements
+        const messageDiv = document.getElementById('message');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const noDataMessage = document.getElementById('noDataMessage');
+        const doctorsTableContainer = document.getElementById('doctorsTableContainer');
+        const doctorsTableBody = document.getElementById('doctorsTableBody');
+        const refreshButton = document.getElementById('refreshButton');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const resetFilters = document.getElementById('resetFilters');
+        const editDoctorForm = document.getElementById('editDoctorForm');
+        const saveChangesBtn = document.getElementById('saveChangesBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        
+        // Statistics elements
+        const totalDoctorsEl = document.getElementById('totalDoctors');
+        const activeDoctorsEl = document.getElementById('activeDoctors');
+        const inactiveDoctorsEl = document.getElementById('inactiveDoctors');
+        const cardiologistsEl = document.getElementById('cardiologists');
+        
+        // Show message function
+        function showMessage(message, type) {
+            messageDiv.className = `alert alert-${type}`;
+            messageDiv.textContent = message;
+            messageDiv.classList.remove('d-none');
+            
+            setTimeout(() => {
+                messageDiv.classList.add('d-none');
+            }, 5000);
+        }
+        
+        // Update statistics
+        function updateStatistics(doctors) {
+            const total = doctors.length;
+            const active = doctors.filter(d => d.status === 'ACTIVE').length;
+            const inactive = doctors.filter(d => d.status === 'INACTIVE').length;
+            const cardiologists = doctors.filter(d => d.specialization === 'Cardiology').length;
+            
+            totalDoctorsEl.textContent = total;
+            activeDoctorsEl.textContent = active;
+            inactiveDoctorsEl.textContent = inactive;
+            cardiologistsEl.textContent = cardiologists;
+        }
+        
+        // Fetch all doctors from API
+        async function fetchDoctors() {
+            try {
+                // Show loading spinner
+                loadingSpinner.classList.remove('d-none');
+                noDataMessage.classList.add('d-none');
+                doctorsTableContainer.classList.add('d-none');
+                
+                const response = await fetch(`${API_BASE_URL}/all`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    doctorsData = result.data;
+                    
+                    // Update statistics
+                    updateStatistics(doctorsData);
+                    
+                    // Render table
+                    renderDoctorsTable(doctorsData);
+                    
+                    // Show appropriate view
+                    if (doctorsData.length > 0) {
+                        loadingSpinner.classList.add('d-none');
+                        doctorsTableContainer.classList.remove('d-none');
+                    } else {
+                        loadingSpinner.classList.add('d-none');
+                        noDataMessage.classList.remove('d-none');
+                    }
+                    
+                    // Show success message on first load
+                    if (!dataTable) {
+                        showMessage(`Loaded ${doctorsData.length} doctors`, 'success');
+                    }
+                } else {
+                    throw new Error(result.message || 'Failed to fetch doctors');
+                }
+            } catch (error) {
+                console.error('Error fetching doctors:', error);
+                loadingSpinner.classList.add('d-none');
+                showMessage(`Error: ${error.message}`, 'danger');
+                
+                // For demo purposes, load sample data if API fails
+                loadSampleData();
+            }
+        }
+        
+        // Load sample data for demo
+        function loadSampleData() {
+            doctorsData = [
+                {
+                    id: 1,
+                    name: "Dr. John Smith",
+                    email: "john.smith@hospital.com",
+                    phone: "9876543210",
+                    specialization: "Cardiology",
+                    department: "Heart Care",
+                    qualification: "MD, DM Cardiology",
+                    experience: 10,
+                    consultingHours: "10:00 AM - 4:00 PM",
+                    roomNumber: "A-101",
+                    status: "ACTIVE"
+                },
+                {
+                    id: 2,
+                    name: "Dr. Sarah Johnson",
+                    email: "sarah.j@hospital.com",
+                    phone: "9123456780",
+                    specialization: "Neurology",
+                    department: "Neuro Science",
+                    qualification: "MD, DM Neurology",
+                    experience: 8,
+                    consultingHours: "11:00 AM - 6:00 PM",
+                    roomNumber: "B-201",
+                    status: "ACTIVE"
+                },
+                {
+                    id: 3,
+                    name: "Dr. Michael Brown",
+                    email: "michael.b@hospital.com",
+                    phone: "9234567890",
+                    specialization: "Orthopedics",
+                    department: "Bone & Joint",
+                    qualification: "MS Orthopedics",
+                    experience: 15,
+                    consultingHours: "9:00 AM - 3:00 PM",
+                    roomNumber: "C-301",
+                    status: "ACTIVE"
+                },
+                {
+                    id: 4,
+                    name: "Dr. Emily Davis",
+                    email: "emily.d@hospital.com",
+                    phone: "9345678901",
+                    specialization: "Pediatrics",
+                    department: "Child Care",
+                    qualification: "MD Pediatrics",
+                    experience: 7,
+                    consultingHours: "10:00 AM - 5:00 PM",
+                    roomNumber: "D-401",
+                    status: "INACTIVE"
+                }
+            ];
+            
+            // Update statistics
+            updateStatistics(doctorsData);
+            
+            // Render table
+            renderDoctorsTable(doctorsData);
+            
+            // Show appropriate view
+            loadingSpinner.classList.add('d-none');
+            doctorsTableContainer.classList.remove('d-none');
+            
+            showMessage("Loaded sample data (API not available)", 'warning');
+        }
+        
+        // Render doctors table
+        function renderDoctorsTable(doctors) {
+            // Clear existing table body
+            doctorsTableBody.innerHTML = '';
+            
+            // Populate table rows
+            doctors.forEach(doctor => {
+                const row = document.createElement('tr');
+                
+                // Status badge
+                const statusBadge = doctor.status === 'ACTIVE' 
+                    ? '<span class="badge badge-active">ACTIVE</span>'
+                    : '<span class="badge badge-inactive">INACTIVE</span>';
+                
+                // Action buttons
+                const actions = `
+                    <div class="action-buttons">
+                        <button class="btn btn-info btn-sm view-btn" data-id="${doctor.id}" title="View Details">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-warning btn-sm edit-btn" data-id="${doctor.id}" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="${doctor.id}" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        ${doctor.status === 'ACTIVE' 
+                            ? `<button class="btn btn-secondary btn-sm status-btn" data-id="${doctor.id}" title="Deactivate">
+                                  <i class="fas fa-toggle-on"></i>
+                               </button>`
+                            : `<button class="btn btn-success btn-sm status-btn" data-id="${doctor.id}" title="Activate">
+                                  <i class="fas fa-toggle-off"></i>
+                               </button>`
+                        }
+                    </div>
+                `;
+                
+                // Get first letter of name for avatar
+                const nameInitial = doctor.name.charAt(0);
+                
+                row.innerHTML = `
+                    <td>${doctor.id}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="doctor-avatar me-3">${nameInitial}</div>
+                            <div>
+                                <strong>${doctor.name}</strong><br>
+                                <small class="text-muted">${doctor.qualification}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong>${doctor.specialization}</strong><br>
+                        <small>${doctor.department}</small>
+                    </td>
+                    <td>${doctor.department}</td>
+                    <td>
+                        <i class="fas fa-envelope"></i> ${doctor.email}<br>
+                        <i class="fas fa-phone"></i> ${doctor.phone}
+                    </td>
+                    <td>${doctor.experience} years</td>
+                    <td>${statusBadge}</td>
+                    <td>${actions}</td>
+                `;
+                
+                doctorsTableBody.appendChild(row);
+            });
+            
+            // Initialize or refresh DataTable
+            if (dataTable) {
+                dataTable.destroy();
+            }
+            
+            dataTable = $('#doctorsTable').DataTable({
+                pageLength: 10,
+                lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                order: [[0, 'desc']],
+                responsive: true,
+                dom: '<"top"flp>rt<"bottom"ip><"clear">',
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries"
+                }
+            });
+            
+            // Add event listeners to action buttons
+            addActionButtonListeners();
+        }
+        
+        // Add event listeners to action buttons
+        function addActionButtonListeners() {
+            // View button
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const doctorId = e.currentTarget.getAttribute('data-id');
+                    viewDoctorDetails(doctorId);
+                });
+            });
+            
+            // Edit button
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const doctorId = e.currentTarget.getAttribute('data-id');
+                    openEditDoctorModal(doctorId);
+                });
+            });
+            
+            // Delete button
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const doctorId = e.currentTarget.getAttribute('data-id');
+                    const doctor = doctorsData.find(d => d.id == doctorId);
+                    openDeleteDoctorModal(doctorId, doctor.name);
+                });
+            });
+            
+            // Status toggle button
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const doctorId = e.currentTarget.getAttribute('data-id');
+                    const doctor = doctorsData.find(d => d.id == doctorId);
+                    const newStatus = doctor.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+                    
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/status/${doctorId}?status=${newStatus}`, {
+                            method: 'PATCH'
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            showMessage(`Doctor status updated to ${newStatus}`, 'success');
+                            fetchDoctors(); // Refresh data
+                        } else {
+                            showMessage(`Error: ${result.message}`, 'danger');
+                        }
+                    } catch (error) {
+                        console.error('Error updating status:', error);
+                        // For demo purposes, update locally
+                        doctor.status = newStatus;
+                        updateStatistics(doctorsData);
+                        renderDoctorsTable(doctorsData);
+                        showMessage(`Doctor status updated to ${newStatus} (demo mode)`, 'info');
+                    }
+                });
+            });
+        }
+        
+        // View doctor details
+        function viewDoctorDetails(doctorId) {
+            const doctor = doctorsData.find(d => d.id == doctorId);
+            
+            if (doctor) {
+                const details = `
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">Doctor Details - ID: ${doctor.id}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 text-center mb-3">
+                                    <div class="doctor-avatar mx-auto" style="width: 120px; height: 120px; font-size: 3rem;">
+                                        ${doctor.name.charAt(0)}
+                                    </div>
+                                    <h4 class="mt-3">${doctor.name}</h4>
+                                    <span class="badge ${doctor.status === 'ACTIVE' ? 'bg-success' : 'bg-secondary'}">
+                                        ${doctor.status}
+                                    </span>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-2"><strong>Email:</strong> ${doctor.email}</div>
+                                        <div class="col-md-6 mb-2"><strong>Phone:</strong> ${doctor.phone}</div>
+                                        <div class="col-md-6 mb-2"><strong>Specialization:</strong> ${doctor.specialization}</div>
+                                        <div class="col-md-6 mb-2"><strong>Department:</strong> ${doctor.department}</div>
+                                        <div class="col-md-6 mb-2"><strong>Qualification:</strong> ${doctor.qualification}</div>
+                                        <div class="col-md-6 mb-2"><strong>Experience:</strong> ${doctor.experience} years</div>
+                                        <div class="col-md-6 mb-2"><strong>Consulting Hours:</strong> ${doctor.consultingHours}</div>
+                                        <div class="col-md-6 mb-2"><strong>Room Number:</strong> ${doctor.roomNumber || 'Not assigned'}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Create a modal or show in an alert
+                alert(`Doctor Details:\n\nName: ${doctor.name}\nEmail: ${doctor.email}\nSpecialization: ${doctor.specialization}\nDepartment: ${doctor.department}\nExperience: ${doctor.experience} years\nStatus: ${doctor.status}`);
+            }
+        }
+        
+        // Open edit doctor modal
+        async function openEditDoctorModal(doctorId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/${doctorId}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const doctor = result.data;
+                    
+                    // Populate form fields
+                    document.getElementById('editDoctorId').value = doctor.id;
+                    document.getElementById('editName').value = doctor.name;
+                    document.getElementById('editEmail').value = doctor.email;
+                    document.getElementById('editPhone').value = doctor.phone;
+                    document.getElementById('editSpecialization').value = doctor.specialization;
+                    document.getElementById('editDepartment').value = doctor.department;
+                    document.getElementById('editQualification').value = doctor.qualification;
+                    document.getElementById('editExperience').value = doctor.experience;
+                    document.getElementById('editConsultingHours').value = doctor.consultingHours;
+                    document.getElementById('editRoomNumber').value = doctor.roomNumber || '';
+                    document.getElementById('editStatus').value = doctor.status;
+                    
+                    // Clear any previous message
+                    document.getElementById('editMessage').classList.add('d-none');
+                    
+                    // Show modal
+                    const editModal = new bootstrap.Modal(document.getElementById('editDoctorModal'));
+                    editModal.show();
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('Error fetching doctor details:', error);
+                showMessage(`Error: ${error.message}`, 'danger');
+                
+                // For demo, use local data
+                const doctor = doctorsData.find(d => d.id == doctorId);
+                if (doctor) {
+                    // Populate form fields
+                    document.getElementById('editDoctorId').value = doctor.id;
+                    document.getElementById('editName').value = doctor.name;
+                    document.getElementById('editEmail').value = doctor.email;
+                    document.getElementById('editPhone').value = doctor.phone;
+                    document.getElementById('editSpecialization').value = doctor.specialization;
+                    document.getElementById('editDepartment').value = doctor.department;
+                    document.getElementById('editQualification').value = doctor.qualification;
+                    document.getElementById('editExperience').value = doctor.experience;
+                    document.getElementById('editConsultingHours').value = doctor.consultingHours;
+                    document.getElementById('editRoomNumber').value = doctor.roomNumber || '';
+                    document.getElementById('editStatus').value = doctor.status;
+                    
+                    // Clear any previous message
+                    document.getElementById('editMessage').classList.add('d-none');
+                    
+                    // Show modal
+                    const editModal = new bootstrap.Modal(document.getElementById('editDoctorModal'));
+                    editModal.show();
+                }
+            }
+        }
+        
+        // Open delete confirmation modal
+        function openDeleteDoctorModal(doctorId, doctorName) {
+            document.getElementById('doctorToDeleteId').value = doctorId;
+            document.getElementById('doctorToDeleteName').textContent = doctorName;
+            
+            const deleteModal = new bootstrap.Modal(document.getElementById('deleteDoctorModal'));
+            deleteModal.show();
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial load
+            fetchDoctors();
+            
+            // Refresh button
+            refreshButton.addEventListener('click', () => {
+                fetchDoctors();
+                showMessage("Refreshing doctor data...", 'info');
+            });
+            
+            // Search functionality
+            searchButton.addEventListener('click', () => {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                if (searchTerm) {
+                    const filteredDoctors = doctorsData.filter(doctor => 
+                        doctor.name.toLowerCase().includes(searchTerm) ||
+                        doctor.email.toLowerCase().includes(searchTerm) ||
+                        doctor.specialization.toLowerCase().includes(searchTerm) ||
+                        doctor.department.toLowerCase().includes(searchTerm)
+                    );
+                    
+                    updateStatistics(filteredDoctors);
+                    renderDoctorsTable(filteredDoctors);
+                    showMessage(`Found ${filteredDoctors.length} doctors matching "${searchTerm}"`, 'info');
+                }
+            });
+            
+            // Search on Enter key
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    searchButton.click();
+                }
+            });
+            
+            // Reset filters
+            resetFilters.addEventListener('click', () => {
+                searchInput.value = '';
+                updateStatistics(doctorsData);
+                renderDoctorsTable(doctorsData);
+                showMessage("Filters reset", 'info');
+            });
+            
+            // Filter badges
+            document.querySelectorAll('.filter-badge').forEach(badge => {
+                badge.addEventListener('click', (e) => {
+                    const filter = e.currentTarget.getAttribute('data-filter');
+                    let filteredDoctors = [];
+                    
+                    if (filter === 'all') {
+                        filteredDoctors = doctorsData;
+                    } else if (filter === 'active') {
+                        filteredDoctors = doctorsData.filter(d => d.status === 'ACTIVE');
+                    } else if (filter === 'inactive') {
+                        filteredDoctors = doctorsData.filter(d => d.status === 'INACTIVE');
+                    } else {
+                        filteredDoctors = doctorsData.filter(d => d.specialization === filter);
+                    }
+                    
+                    updateStatistics(filteredDoctors);
+                    renderDoctorsTable(filteredDoctors);
+                    showMessage(`Showing ${filteredDoctors.length} ${filter} doctors`, 'info');
+                });
+            });
+            
+            // Save changes in edit modal
+            saveChangesBtn.addEventListener('click', async () => {
+                const doctorId = document.getElementById('editDoctorId').value;
+                const editMessage = document.getElementById('editMessage');
+                
+                // Get form data
+                const formData = {
+                    name: document.getElementById('editName').value,
+                    email: document.getElementById('editEmail').value,
+                    phone: document.getElementById('editPhone').value,
+                    specialization: document.getElementById('editSpecialization').value,
+                    department: document.getElementById('editDepartment').value,
+                    qualification: document.getElementById('editQualification').value,
+                    experience: parseInt(document.getElementById('editExperience').value),
+                    consultingHours: document.getElementById('editConsultingHours').value,
+                    roomNumber: document.getElementById('editRoomNumber').value,
+                    status: document.getElementById('editStatus').value
+                };
+                
+                try {
+                    // Show loading state
+                    saveChangesBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                    saveChangesBtn.disabled = true;
+                    
+                    const response = await fetch(`${API_BASE_URL}/update/${doctorId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Show success message
+                        editMessage.className = 'alert alert-success';
+                        editMessage.textContent = 'Doctor information updated successfully!';
+                        editMessage.classList.remove('d-none');
+                        
+                        // Close modal after delay
+                        setTimeout(() => {
+                            const editModal = bootstrap.Modal.getInstance(document.getElementById('editDoctorModal'));
+                            editModal.hide();
+                            fetchDoctors(); // Refresh data
+                        }, 1500);
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    console.error('Error updating doctor:', error);
+                    editMessage.className = 'alert alert-danger';
+                    editMessage.textContent = `Error: ${error.message}`;
+                    editMessage.classList.remove('d-none');
+                    
+                    // For demo, update locally
+                    const doctorIndex = doctorsData.findIndex(d => d.id == doctorId);
+                    if (doctorIndex !== -1) {
+                        doctorsData[doctorIndex] = { ...doctorsData[doctorIndex], ...formData, id: parseInt(doctorId) };
+                        updateStatistics(doctorsData);
+                        renderDoctorsTable(doctorsData);
+                        
+                        editMessage.className = 'alert alert-info';
+                        editMessage.textContent = 'Doctor information updated (demo mode)!';
+                        editMessage.classList.remove('d-none');
+                        
+                        setTimeout(() => {
+                            const editModal = bootstrap.Modal.getInstance(document.getElementById('editDoctorModal'));
+                            editModal.hide();
+                        }, 1500);
+                    }
+                } finally {
+                    // Restore button state
+                    saveChangesBtn.innerHTML = 'Save Changes';
+                    saveChangesBtn.disabled = false;
+                }
+            });
+            
+            // Confirm delete
+            confirmDeleteBtn.addEventListener('click', async () => {
+                const doctorId = document.getElementById('doctorToDeleteId').value;
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/delete/${doctorId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        showMessage('Doctor deleted successfully', 'success');
+                        
+                        // Close modal
+                        const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteDoctorModal'));
+                        deleteModal.hide();
+                        
+                        // Refresh data
+                        fetchDoctors();
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    console.error('Error deleting doctor:', error);
+                    showMessage(`Error: ${error.message}`, 'danger');
+                    
+                    // For demo, delete locally
+                    doctorsData = doctorsData.filter(d => d.id != doctorId);
+                    updateStatistics(doctorsData);
+                    renderDoctorsTable(doctorsData);
+                    
+                    showMessage('Doctor deleted (demo mode)', 'info');
+                    
+                    // Close modal
+                    const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteDoctorModal'));
+                    deleteModal.hide();
+                }
+            });
+            
+            // Reset edit modal when closed
+            document.getElementById('editDoctorModal').addEventListener('hidden.bs.modal', () => {
+                document.getElementById('editDoctorForm').reset();
+                document.getElementById('editMessage').classList.add('d-none');
+            });
+        });
+         
+      
+        document.getElementById('adminBtn').addEventListener('click', () => {
+            window.location.href = 'showappoitmentadmin.html'; 
+            // yahan apna page ka naam do
+        });
+   
+
+    </script>
+</body>
+</html>

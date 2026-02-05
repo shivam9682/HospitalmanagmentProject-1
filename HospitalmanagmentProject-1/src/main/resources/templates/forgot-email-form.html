@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Forgot Password</title>
+     <style>
+/* Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+}
+
+/* Background & Layout */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Card Container */
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 40px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: cardAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Heading */
+.container h2 {
+    margin-bottom: 28px;
+    color: #1a202c;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    padding-bottom: 12px;
+}
+
+.container h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    width: 50%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #667eea, transparent);
+    border-radius: 3px;
+}
+
+/* Form Layout */
+.container form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Label */
+.container label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-left: 4px;
+}
+
+/* Input Field */
+.container input[type="email"] {
+    width: 100%;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    outline: none;
+    font-size: 16px;
+    color: #2d3748;
+    background: #f8fafc;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.container input[type="email"]:hover {
+    border-color: #cbd5e0;
+    background: #ffffff;
+}
+
+.container input[type="email"]:focus {
+    border-color: #667eea;
+    background: #ffffff;
+    box-shadow: 
+        0 0 0 4px rgba(102, 126, 234, 0.15),
+        0 8px 24px rgba(102, 126, 234, 0.15);
+    transform: translateY(-2px);
+}
+
+.container input[type="email"]::placeholder {
+    color: #a0aec0;
+    font-weight: 400;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.container input[type="email"]:focus::placeholder {
+    opacity: 0.3;
+}
+
+/* Button */
+.container button {
+    width: 100%;
+    padding: 17px;
+    background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    margin-top: 8px;
+    box-shadow: 
+        0 4px 12px rgba(102, 126, 234, 0.25),
+        0 2px 6px rgba(102, 126, 234, 0.2);
+}
+
+.container button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s;
+}
+
+.container button:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 12px 28px rgba(102, 126, 234, 0.35),
+        0 6px 16px rgba(102, 126, 234, 0.25);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.container button:hover::before {
+    left: 100%;
+}
+
+.container button:active {
+    transform: translateY(-1px);
+    box-shadow: 
+        0 6px 16px rgba(102, 126, 234, 0.3),
+        0 3px 8px rgba(102, 126, 234, 0.2);
+    transition: all 0.1s;
+}
+
+.container button:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Messages */
+.error, .success {
+    padding: 16px 20px;
+    margin-top: 24px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    animation: messageSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+@keyframes messageSlide {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error {
+    background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+    color: #9b2c2c;
+    box-shadow: 
+        0 4px 12px rgba(245, 101, 101, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border-left: 4px solid #e53e3e;
+}
+
+.success {
+    background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+    color: #276749;
+    box-shadow: 
+        0 4px 12px rgba(72, 187, 120, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border-left: 4px solid #38a169;
+}
+
+.error::before, .success::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .container {
+        padding: 32px 24px;
+        margin: 0 16px;
+        border-radius: 16px;
+    }
+    
+    .container h2 {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+    
+    .container input[type="email"] {
+        padding: 14px 16px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+    
+    .container button {
+        padding: 16px;
+        font-size: 15px;
+        border-radius: 10px;
+    }
+    
+    .error, .success {
+        padding: 14px 16px;
+        font-size: 14px;
+        margin-top: 20px;
+    }
+}
+
+/* Loading State */
+.container button.loading {
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.container button.loading::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin: -10px 0 0 -10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Focus Accessibility */
+.container input[type="email"]:focus-visible,
+.container button:focus-visible {
+    outline: 2px solid #667eea;
+    outline-offset: 3px;
+}
+
+/* Disabled State */
+.container input[type="email"]:disabled,
+.container button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Decorative Elements */
+.container::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+    border-radius: 22px;
+    z-index: -1;
+    opacity: 0.1;
+    filter: blur(5px);
+}
+</style>
+   </head>
+<body>
+
+<div class="container">
+     
+       
+     
+        
+      <h2>Enter Registered Email</h2>
+       
+        
+
+    <form th:action="@{/send-otp}" method="post">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+      
+        <button type="submit">Send Reset Link</button>
+        
+    </form>
+
+    <p class="error" th:text="${error}">Normal </p>
+    <p class="success" th:text="${message}">High</p>
+</div>
+
+</body>
+</html>
+

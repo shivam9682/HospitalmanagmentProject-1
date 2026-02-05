@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Hospital </title>
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+ <link rel="stylesheet" href="index.css">
+ <!-- Add this in head section of index2.jsp -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+</head>
+<body>
+
+<nav>
+    <div class="left">
+        <p><i class="fa-solid fa-envelope"></i> ssivamyadav123@gmail.com</p>
+        <p><i class="fa-solid fa-phone"></i> +91 9682957154</p>
+        <p><i class="fa-solid fa-clock"></i> 24X7</p>
+    </div>
+      
+      
+    <button style="
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 25px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    ">
+        <a href="adminlog" style="
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: 0.5px;
+        ">Admin Panel</a>
+    </button>
+
+
+    <div class="right">
+           
+        <a href=""><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://www.instagram.com/shivam2978yadav/"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/in/shivam968295/"><i class="fa-brands fa-linkedin"></i></a>
+    </div>
+     
+</nav>
+     <!-- Header-->
+
+<header class="header">
+    <div class="logo">
+        <img src="logo.png" alt="Hospital Logo" >
+        <div class="logo-text">
+            <h2>LUCKNOW HOSPITAL</h2>
+            <p>Institute of Nursing & Paramedical Science</p>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <a href="#" class="active">HOME</a>
+        <a href="about.html">ABOUT US</a>
+        <a href="doctorlog">DOCTORS PANAL</a>
+        <a href="department.html">DEPARTMENTS</a>
+        <a href="gallary.html">GALLERY</a>
+        
+       <!-- <a href="#" class="login">Login</a>-->
+        <button><a href="log">Login</a></button>
+        <!--<a href="#" class="register">Register</a>  -->
+         <button><a href="reg">Register</a></button>
+         
+    </nav>
+
+    
+</header>
+  <!-- Slider-->
+
+  <input type="radio" name="slider" id="slide1" checked>
+        <input type="radio" name="slider" id="slide2">
+        <input type="radio" name="slider" id="slide3">
+        <input type="radio" name="slider" id="slide4">
+        <input type="radio" name="slider" id="slide5">
+        
+        <div class="slider-container">
+            <div class="slider">
+                <!-- Slide 1 -->
+                <div class="slide">
+                    <img src="img1.png" alt="Mountain Landscape">      
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="slide">
+                    <img src="img2.png" alt="Beach Sunset">                   
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="slide">
+                    <img src="img3.png" alt="Forest Path">                  
+                </div>
+                
+                <!-- Slide 4 -->
+                <div class="slide">
+                    <img src="img4.png" alt="Northern Lights">
+                   
+                </div>
+                
+                <!-- Slide 5 -->
+                <div class="slide">
+                    <img src="img3.png" alt="Desert Dunes">         
+                </div>
+                
+            </div>
+            
+            <!-- Navigation buttons -->
+            <div class="slider-nav">
+                <label for="slide1" class="nav-btn prev-btn">
+                    <i class="fas fa-chevron-left"></i>
+                </label>
+                <label for="slide2" class="nav-btn next-btn">
+                    <i class="fas fa-chevron-right"></i>
+                </label>
+            </div>
+            
+            <!-- Slide indicators -->
+            <div class="slider-indicators">
+                <label for="slide1" class="indicator"></label>
+                <label for="slide2" class="indicator"></label>
+                <label for="slide3" class="indicator"></label>
+                <label for="slide4" class="indicator"></label>
+                <label for="slide5" class="indicator"></label>
+            </div>
+        </div>
+
+<!--   Second section -->
+   <section class="info-section">
+    <div class="info-container">
+        <div class="info-box">
+            <h4>BEST CHECKUP</h4>
+             <h1>01</h1>
+              <p>To eliminate the chances of future health issues it's,
+                 very important and Lucknow ,Hospital has been set up,
+                  to provide access to superior quality diagnostics,
+                   services.</p>
+        </div>
+          <div class="info-box">
+            <h4>ONLINE APPOINTMENT</h4>
+             <h1>02</h1>
+              <p>Book doctor's appointment online to consult with the best,
+                 doctors in Lucknow. Visit the best hospital in Lucknow ,
+                 and meet the top doctors for best-class medical,
+                  facilities.</p>
+        </div>
+         
+        <div class="info-box">
+            <h4>24X7 AVAILABLE</h4>
+             <h1>03</h1>
+              <p>We provide around the clock monitoring for mission-critical,
+                 customer-facing applications. Our skilled Doctors are ready,
+                  to respond to and resolve incidents 24/7, 365.</p>
+        </div>
+    </div>
+     </section>
+         <div class="info-info">
+      <div class="img-sections">
+        <div class="im">
+           <video src="videoo.mp4"  width="900px" height="400px" style="border-radius: 10px;"  controls autoplay muted loop></video>
+           <!-- <img src="img2.png" alt="" width="900px" height="400px" style="border-radius: 10px;" >  -->
+        </div> 
+      
+      
+        <div class="h">
+            <h6>--about us</h6>
+             <h2 class="about">WELCOME TO  <span>LUCKNOW HOSPITAL</span></h2>
+             
+       
+        <p>We, at Lucknow Hospital provide the highest quality and affordable treatments to our <br>
+            patients. Our hospital is located at Krishna Nagar, Lucknow, Uttar Pradesh. <br>
+             All patients are assured of the best service in a very pleasant and non-stressful <br>
+              atmosphere. Proper attention is paid to hygiene and sanitation. We have the best <br>
+              and most experienced surgeons and specialists treating our patients with utmost <br>
+              care. With our rich knowledge and experience, be assured of quality healthcare <br>
+              services that we provide. We have an unwavering commitment to medical ethics.</p>
+                    
+        </div>
+      </div>  
+    </div>
+      
+          <section class="section3">
+             <div class="info-section3">
+                <div class="box1">
+                    <h4>Top Doctor</h4> 
+                     <P>Our specialists top priority is you. Which means <br>
+                    you get the answers and assurance you deserve <br> 
+                    with accuracy you can trust.</P> 
+                    <a href=""><Span>Read more <i class="fa-solid fa-circle-right"></i></Span></a>
+                </div>
+                   
+                <div class="box2">
+                    <h4>Workings Hour</h4> 
+                    <ul>
+                        <li>
+                            <span>Monday-Friday</span>
+                            8.00 - 17.00
+                        </li>
+                         <li>
+                            <span>Suterday</span>
+                             9.00 - 18.00
+                         </li>
+                          <li>
+                            <span>Sunday</span> 
+                            9.00 - 13.00
+                          </li>
+                    </ul> 
+                    
+                </div>
+                
+
+                <div class="box3">
+                    <h4>Emergenct calls</h4> 
+                     <P>Emergency calls are answered on a land line <br>
+                         directly by one of our team of highly skilled and  <br>
+                         experienced Incident Advisors, who are mostly <br>
+                          chemists and qualified Dangerous Goods Safety Advisers.</P> 
+                          <h5><i class="fa-solid fa-phone"></i> +91 9682957154</h5>
+                </div>
+             </div>
+          </section>
+
+              <div class="container2">
+                <div class="row">
+                    <div class="row-info">
+                          <div class="iconfeature">
+                            <i class="fa-solid fa-stethoscope"></i>
+                          </div> 
+                          <div class="data">
+                            <h5>Outdoor Checkup</h5>
+                          </div>
+                          <div class="data-info">
+                            <p>We have experience in different areas of Health <br>
+                                 Center, We offer our Better solutions your treatment <br>
+                                                  is appropriate.</p> 
+                       </div>
+                    </div> 
+                    
+                     <div class="row-info">
+                          <div class="iconfeature">
+                           <i class="fa-solid fa-user-doctor"></i>
+                          </div> 
+                          <div class="data">
+                            <h5>Operation Theatre</h5>
+                          </div>
+                          <div class="data-info">
+                            <p>We have experience in different areas of Health <br>
+                                 Center, We offer our Better solutions your treatment <br>
+                                 is appropriate.</p> 
+                       </div>
+                    </div>  
+
+                     <div class="row-info">
+                          <div class="iconfeature">
+                       <i class="fa-solid fa-prescription-bottle"></i>
+                          </div> 
+                          <div class="data">
+                            <h5>Pharmacy</h5>
+                          </div>
+                          <div class="data-info">
+                            <p>We have experience in different areas of Health <br>
+                                 Center, We offer our Better solutions your treatment <br>
+                                 is appropriate.</p> 
+                       </div>
+                    </div>  
+
+                     <div class="row-info">
+                          <div class="iconfeature">
+                            <i class="fa-solid fa-flask-vial"></i>
+                          </div> 
+                          <div class="data">
+                            <h5>Blood Test</h5>
+                          </div>
+                          <div class="data-info">
+                            <p>We have experience in different areas of Health <br>
+                                 Center, We offer our Better solutions your treatment <br>
+                                 is appropriate.</p> 
+                       </div>
+                    </div>  
+
+                     <div class="row-info">
+                          <div class="iconfeature">
+                            <i class="fa-solid fa-house-medical"></i>
+                          </div> 
+                          <div class="data">
+                            <h5>Qualified Doctors</h5>
+                          </div>
+                          <div class="data-info">
+                            <p>We have experience in different areas of Health <br>
+                                 Center, We offer our Better solutions your treatment <br>
+                                 is appropriate.</p> 
+                       </div>
+                    </div>  
+
+                     <div class="row-info">
+                          <div class="iconfeature">
+                            <i class="fa-solid fa-truck-medical"></i>
+                          </div> 
+                          <div class="data">
+                            <h5>Emergency Care</h5>
+                          </div>
+                          <div class="data-info">
+                            <p>We have experience in different areas of Health <br>
+                                 Center, We offer our Better solutions your treatment <br>
+                                 is appropriate.</p> 
+                       </div>
+                    </div>  
+
+               </div>
+              </div>
+
+        <!--       Book Appoitmrnt part-->
+                
+               <div class="app">
+                <div class="imgdata">
+                    <img src="img2.png" alt="" width="80%" height="700px">
+                </div> 
+                   <div class="appdata">
+                     <h6>Reservation</h6>
+                      <h2>Book An <span>Appointment Now!</span></h2>
+                      <p>Hectolab Provide Greate Services Exerci tation ullamcorper suscipitorens <br>
+                         lobortis nisl ut aliquip ex ea commodo, Exerci tation ullamcorper suscipitorens <br>
+                                    Ut elit tellus.</p>
+                   
+                    <div class="tabl">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td style="width: 250px;">
+                                        <input type="text"  name="name11" placeholder="Enter name" required class="form-control">
+
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="text" name="name22" placeholder="Enter Email" required class="form-control">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="text"  name="33" placeholder="Enter your Phone No." required class="form-control">
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td> 
+                                        <input type="datetime-local" name="date"  required class="form-control">
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td>
+                                        <input type="text" name="name44" placeholder="Problem" required class="form-control">
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td>
+                                        <input type="file" name="file" required class="form-control">
+                                    </td>
+                                 </tr>
+
+                            </tbody>
+                        </table>
+                         <div class="btn">
+                        <a href="#">Make appointment</a>
+                     </div>
+                    </div>
+                    </div>
+                    
+               </div>
+                
+                 <div class="main1">
+                    <div class="container5">
+                       
+                            
+                               <div class="logo-text1">
+                                 <h5>LUCKNOW <span>HOSPITAL</span></h5>
+                                 <p class="ppp">Institute of Nursing & Paramedical Science</p>
+                                 
+                                  <p>Lucknow Hospital is Healthcare <br>
+                                        platform connecting Doctors, Hospitals, <br>
+                                        Home care service providers, Pharmacies & <br>
+                                         Laboratories with the patients. Facilitating <br>
+                                          Online Appointment, Online Consultation <br>
+                                           as well Video, Door Delivery of  Health  <br>
+                                           packages, Lab Sample Collection at Home</p>
+                                            
+                                           <a href="#">Read More <i class="fa-solid fa-circle-right"></i></a>
+                                 </div>
+                                   <div class="logo-text2">
+                                 <h5>OUR  <span>DEPARTMENT</span></h5>
+                                   <ul>
+                                    <li><a href="">Outpatient Department</a></li>
+                                    <li><a href="">Pediatrics Department</a></li>
+                                    <li><a href="">Neurology Department</a></li>
+                                    <li><a href="">Dental Department</a></li>
+                                    <li><a href="">Cardiology Department</a></li>
+                                    <li><a href="">Diagnostic Department</a></li>
+                                   </ul>
+                                 </div>
+                                  
+                                 <div class="logo-text3">
+                                 <h5>QUICK  <span>LINK</span></h5>
+                                   <ul>
+                                    <li><a href="">About Us</a></li>
+                                    <li><a href="">Contact Us</a></li>
+                                    <li><a href="">Privact Policy</a></li>
+                                    <li><a href="">Term & Condition</a></li>
+                                    
+                                   </ul>
+                                 </div>
+
+                                 <div class="logo-text4">
+                                    <h5>GET IN <span>TOUCH</span></h5>
+                                     <ul>
+                                        <li>
+                                        
+                                          <p>B 1,Behind Krishna Nagar <br>
+                                             Metro Station, Sindhu Nagar, <br>
+                                              Manas Nagar,Kanpur Road,  <br>
+                                              Krishna Nagar, Lucknow, <br>
+                                               Uttar Pradesh 226005</p>  
+                                        </li>
+                                        <li>
+                                           <i class="fa-solid fa-envelope-circle-check"></i>
+                                            <a href="ssivamyadav0123@gmail.com">ssivamyadav0123@gmail</a>
+                                        </li>
+                                         <li>
+                                          <i class="fa-solid fa-phone-volume"></i>
+                                            <a href="+91 9682957154">+91 9682957154</a>
+                                         </li>
+                                     </ul>
+                                 </div>
+                               
+                    </div>
+                     
+                 </div> 
+                  
+                      
+                    
+                <div class="social-bar">
+  <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+  <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+  <a href="#" class="google"><i class="fab fa-google-plus-g"></i></a>
+  <a href="#" class="linkedin"><i class="fab fa-linkedin-in"></i></a>
+  <a href="#" class="skype"><i class="fab fa-skype"></i></a>
+</div>
+<footer class="footer">
+  <p>
+   <i class="fa-solid fa-copyright"></i> Copyright 2026 Design By
+    <span>SHIVAM</span> | All Rights Reserved
+  </p>
+</footer>
+
+ <!-- Hospital Important Notice Popup -->
+<div class="popup-overlay" id="hospitalPopup">
+    <div class="popup-container">
+        <div class="popup-header">
+            <h3><i class="fas fa-hospital"></i> IMPORTANT HOSPITAL NOTICE</h3>
+            <button class="close-popup" id="closePopup">&times;</button>
+        </div>
+        
+        <div class="popup-content">
+            <div class="popup-alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div>
+                    <h4> Safety Protocols</h4>
+                    <p>Masks are mandatory in all hospital areas. Please maintain social distancing.</p>
+                </div>
+            </div>
+            
+            <p>Welcome to <strong>Lucknow Hospital</strong>. Please note the following important information:</p>
+            
+            <ul class="popup-list">
+                <li>
+                    <i class="fas fa-clock"></i>
+                    <strong>Emergency Dept:</strong> 24/7 Open
+                </li>
+                <li>
+                    <i class="fas fa-user-md"></i>
+                    <strong>OPD Timing:</strong> 8:00 AM - 8:00 PM
+                </li>
+                <li>
+                    <i class="fas fa-users"></i>
+                    <strong>Visitors Policy:</strong> Max 2 per patient
+                </li>
+                <li>
+                    <i class="fas fa-phone"></i>
+                    <strong>Emergency:</strong> +91 9682957154
+                </li>
+                <li>
+                    <i class="fas fa-calendar-check"></i>
+                    <strong>Appointments:</strong> Online & Offline
+                </li>
+                <li>
+                    <i class="fas fa-parking"></i>
+                    <strong>Parking:</strong> Free for patients
+                </li>
+            </ul>
+            
+            <div class="popup-actions">
+                <a href="log" class="popup-btn primary">
+                    <i class="fas fa-sign-in-alt"></i> Patient Login
+                </a>
+                <a href="reg" class="popup-btn secondary">
+                    <i class="fas fa-user-plus"></i> New Registration
+                </a>
+                <button class="popup-btn emergency" id="emergencyCall">
+                    <i class="fas fa-phone-alt"></i> Emergency Call
+                </button>
+            </div>
+            
+            <div class="popup-checkbox">
+                <input type="checkbox" id="dontShowAgain">
+                <label for="dontShowAgain">Don't show this message again for 7 days</label>
+            </div>
+        </div>
+    </div>
+</div>
+       
+
+<script>
+    // Enhanced Auto Slide with Pause on Hover
+    let isAutoSlide = true;
+    let autoSlideInterval;
+    let hoverPaused = false;
+    const slider = document.querySelector('.slider-container');
+    
+    function startAutoSlide() {
+        if (isAutoSlide && !hoverPaused) {
+            autoSlideInterval = setInterval(() => {
+                const currentSlide = document.querySelector('input[name="slider"]:checked');
+                const nextSlide = currentSlide.nextElementSibling || document.querySelector('input[name="slider"]:first-child');
+                if (nextSlide) {
+                    nextSlide.checked = true;
+                }
+            }, 5000);
+        }
+    }
+    
+    function stopAutoSlide() {
+        clearInterval(autoSlideInterval);
+    }
+    
+    // Pause auto slide on hover
+    slider.addEventListener('mouseenter', () => {
+        hoverPaused = true;
+        stopAutoSlide();
+    });
+    
+    slider.addEventListener('mouseleave', () => {
+        hoverPaused = false;
+        if (isAutoSlide) {
+            startAutoSlide();
+        }
+    });
+    
+    // Initialize auto slide
+    startAutoSlide();
+    
+    // Toggle auto slide button (optional)
+    function toggleAutoSlide() {
+        isAutoSlide = !isAutoSlide;
+        const button = document.querySelector('.auto-btn');
+        if (button) {
+            button.textContent = isAutoSlide ? 'Pause Auto-Slide' : 'Start Auto-Slide';
+            button.classList.toggle('active', !isAutoSlide);
+        }
+        
+        if (isAutoSlide && !hoverPaused) {
+            startAutoSlide();
+        } else {
+            stopAutoSlide();
+        }
+    }
+    
+    // Header scroll effect
+    const header = document.querySelector('.header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+    
+    // Back to top button
+    const backToTop = document.createElement('a');
+    backToTop.href = '#';
+    backToTop.className = 'back-to-top';
+    backToTop.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    document.body.appendChild(backToTop);
+    
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // Add floating animation to info boxes on hover
+    document.querySelectorAll('.info-box').forEach(box => {
+        box.addEventListener('mouseenter', function() {
+            this.classList.add('floating');
+        });
+        
+        box.addEventListener('mouseleave', function() {
+            this.classList.remove('floating');
+        });
+    });
+    
+    // Form validation for appointment form
+    const appointmentForm = document.querySelector('.tabl');
+    if (appointmentForm) {
+        appointmentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple validation
+            const inputs = this.querySelectorAll('.form-control');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.style.borderColor = '#ff4081';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = '#12c7b7';
+                }
+            });
+            
+            if (isValid) {
+                // Show success message
+                alert('Appointment request submitted successfully! We will contact you shortly.');
+                this.reset();
+            }
+        });
+    }
+    
+    // Add scroll animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for scroll animations
+    document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Add current year to footer
+    const yearSpan = document.querySelector('.footer span');
+    if (yearSpan && yearSpan.textContent === 'SHIVAM') {
+        yearSpan.textContent = `SHIVAM ${new Date().getFullYear()}`;
+    }
+    
+    // Interactive social media icons
+    document.querySelectorAll('.right a').forEach(icon => {
+        icon.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.style.transform = 'scale(1.5) rotate(360deg)';
+            setTimeout(() => {
+                this.style.transform = '';
+                window.open(this.href, '_blank');
+            }, 300);
+        });
+    });
+    
+    // Video play/pause on hover
+    const video = document.querySelector('video');
+    if (video) {
+        video.addEventListener('mouseenter', () => {
+            video.play();
+        });
+        
+        video.addEventListener('mouseleave', () => {
+            video.pause();
+        });
+    }
+    
+    
+       
+     
+     
+    // ==================== SWEETALERT2 POPUP VERSION ====================
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if popup should be shown
+    function shouldShowPopup() {
+        const dontShowUntil = localStorage.getItem('lucknowHospitalPopupDontShowUntil');
+        if (!dontShowUntil) return true;
+        
+        const currentTime = new Date().getTime();
+        return currentTime > parseInt(dontShowUntil);
+    }
+    
+    // Show popup using SweetAlert2
+    function showHospitalPopup() {
+        if (shouldShowPopup()) {
+            setTimeout(() => {
+                Swal.fire({
+                    title: '<strong>🏥 Lucknow Hospital - Important Notice</strong>',
+                    html: `
+                        <div style="text-align: left; max-height: 400px; overflow-y: auto; padding: 10px;">
+                            <div style="background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); padding: 15px; border-radius: 8px; border-left: 5px solid #ffc107; margin-bottom: 20px;">
+                                <h4 style="color: #856404; margin: 0 0 10px 0;"><i class="fas fa-exclamation-triangle"></i> COVID-19 Safety Protocols</h4>
+                                <p style="margin: 0;">Masks are mandatory in all hospital areas. Please maintain social distancing.</p>
+                            </div>
+                            
+                            <p>Welcome to <strong>Lucknow Hospital</strong>. Please note:</p>
+                            
+                            <ul style="list-style: none; padding: 0; margin: 15px 0;">
+                                <li style="padding: 8px 0; border-bottom: 1px dashed #eee;"><i class="fas fa-clock" style="color: #28a745;"></i> <strong>Emergency Dept:</strong> 24/7 Open</li>
+                                <li style="padding: 8px 0; border-bottom: 1px dashed #eee;"><i class="fas fa-user-md" style="color: #28a745;"></i> <strong>OPD Timing:</strong> 8:00 AM - 8:00 PM</li>
+                                <li style="padding: 8px 0; border-bottom: 1px dashed #eee;"><i class="fas fa-users" style="color: #28a745;"></i> <strong>Visitors:</strong> Max 2 per patient</li>
+                                <li style="padding: 8px 0; border-bottom: 1px dashed #eee;"><i class="fas fa-phone" style="color: #28a745;"></i> <strong>Emergency:</strong> +91 9682957154</li>
+                                <li style="padding: 8px 0;"><i class="fas fa-calendar-check" style="color: #28a745;"></i> <strong>Appointments:</strong> Online & Offline</li>
+                            </ul>
+                            
+                            <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                                    <input type="checkbox" id="swalDontShowAgain" style="width: 18px; height: 18px;">
+                                    <span>Don't show this message again for 7 days</span>
+                                </label>
+                            </div>
+                        </div>
+                    `,
+                    width: 500,
+                    padding: '30px',
+                    showCloseButton: true,
+                    showCancelButton: true,
+                    showConfirmButton: true,
+                    confirmButtonText: 'Patient Login',
+                    cancelButtonText: 'Emergency Contact',
+                    confirmButtonColor: '#667eea',
+                    cancelButtonColor: '#dc3545',
+                    focusConfirm: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: true,
+                    allowEnterKey: true,
+                    preConfirm: () => {
+                        const dontShow = document.getElementById('swalDontShowAgain').checked;
+                        if (dontShow) {
+                            const weekFromNow = new Date().getTime() + (7 * 24 * 60 * 60 * 1000);
+                            localStorage.setItem('lucknowHospitalPopupDontShowUntil', weekFromNow.toString());
+                        }
+                        window.location.href = 'log';
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Already handled by preConfirm
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        Swal.fire({
+                            title: 'Emergency Contact',
+                            html: `
+                                <p><strong>Emergency/Ambulance:</strong> +91 9682957154</p>
+                                <p><strong>Address:</strong> B 1, Behind Krishna Nagar Metro Station, Lucknow</p>
+                                <p class="text-danger"><strong>Note:</strong> Emergency Department is open 24/7</p>
+                            `,
+                            icon: 'warning'
+                        });
+                    }
+                });
+            }, 1000);
+        }
+    }
+    
+    // Show popup on page load
+    showHospitalPopup();
+});
+    
+console.log("Script loaded successfully!");
+</script>
+</body>
+</html>

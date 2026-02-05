@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Doctor - Hospital Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding-top: 20px;
+        }
+        
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+            margin-bottom: 30px;
+        }
+        
+        .card-header {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #4b6cb7;
+            box-shadow: 0 0 0 0.25rem rgba(75, 108, 183, 0.25);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(75, 108, 183, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(90deg, #6c757d 0%, #495057 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+        
+        .doctor-icon {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .nav-tabs {
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        .nav-tabs .nav-link {
+            color: #495057;
+            border: none;
+            font-weight: 500;
+            padding: 12px 25px;
+            border-radius: 10px 10px 0 0;
+            transition: all 0.3s;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            border: none;
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+        
+        .nav-link i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h1 class="display-5 fw-bold text-primary">
+                        <i class="fas fa-hospital-alt doctor-icon"></i>Hospital Management System
+                    </h1>
+                    <div class="text-end">
+                        <p class="mb-1 text-muted">Doctor Management Module</p>
+                        <a href="show-doctors.html" class="btn btn-outline-primary">
+                            <i class="fas fa-list"></i> View All Doctors
+                        </a>
+                    </div>
+                </div>
+                <hr class="my-3">
+            </div>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <ul class="nav nav-tabs" id="doctorTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="add-tab" data-bs-toggle="tab" data-bs-target="#add" type="button" role="tab">
+                            <i class="fas fa-user-plus"></i> Add New Doctor
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="quick-tab" data-bs-toggle="tab" data-bs-target="#quick" type="button" role="tab">
+                            <i class="fas fa-bolt"></i> Quick Add
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="row">
+            <div class="col-12">
+                <div class="tab-content" id="doctorTabsContent">
+                    
+                    <!-- Add New Doctor Tab -->
+                    <div class="tab-pane fade show active" id="add" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-user-md"></i> Add Doctor Information
+                            </div>
+                            <div class="card-body">
+                                <div id="message" class="alert d-none"></div>
+                                
+                                <form id="addDoctorForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="name" class="form-label required">Full Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter doctor's full name" required>
+                                            <div class="invalid-feedback">Please enter doctor's name</div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <label for="email" class="form-label required">Email Address</label>
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address" required>
+                                            <div class="invalid-feedback">Please enter a valid email</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="phone" class="form-label required">Phone Number</label>
+                                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number" required>
+                                            <div class="invalid-feedback">Please enter phone number</div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <label for="specialization" class="form-label required">Specialization</label>
+                                            <select class="form-select" id="specialization" name="specialization" required>
+                                                <option value="" selected disabled>Select specialization</option>
+                                                <option value="Cardiology">Cardiology</option>
+                                                <option value="Neurology">Neurology</option>
+                                                <option value="Orthopedics">Orthopedics</option>
+                                                <option value="Pediatrics">Pediatrics</option>
+                                                <option value="Dermatology">Dermatology</option>
+                                                <option value="Oncology">Oncology</option>
+                                                <option value="Gynecology">Gynecology</option>
+                                                <option value="Psychiatry">Psychiatry</option>
+                                                <option value="General Surgery">General Surgery</option>
+                                                <option value="ENT">ENT</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select specialization</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="department" class="form-label required">Department</label>
+                                            <select class="form-select" id="department" name="department" required>
+                                                <option value="" selected disabled>Select department</option>
+                                                <option value="Heart Care">Heart Care</option>
+                                                <option value="Neuro Science">Neuro Science</option>
+                                                <option value="Bone & Joint">Bone & Joint</option>
+                                                <option value="Child Care">Child Care</option>
+                                                <option value="Skin Care">Skin Care</option>
+                                                <option value="Cancer Care">Cancer Care</option>
+                                                <option value="Women's Health">Women's Health</option>
+                                                <option value="Mental Health">Mental Health</option>
+                                                <option value="Surgery">Surgery</option>
+                                                <option value="ENT Care">ENT Care</option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select department</div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <label for="qualification" class="form-label required">Qualification</label>
+                                            <input type="text" class="form-control" id="qualification" name="qualification" placeholder="e.g., MD, MBBS, MS" required>
+                                            <div class="invalid-feedback">Please enter qualification</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="experience" class="form-label required">Experience (Years)</label>
+                                            <input type="number" class="form-control" id="experience" name="experience" min="0" max="50" placeholder="Enter years of experience" required>
+                                            <div class="invalid-feedback">Please enter experience (0-50 years)</div>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <label for="consultingHours" class="form-label required">Consulting Hours</label>
+                                            <input type="text" class="form-control" id="consultingHours" name="consultingHours" placeholder="e.g., 10:00 AM - 4:00 PM" required>
+                                            <div class="invalid-feedback">Please enter consulting hours</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="roomNumber" class="form-label">Room Number</label>
+                                            <input type="text" class="form-control" id="roomNumber" name="roomNumber" placeholder="Enter room number">
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <label for="status" class="form-label">Status</label>
+                                            <select class="form-select" id="status" name="status">
+                                                <option value="ACTIVE" selected>ACTIVE</option>
+                                                <option value="INACTIVE">INACTIVE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="reset" class="btn btn-secondary">
+                                            <i class="fas fa-redo"></i> Reset Form
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Add Doctor
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Add Tab -->
+                    <div class="tab-pane fade" id="quick" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fas fa-bolt"></i> Quick Add Doctor
+                            </div>
+                            <div class="card-body">
+                                <div id="quickMessage" class="alert d-none"></div>
+                                
+                                <p class="text-muted mb-4">Fill only essential details. Other fields will be set to default values.</p>
+                                
+                                <form id="quickAddDoctorForm">
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label for="quickName" class="form-label required">Full Name</label>
+                                            <input type="text" class="form-control" id="quickName" name="name" placeholder="Doctor's name" required>
+                                        </div>
+                                        
+                                        <div class="col-md-4 mb-3">
+                                            <label for="quickEmail" class="form-label required">Email</label>
+                                            <input type="email" class="form-control" id="quickEmail" name="email" placeholder="Email address" required>
+                                        </div>
+                                        
+                                        <div class="col-md-4 mb-3">
+                                            <label for="quickSpecialization" class="form-label required">Specialization</label>
+                                            <select class="form-select" id="quickSpecialization" name="specialization" required>
+                                                <option value="" selected disabled>Select specialization</option>
+                                                <option value="Cardiology">Cardiology</option>
+                                                <option value="Neurology">Neurology</option>
+                                                <option value="Orthopedics">Orthopedics</option>
+                                                <option value="Pediatrics">Pediatrics</option>
+                                                <option value="General Surgery">General Surgery</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="quickPhone" class="form-label required">Phone</label>
+                                            <input type="tel" class="form-control" id="quickPhone" name="phone" placeholder="Phone number" required>
+                                        </div>
+                                        
+                                        <div class="col-md-6 mb-3">
+                                            <label for="quickDepartment" class="form-label required">Department</label>
+                                            <select class="form-select" id="quickDepartment" name="department" required>
+                                                <option value="" selected disabled>Select department</option>
+                                                <option value="Heart Care">Heart Care</option>
+                                                <option value="Neuro Science">Neuro Science</option>
+                                                <option value="Bone & Joint">Bone & Joint</option>
+                                                <option value="Child Care">Child Care</option>
+                                                <option value="Surgery">Surgery</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="reset" class="btn btn-secondary">
+                                            <i class="fas fa-redo"></i> Reset
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-bolt"></i> Quick Add
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <hr>
+                <p class="text-muted">
+                    <i class="fas fa-code"></i> Developed for Hospital Management System | 
+                    <i class="fas fa-envelope"></i> support@hospital.com
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Base URL for API - Change this to match your backend URL
+        const API_BASE_URL = 'http://localhost:8080/api/doctors';
+        
+        // DOM elements
+        const addDoctorForm = document.getElementById('addDoctorForm');
+        const quickAddDoctorForm = document.getElementById('quickAddDoctorForm');
+        const messageDiv = document.getElementById('message');
+        const quickMessageDiv = document.getElementById('quickMessage');
+        
+        // Show message function
+        function showMessage(element, message, type) {
+            element.className = `alert alert-${type}`;
+            element.textContent = message;
+            element.classList.remove('d-none');
+            
+            setTimeout(() => {
+                element.classList.add('d-none');
+            }, 5000);
+        }
+        
+        // Handle form submission for Add Doctor
+        if (addDoctorForm) {
+            addDoctorForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Basic form validation
+                if (!addDoctorForm.checkValidity()) {
+                    e.stopPropagation();
+                    addDoctorForm.classList.add('was-validated');
+                    return;
+                }
+                
+                // Get form data
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    specialization: document.getElementById('specialization').value,
+                    department: document.getElementById('department').value,
+                    qualification: document.getElementById('qualification').value,
+                    experience: parseInt(document.getElementById('experience').value),
+                    consultingHours: document.getElementById('consultingHours').value,
+                    roomNumber: document.getElementById('roomNumber').value,
+                    status: document.getElementById('status').value
+                };
+                
+                try {
+                    // Show loading state
+                    const submitBtn = addDoctorForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+                    submitBtn.disabled = true;
+                    
+                    // Send POST request to add doctor
+                    const response = await fetch(`${API_BASE_URL}/add`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Show success message
+                        showMessage(messageDiv, `Doctor "${formData.name}" added successfully!`, 'success');
+                        
+                        // Reset form
+                        addDoctorForm.reset();
+                        addDoctorForm.classList.remove('was-validated');
+                        
+                        // Show the doctor ID in message
+                        setTimeout(() => {
+                            showMessage(messageDiv, `Doctor ID: ${result.data.id}. You can now view the doctor in the list.`, 'info');
+                        }, 2000);
+                    } else {
+                        // Show error message
+                        showMessage(messageDiv, `Error: ${result.message}`, 'danger');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage(messageDiv, `Network error: ${error.message}`, 'danger');
+                } finally {
+                    // Restore button state
+                    const submitBtn = addDoctorForm.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+        
+        // Handle form submission for Quick Add
+        if (quickAddDoctorForm) {
+            quickAddDoctorForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Basic form validation
+                if (!quickAddDoctorForm.checkValidity()) {
+                    e.stopPropagation();
+                    quickAddDoctorForm.classList.add('was-validated');
+                    return;
+                }
+                
+                // Get form data with default values for missing fields
+                const formData = {
+                    name: document.getElementById('quickName').value,
+                    email: document.getElementById('quickEmail').value,
+                    phone: document.getElementById('quickPhone').value,
+                    specialization: document.getElementById('quickSpecialization').value,
+                    department: document.getElementById('quickDepartment').value,
+                    qualification: "MBBS", // Default value
+                    experience: 5, // Default value
+                    consultingHours: "10:00 AM - 5:00 PM", // Default value
+                    roomNumber: "TBD", // Default value
+                    status: "ACTIVE" // Default value
+                };
+                
+                try {
+                    // Show loading state
+                    const submitBtn = quickAddDoctorForm.querySelector('button[type="submit"]');
+                    const originalText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+                    submitBtn.disabled = true;
+                    
+                    // Send POST request to add doctor
+                    const response = await fetch(`${API_BASE_URL}/add`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // Show success message
+                        showMessage(quickMessageDiv, `Doctor "${formData.name}" added successfully with default values!`, 'success');
+                        
+                        // Reset form
+                        quickAddDoctorForm.reset();
+                        quickAddDoctorForm.classList.remove('was-validated');
+                    } else {
+                        // Show error message
+                        showMessage(quickMessageDiv, `Error: ${result.message}`, 'danger');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showMessage(quickMessageDiv, `Network error: ${error.message}`, 'danger');
+                } finally {
+                    // Restore button state
+                    const submitBtn = quickAddDoctorForm.querySelector('button[type="submit"]');
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }
+            });
+        }
+        
+        // Add real-time validation
+        document.querySelectorAll('.form-control, .form-select').forEach(input => {
+            input.addEventListener('blur', () => {
+                if (!input.checkValidity()) {
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+            });
+            
+            input.addEventListener('input', () => {
+                if (input.checkValidity()) {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                }
+            });
+        });
+        
+        // Load sample data for testing
+        window.addEventListener('load', () => {
+            // Check if we should load sample data (for demo purposes)
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('demo') === 'true') {
+                // Fill form with sample data
+                document.getElementById('name').value = "Dr. John Smith";
+                document.getElementById('email').value = "john.smith@hospital.com";
+                document.getElementById('phone').value = "9876543210";
+                document.getElementById('specialization').value = "Cardiology";
+                document.getElementById('department').value = "Heart Care";
+                document.getElementById('qualification').value = "MD, DM Cardiology";
+                document.getElementById('experience').value = "10";
+                document.getElementById('consultingHours').value = "10:00 AM - 4:00 PM";
+                document.getElementById('roomNumber').value = "A-101";
+                
+                showMessage(messageDiv, "Sample data loaded. You can now submit the form.", 'info');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2d3436;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 28px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+            position: relative;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 16px 20px 16px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            color: #333;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #6a11cb;
+            background: white;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.1);
+            transform: translateY(-2px);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #95a5a6;
+        }
+
+        .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6a11cb;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        textarea {
+            padding-left: 45px;
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .btn-submit:active {
+            transform: translateY(-1px);
+        }
+
+        .view-appointments {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            margin-top: 25px;
+            padding: 14px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .view-appointments:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(17, 153, 142, 0.3);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .floating-label {
+            position: absolute;
+            left: 45px;
+            top: 16px;
+            color: #95a5a6;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background: #f8f9fa;
+            padding: 0 5px;
+        }
+
+        input:focus + .floating-label,
+        input:not(:placeholder-shown) + .floating-label,
+        textarea:focus + .floating-label,
+        textarea:not(:placeholder-shown) + .floating-label {
+            top: -10px;
+            font-size: 12px;
+            color: #6a11cb;
+            background: white;
+        }
+
+        select + .floating-label {
+            background: transparent;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 10px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 22px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+    <h2><i class="fas fa-calendar-check"></i> Book Appointment</h2>
+    
+    <div id="statusMessage" class="status-message"></div>
+
+    <form id="appointmentForm">
+        <div class="form-group">
+            <i class="fas fa-user icon"></i>
+            <input type="text" id="fullname" placeholder="Full Name" required>
+            <span class="floating-label">Full Name</span>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <i class="fas fa-phone icon"></i>
+                <input type="text" id="phone" placeholder="Phone Number" required>
+                <span class="floating-label">Phone</span>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-envelope icon"></i>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <span class="floating-label">Email</span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <i class="fas fa-birthday-cake icon"></i>
+                <input type="number" id="age" placeholder="Age" required>
+                <span class="floating-label">Age</span>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-venus-mars icon"></i>
+                <select id="gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+                <span class="floating-label"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <i class="fas fa-calendar-day icon"></i>
+                <input type="date" id="date" required>
+                <span class="floating-label">Appointment Date</span>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-clock icon"></i>
+                <input type="time" id="time" required>
+                <span class="floating-label">Time</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <i class="fas fa-building icon"></i>
+            <input type="text" id="department" placeholder="Medical Department" required>
+            <span class="floating-label">Department</span>
+        </div>
+
+       <div class="form-group">
+    <i class="fas fa-user-md icon"></i>
+    <select id="doctorId" required>
+        <option value="" disabled selected>Select Doctor</option>
+        <option value="DOC001">Dr. Amit Sharma (DOC001)</option>
+        <option value="DOC002">Dr. Neha Verma (DOC002)</option>
+        <option value="DOC003">Dr. Rahul Mehta (DOC003)</option>
+        <option value="DOC004">Dr. Priya Singh (DOC004)</option>
+        <option value="DOC005">Dr. Ankit Patel (DOC005)</option>
+    </select>
+    <span class="floating-label">Doctor</span>
+</div>
+
+
+        <div class="form-group">
+            <i class="fas fa-stethoscope icon"></i>
+            <textarea id="symptoms" placeholder="Describe your symptoms..."></textarea>
+            <span class="floating-label">Symptoms (Optional)</span>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn btn-submit">
+                <i class="fas fa-paper-plane"></i> Book Appointment
+            </button>
+            <button type="reset" class="btn" style="background: #dfe6e9; color: #2d3436;">
+                <i class="fas fa-redo"></i> Clear Form
+            </button>
+        </div>
+    </form>
+
+    <a href="showappoitment.html" class="view-appointments">
+        <i class="fas fa-list-alt"></i> View Appointments
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('appointmentForm');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // Set min date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').min = today;
+        
+        // Add floating label functionality
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                const label = this.nextElementSibling;
+                if (label && label.classList.contains('floating-label')) {
+                    label.style.top = '-10px';
+                    label.style.fontSize = '12px';
+                    label.style.color = '#6a11cb';
+                }
+            });
+            
+            input.addEventListener('blur', function() {
+                const label = this.nextElementSibling;
+                if (label && label.classList.contains('floating-label')) {
+                    if (!this.value) {
+                        label.style.top = '16px';
+                        label.style.fontSize = '15px';
+                        label.style.color = '#95a5a6';
+                    }
+                }
+            });
+            
+            // Initialize labels for pre-filled values
+            if (input.value) {
+                const label = input.nextElementSibling;
+                if (label && label.classList.contains('floating-label')) {
+                    label.style.top = '-10px';
+                    label.style.fontSize = '12px';
+                    label.style.color = '#6a11cb';
+                }
+            }
+        });
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitBtn.disabled = true;
+
+            const appointment = {
+                fullname: document.getElementById("fullname").value,
+                phone: document.getElementById("phone").value,
+                email: document.getElementById("email").value,
+                age: document.getElementById("age").value,
+                gender: document.getElementById("gender").value,
+                date: document.getElementById("date").value,
+                department: document.getElementById("department").value,
+                doctorId: document.getElementById("doctorId").value,
+                time: document.getElementById("time").value,
+                symptoms: document.getElementById("symptoms").value
+            };
+
+            try {
+                const response = await fetch("http://localhost:8080/api/appoitment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(appointment)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showMessage("Appointment booked successfully!", "success");
+                    form.reset();
+                    
+                    // Reset floating labels
+                    inputs.forEach(input => {
+                        const label = input.nextElementSibling;
+                        if (label && label.classList.contains('floating-label')) {
+                            label.style.top = '16px';
+                            label.style.fontSize = '15px';
+                            label.style.color = '#95a5a6';
+                        }
+                    });
+                    
+                    // Add success animation
+                    const container = document.querySelector('.container');
+                    container.style.animation = 'none';
+                    setTimeout(() => {
+                        container.style.animation = 'pulse 0.5s';
+                    }, 10);
+                } else {
+                    throw new Error('Server responded with error');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                showMessage("Failed to book appointment. Please try again.", "error");
+            } finally {
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+
+        function showMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = 'status-message ' + type;
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusMessage.style.opacity = '0';
+                    statusMessage.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        statusMessage.className = 'status-message';
+                        statusMessage.style.opacity = '';
+                        statusMessage.style.transform = '';
+                    }, 300);
+                }, 5000);
+            }
+        }
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Professionals Directory | Trusted Doctors</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2a7de1;
+            --primary-dark: #1a5fb4;
+            --secondary: #00b894;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark);
+            background-color: #f5f7fb;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            background: rgba(255, 255, 255, 0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .logo-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        main {
+            padding: 40px 0;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title h2 {
+            font-size: 36px;
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+        }
+
+        .page-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 18px;
+        }
+
+        /* Controls Section */
+        .controls {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--light-gray);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42, 125, 225, 0.1);
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: var(--light-gray);
+            border: none;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover {
+            background: #d0d7e0;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #sortSelect {
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 2px solid var(--light-gray);
+            background: white;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Doctors Grid */
+        .doctors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .doctor-image {
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .doctor-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .doctor-card:hover .doctor-image img {
+            transform: scale(1.05);
+        }
+
+        .doctor-info {
+            padding: 25px;
+        }
+
+        .doctor-name {
+            font-size: 22px;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .doctor-qualification {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .doctor-qualification i {
+            font-size: 14px;
+        }
+
+        .doctor-specialization {
+            display: inline-block;
+            background: rgba(42, 125, 225, 0.1);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .doctor-experience {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--gray);
+            font-size: 15px;
+        }
+
+        .doctor-experience i {
+            color: var(--secondary);
+        }
+
+        .doctor-bio {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .doctor-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-view {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .btn-view:hover {
+            background: #d0d7e0;
+        }
+
+        .btn-book {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-book:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Doctor Count */
+        .doctor-count {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        .doctor-count span {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 30px;
+            color: var(--gray);
+            cursor: pointer;
+            z-index: 10;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            color: var(--dark);
+        }
+
+        .modal-header {
+            padding: 30px 30px 0;
+        }
+
+        .modal-body {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+
+        .modal-doctor-image {
+            border-radius: 15px;
+            overflow: hidden;
+            height: 300px;
+        }
+
+        .modal-doctor-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-doctor-info h3 {
+            font-size: 28px;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .modal-qualification {
+            color: var(--secondary);
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .modal-specialization {
+            display: inline-block;
+            background: rgba(42, 125, 225, 0.1);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .modal-details {
+            margin-bottom: 25px;
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            min-width: 150px;
+            color: var(--dark);
+        }
+
+        .detail-value {
+            color: var(--gray);
+        }
+
+        .modal-bio {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .modal-bio h4 {
+            margin-bottom: 15px;
+            color: var(--primary-dark);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 50px 0 30px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section p {
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0.7;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .header-content {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-doctor-image {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .filter-buttons {
+                justify-content: center;
+            }
+
+            .doctors-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+
+            .page-title h2 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .doctor-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .modal-header, .modal-body {
+                padding: 20px;
+            }
+        }
+         .home{
+          margin-right:40px;
+          margin-top:20px;
+           height :30px;
+           width:40px;
+
+
+         }
+         .home button{
+         background-color: #2a7de1;
+            height :30px;
+           width:80px;
+            border-radius: 30px ;
+         }
+         .home button a{
+         text-decoration: none;
+         color: white;
+
+         }
+         .home button a:hover{
+          background-color: var(--primary);
+          
+         }
+
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>MediCare Professionals</h1>
+                    <p>Trusted Medical Experts Directory</p>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="home">
+                    <button><a href="index.html">Home</a></button>
+                </div>
+
+                <div class="stat-item">
+                    <div class="stat-number">24+</div>
+                    <div class="stat-label">Doctors</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Specialties</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Verified</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+    <div class="page-title">
+        <h2>Our Medical Professionals</h2>
+        <p>Browse our directory of board-certified doctors with extensive experience and expertise in their respective fields.</p>
+    </div>
+
+    <!-- Controls Section -->
+    <div class="controls">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search doctors by name, specialization, or qualification...">
+        </div>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All Specialties</button>
+            <button class="filter-btn" data-filter="Cardiology">Cardiology</button>
+            <button class="filter-btn" data-filter="Neurology">Neurology</button>
+            <button class="filter-btn" data-filter="Orthopedics">Orthopedics</button>
+            <button class="filter-btn" data-filter="Dermatology">Dermatology</button>
+            <button class="filter-btn" data-filter="Pediatrics">Pediatrics</button>
+        </div>
+        <div class="sort-options">
+            <label for="sortSelect">Sort by:</label>
+            <select id="sortSelect">
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+                <option value="experience-desc">Experience (High to Low)</option>
+                <option value="experience-asc">Experience (Low to High)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Doctor Count -->
+    <div class="doctor-count">
+        Showing <span id="visibleCount">0</span> of <span id="totalCount">0</span> doctors
+    </div>
+
+    <!-- Doctors Grid -->
+    <div class="doctors-grid" id="doctorsGrid">
+        <!-- Doctors will be loaded here by JavaScript -->
+    </div>
+
+    <!-- Modal for Doctor Details -->
+    <div class="modal" id="doctorModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div class="modal-header">
+                <!-- Modal content will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>MediCare Professionals</h3>
+                <p>We connect patients with trusted, board-certified medical professionals across various specialties. Our directory is carefully curated to ensure quality healthcare access.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Find a Doctor</a></li>
+                    <li><a href="#">Specialties</a></li>
+                    <li><a href="appoitment.html">Book Appointment</a></li>
+                    <li><a href="#">Patient Resources</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Medical Center Blvd, Health City</p>
+                <p><i class="fas fa-phone"></i>+91 9682957154</p>
+                <p><i class="fas fa-envelope"></i> info@medicarepros.com</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 MediCare Professionals Directory. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Doctors Data
+    const doctors = [
+        {
+            id: 1,
+            name: "Dr. Michael Rodriguez",
+            qualification: "MD, Cardiology, FACC",
+            specialization: "Cardiology",
+            experience: 18,
+            image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Rodriguez is a board-certified cardiologist with over 18 years of experience. He specializes in interventional cardiology and has performed over 5,000 cardiac procedures.",
+            education: "Harvard Medical School, Johns Hopkins Hospital",
+            languages: "English, Spanish, French",
+            awards: "American Heart Association Award (2019), Top Cardiologist Award (2021)"
+        },
+        {
+            id: 2,
+            name: "Dr. Sarah Chen",
+            qualification: "MD, Neurology, FAAN",
+            specialization: "Neurology",
+            experience: 15,
+            image: "https://images.unsplash.com/photo-1594824434340-7e7dfc37cabb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Chen is a leading neurologist specializing in epilepsy and movement disorders. She has published over 50 research papers in prestigious medical journals.",
+            education: "Stanford University School of Medicine, Mayo Clinic",
+            languages: "English, Mandarin, Japanese",
+            awards: "Neurology Research Excellence Award (2020), Women in Medicine Award (2022)"
+        },
+        {
+            id: 3,
+            name: "Dr. Robert Johnson",
+            qualification: "MD, Orthopedic Surgery",
+            specialization: "Orthopedics",
+            experience: 22,
+            image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Johnson specializes in sports medicine and joint replacement surgery. He has served as team physician for several professional sports teams.",
+            education: "University of Michigan Medical School, Hospital for Special Surgery",
+            languages: "English",
+            awards: "American Academy of Orthopedic Surgeons Award (2018), Sports Medicine Excellence Award (2020)"
+        },
+        {
+            id: 4,
+            name: "Dr. Emily Watson",
+            qualification: "MD, Dermatology, FAAD",
+            specialization: "Dermatology",
+            experience: 12,
+            image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Watson is a dermatologist specializing in skin cancer prevention and cosmetic dermatology. She is known for her patient-centered approach and innovative treatments.",
+            education: "Yale School of Medicine, Massachusetts General Hospital",
+            languages: "English, Spanish",
+            awards: "Dermatology Innovation Award (2019), Patient Choice Award (2021)"
+        },
+        {
+            id: 5,
+            name: "Dr. James Wilson",
+            qualification: "MD, Pediatrics, FAAP",
+            specialization: "Pediatrics",
+            experience: 17,
+            image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Wilson has been practicing pediatrics for 17 years, with a special interest in childhood asthma and allergies. He is passionate about child health advocacy.",
+            education: "University of California, San Francisco, Boston Children's Hospital",
+            languages: "English, Spanish",
+            awards: "Pediatric Care Excellence Award (2017), Community Service Award (2020)"
+        },
+        {
+            id: 6,
+            name: "Dr. Olivia Martinez",
+            qualification: "MD, Oncology, FACP",
+            specialization: "Oncology",
+            experience: 20,
+            image: "https://images.unsplash.com/photo-1618498082415-b5c6d4c1f5c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Martinez is a leading oncologist specializing in breast cancer treatment. She has been at the forefront of developing new targeted therapies for cancer patients.",
+            education: "Johns Hopkins School of Medicine, MD Anderson Cancer Center",
+            languages: "English, Spanish, Portuguese",
+            awards: "Oncology Research Award (2018), Cancer Care Excellence Award (2022)"
+        },
+        {
+            id: 7,
+            name: "Dr. David Kim",
+            qualification: "MD, Gastroenterology",
+            specialization: "Gastroenterology",
+            experience: 14,
+            image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Kim specializes in digestive diseases and endoscopic procedures. He is an expert in inflammatory bowel disease and liver disorders.",
+            education: "University of Chicago Pritzker School of Medicine, Cleveland Clinic",
+            languages: "English, Korean",
+            awards: "Gastroenterology Innovation Award (2019), Patient Safety Award (2021)"
+        },
+        {
+            id: 8,
+            name: "Dr. Sophia Williams",
+            qualification: "MD, Psychiatry, DFAPA",
+            specialization: "Psychiatry",
+            experience: 16,
+            image: "https://images.unsplash.com/photo-1594824434340-7e7dfc37cabb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Williams is a psychiatrist specializing in mood disorders and psychotherapy. She takes an integrative approach to mental health treatment.",
+            education: "Columbia University Vagelos College of Physicians and Surgeons, McLean Hospital",
+            languages: "English, French",
+            awards: "Psychiatry Excellence Award (2020), Mental Health Advocacy Award (2022)"
+        },
+        {
+            id: 9,
+            name: "Dr. Benjamin Taylor",
+            qualification: "MD, Ophthalmology, FACS",
+            specialization: "Ophthalmology",
+            experience: 19,
+            image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Taylor is a cataract and refractive surgery specialist. He has performed over 10,000 successful eye surgeries throughout his career.",
+            education: "University of Pennsylvania Perelman School of Medicine, Wilmer Eye Institute",
+            languages: "English",
+            awards: "Ophthalmology Surgical Excellence Award (2018), Innovation in Eye Care Award (2021)"
+        },
+        {
+            id: 10,
+            name: "Dr. Grace Lee",
+            qualification: "MD, Endocrinology, FACE",
+            specialization: "Endocrinology",
+            experience: 13,
+            image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Lee specializes in diabetes management and thyroid disorders. She is committed to helping patients achieve optimal metabolic health.",
+            education: "Washington University School of Medicine, Joslin Diabetes Center",
+            languages: "English, Korean, Mandarin",
+            awards: "Endocrinology Research Award (2019), Diabetes Care Excellence Award (2022)"
+        },
+        {
+            id: 11,
+            name: "Dr. William Carter",
+            qualification: "MD, Urology, FACS",
+            specialization: "Urology",
+            experience: 21,
+            image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Carter is a urologist with expertise in minimally invasive surgery for prostate and kidney conditions. He has pioneered several new surgical techniques.",
+            education: "Duke University School of Medicine, Johns Hopkins Hospital",
+            languages: "English",
+            awards: "Urology Innovation Award (2017), Surgical Excellence Award (2020)"
+        },
+        {
+            id: 12,
+            name: "Dr. Maya Patel",
+            qualification: "MD, Rheumatology",
+            specialization: "Rheumatology",
+            experience: 14,
+            image: "https://images.unsplash.com/photo-1618498082415-b5c6d4c1f5c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Patel specializes in autoimmune diseases and arthritis treatment. She focuses on personalized treatment plans for complex rheumatic conditions.",
+            education: "Northwestern University Feinberg School of Medicine, Brigham and Women's Hospital",
+            languages: "English, Hindi, Gujarati",
+            awards: "Rheumatology Research Award (2020), Patient-Centered Care Award (2021)"
+        },
+        {
+            id: 13,
+            name: "Dr. Thomas Anderson",
+            qualification: "MD, Pulmonology, FCCP",
+            specialization: "Pulmonology",
+            experience: 18,
+            image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Anderson specializes in critical care medicine and sleep disorders. He has extensive experience in managing complex respiratory conditions.",
+            education: "University of Washington School of Medicine, National Jewish Health",
+            languages: "English, German",
+            awards: "Pulmonology Excellence Award (2019), Critical Care Innovation Award (2021)"
+        },
+        {
+            id: 14,
+            name: "Dr. Isabella Garcia",
+            qualification: "MD, Obstetrics & Gynecology, FACOG",
+            specialization: "OB/GYN",
+            experience: 16,
+            image: "https://images.unsplash.com/photo-1594824434340-7e7dfc37cabb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Garcia is an OB/GYN with special expertise in high-risk pregnancies and minimally invasive gynecologic surgery.",
+            education: "University of Texas Southwestern Medical Center, Texas Children's Hospital",
+            languages: "English, Spanish",
+            awards: "Women's Health Excellence Award (2018), Patient Safety Award (2020)"
+        },
+        {
+            id: 15,
+            name: "Dr. Kevin Lewis",
+            qualification: "MD, Neurosurgery, FAANS",
+            specialization: "Neurosurgery",
+            experience: 22,
+            image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Lewis is a neurosurgeon specializing in brain tumors and spine surgery. He is known for his precision and innovative surgical techniques.",
+            education: "University of California, Los Angeles, Barrow Neurological Institute",
+            languages: "English",
+            awards: "Neurosurgery Excellence Award (2017), Innovation in Surgery Award (2021)"
+        },
+        {
+            id: 16,
+            name: "Dr. Rachel Scott",
+            qualification: "MD, Family Medicine, FAAFP",
+            specialization: "Family Medicine",
+            experience: 15,
+            image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Scott provides comprehensive care for patients of all ages. She emphasizes preventive medicine and long-term patient relationships.",
+            education: "University of North Carolina School of Medicine, Mayo Clinic",
+            languages: "English, Spanish",
+            awards: "Family Medicine Excellence Award (2019), Community Health Award (2022)"
+        },
+        {
+            id: 17,
+            name: "Dr. Daniel Park",
+            qualification: "MD, Hematology, FACP",
+            specialization: "Hematology",
+            experience: 17,
+            image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Park specializes in blood disorders and bone marrow transplantation. He has contributed to significant advances in leukemia treatment.",
+            education: "University of Pittsburgh School of Medicine, Memorial Sloan Kettering Cancer Center",
+            languages: "English, Korean",
+            awards: "Hematology Research Award (2018), Patient Care Excellence Award (2021)"
+        },
+        {
+            id: 18,
+            name: "Dr. Lisa Thompson",
+            qualification: "MD, Allergy & Immunology",
+            specialization: "Allergy & Immunology",
+            experience: 12,
+            image: "https://images.unsplash.com/photo-1618498082415-b5c6d4c1f5c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Thompson specializes in allergy testing and immunotherapy. She helps patients manage complex allergic conditions and immune disorders.",
+            education: "University of Michigan Medical School, National Jewish Health",
+            languages: "English, French",
+            awards: "Allergy Research Award (2020), Patient Education Award (2022)"
+        },
+        {
+            id: 19,
+            name: "Dr. Jonathan White",
+            qualification: "MD, Infectious Diseases, FIDSA",
+            specialization: "Infectious Diseases",
+            experience: 19,
+            image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. White specializes in complex infections and travel medicine. He has been a key advisor during public health emergencies.",
+            education: "University of Virginia School of Medicine, Centers for Disease Control and Prevention",
+            languages: "English, Arabic",
+            awards: "Infectious Diseases Excellence Award (2019), Public Health Service Award (2021)"
+        },
+        {
+            id: 20,
+            name: "Dr. Amanda Brooks",
+            qualification: "MD, Physical Medicine & Rehabilitation",
+            specialization: "Physical Medicine",
+            experience: 14,
+            image: "https://images.unsplash.com/photo-1594824434340-7e7dfc37cabb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Brooks specializes in rehabilitation medicine, helping patients recover function after injuries, surgeries, or neurological conditions.",
+            education: "Emory University School of Medicine, Spaulding Rehabilitation Hospital",
+            languages: "English, Spanish",
+            awards: "Rehabilitation Medicine Award (2020), Patient Recovery Excellence Award (2022)"
+        },
+        {
+            id: 21,
+            name: "Dr. Samuel Jackson",
+            qualification: "MD, Cardiology, FACC",
+            specialization: "Cardiology",
+            experience: 25,
+            image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Jackson is a senior cardiologist with expertise in heart failure management. He has contributed to numerous clinical trials for new cardiac medications.",
+            education: "Harvard Medical School, Cleveland Clinic",
+            languages: "English, Italian",
+            awards: "Lifetime Achievement in Cardiology (2021), Heart Care Excellence Award (2022)"
+        },
+        {
+            id: 22,
+            name: "Dr. Jennifer Lopez",
+            qualification: "MD, Dermatology, FAAD",
+            specialization: "Dermatology",
+            experience: 11,
+            image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Lopez specializes in pediatric dermatology and genetic skin disorders. She is known for her gentle approach with young patients.",
+            education: "University of Miami Miller School of Medicine, Children's Hospital of Philadelphia",
+            languages: "English, Spanish",
+            awards: "Pediatric Dermatology Award (2019), Young Investigator Award (2021)"
+        },
+        {
+            id: 23,
+            name: "Dr. Richard Miller",
+            qualification: "MD, Orthopedics, FAOA",
+            specialization: "Orthopedics",
+            experience: 27,
+            image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Miller is a pioneer in joint replacement surgery with over 27 years of experience. He has designed several orthopedic implants currently in use.",
+            education: "Cornell University Weill Medical College, Hospital for Special Surgery",
+            languages: "English, German",
+            awards: "Orthopedic Innovation Award (2018), Surgical Pioneer Award (2020)"
+        },
+        {
+            id: 24,
+            name: "Dr. Maria Hernandez",
+            qualification: "MD, Pediatrics, FAAP",
+            specialization: "Pediatrics",
+            experience: 19,
+            image: "https://images.unsplash.com/photo-1618498082415-b5c6d4c1f5c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+            bio: "Dr. Hernandez specializes in neonatal care and developmental pediatrics. She has dedicated her career to improving outcomes for premature infants.",
+            education: "Stanford University School of Medicine, Boston Children's Hospital",
+            languages: "English, Spanish, Portuguese",
+            awards: "Neonatal Care Excellence Award (2017), Child Health Advocacy Award (2022)"
+        }
+    ];
+
+    // DOM Elements
+    const doctorsGrid = document.getElementById('doctorsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const sortSelect = document.getElementById('sortSelect');
+    const doctorModal = document.getElementById('doctorModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const visibleCountElement = document.getElementById('visibleCount');
+    const totalCountElement = document.getElementById('totalCount');
+
+    // State variables
+    let currentFilter = 'all';
+    let currentSearch = '';
+    let currentSort = 'name-asc';
+
+    // Initialize the page
+    function initPage() {
+        renderDoctors();
+        updateStats();
+
+        // Event listeners
+        searchInput.addEventListener('input', handleSearch);
+        sortSelect.addEventListener('change', handleSortChange);
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Filter button events
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentFilter = button.dataset.filter;
+                renderDoctors();
+                updateStats();
+            });
+        });
+
+        // Close modal when clicking outside
+        doctorModal.addEventListener('click', (e) => {
+            if (e.target === doctorModal) {
+                closeModal();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && doctorModal.style.display === 'flex') {
+                closeModal();
+            }
+        });
+    }
+
+    // Filter doctors based on current filter and search
+    function getFilteredDoctors() {
+        let filtered = doctors;
+
+        // Apply category filter
+        if (currentFilter !== 'all') {
+            filtered = filtered.filter(doctor => doctor.specialization === currentFilter);
+        }
+
+        // Apply search filter
+        if (currentSearch !== '') {
+            const searchLower = currentSearch.toLowerCase();
+            filtered = filtered.filter(doctor =>
+                doctor.name.toLowerCase().includes(searchLower) ||
+                doctor.qualification.toLowerCase().includes(searchLower) ||
+                doctor.specialization.toLowerCase().includes(searchLower) ||
+                doctor.bio.toLowerCase().includes(searchLower)
+            );
+        }
+
+        return filtered;
+    }
+
+    // Sort doctors based on current sort option
+    function sortDoctors(doctorsList) {
+        const sorted = [...doctorsList];
+
+        switch(currentSort) {
+            case 'name-asc':
+                return sorted.sort((a, b) => a.name.localeCompare(b.name));
+            case 'name-desc':
+                return sorted.sort((a, b) => b.name.localeCompare(a.name));
+            case 'experience-desc':
+                return sorted.sort((a, b) => b.experience - a.experience);
+            case 'experience-asc':
+                return sorted.sort((a, b) => a.experience - b.experience);
+            default:
+                return sorted;
+        }
+    }
+
+    // Render doctors to the grid
+    function renderDoctors() {
+        const filteredDoctors = getFilteredDoctors();
+        const sortedDoctors = sortDoctors(filteredDoctors);
+
+        doctorsGrid.innerHTML = '';
+
+        sortedDoctors.forEach(doctor => {
+            const doctorCard = document.createElement('div');
+            doctorCard.className = 'doctor-card';
+
+            doctorCard.innerHTML = `
+                <div class="doctor-image">
+                    <img src="${doctor.image}" alt="${doctor.name}">
+                </div>
+                <div class="doctor-info">
+                    <h3 class="doctor-name">${doctor.name}</h3>
+                    <div class="doctor-qualification">
+                        <i class="fas fa-graduation-cap"></i>
+                        ${doctor.qualification}
+                    </div>
+                    <div class="doctor-specialization">${doctor.specialization}</div>
+                    <div class="doctor-experience">
+                        <i class="fas fa-briefcase"></i>
+                        <span>${doctor.experience} years of experience</span>
+                    </div>
+                    <p class="doctor-bio">${doctor.bio.substring(0, 120)}...</p>
+                    <div class="doctor-actions">
+                        <button class="btn btn-view view-doctor" data-id="${doctor.id}">
+                            <i class="fas fa-eye"></i> View Profile
+                        </button>
+                        <button class="btn btn-book book-doctor" data-id="${doctor.id}">
+                            <i class="fas fa-calendar-check"></i> Book Appointment
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            doctorsGrid.appendChild(doctorCard);
+        });
+
+        // Add event listeners to view buttons
+        document.querySelectorAll('.view-doctor').forEach(button => {
+            button.addEventListener('click', () => {
+                const doctorId = parseInt(button.dataset.id);
+                openDoctorModal(doctorId);
+            });
+        });
+
+        // Add event listeners to book buttons
+        document.querySelectorAll('.book-doctor').forEach(button => {
+            button.addEventListener('click', () => {
+                const doctorId = parseInt(button.dataset.id);
+                bookAppointment(doctorId);
+            });
+        });
+    }
+
+    // Update statistics
+    function updateStats() {
+        const filteredDoctors = getFilteredDoctors();
+        visibleCountElement.textContent = filteredDoctors.length;
+        totalCountElement.textContent = doctors.length;
+    }
+
+    // Handle search input
+    function handleSearch() {
+        currentSearch = searchInput.value;
+        renderDoctors();
+        updateStats();
+    }
+
+    // Handle sort change
+    function handleSortChange() {
+        currentSort = sortSelect.value;
+        renderDoctors();
+    }
+
+    // Open doctor modal
+    function openDoctorModal(doctorId) {
+        const doctor = doctors.find(d => d.id === doctorId);
+        if (!doctor) return;
+
+        const modalHeader = doctorModal.querySelector('.modal-header');
+        modalHeader.innerHTML = `
+            <div class="modal-body">
+                <div class="modal-doctor-image">
+                    <img src="${doctor.image}" alt="${doctor.name}">
+                </div>
+                <div class="modal-doctor-info">
+                    <h3>${doctor.name}</h3>
+                    <div class="modal-qualification">${doctor.qualification}</div>
+                    <div class="modal-specialization">${doctor.specialization}</div>
+
+                    <div class="modal-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Experience:</span>
+                            <span class="detail-value">${doctor.experience} years</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Education:</span>
+                            <span class="detail-value">${doctor.education}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Languages:</span>
+                            <span class="detail-value">${doctor.languages}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Awards:</span>
+                            <span class="detail-value">${doctor.awards}</span>
+                        </div>
+                    </div>
+
+                    <div class="modal-bio">
+                        <h4>About Dr. ${doctor.name.split(' ')[2] || doctor.name.split(' ')[1]}</h4>
+                        <p>${doctor.bio}</p>
+                    </div>
+
+                    <div class="doctor-actions" style="margin-top: 30px;">
+                        <button class="btn btn-view close-modal-btn">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                        <button class="btn btn-book book-doctor-modal" data-id="${doctor.id}">
+                            <i class="fas fa-calendar-check"></i> Book Appointment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        doctorModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        // Add event listeners to modal buttons
+        document.querySelector('.close-modal-btn').addEventListener('click', closeModal);
+        document.querySelector('.book-doctor-modal').addEventListener('click', () => {
+            bookAppointment(doctorId);
+        });
+    }
+
+    // Close modal
+    function closeModal() {
+        doctorModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // Book appointment function
+    function bookAppointment(doctorId) {
+        const doctor = doctors.find(d => d.id === doctorId);
+        if (!doctor) return;
+
+        // In a real application, this would redirect to a booking page
+        // For now, we'll show an alert
+        closeModal();
+        alert(`Booking appointment with ${doctor.name}\n\nSpecialization: ${doctor.specialization}\n\nYou will be redirected to the appointment scheduling system.`);
+    }
+
+    // Initialize the page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initPage);
+</script>
+</body>
+</html>
