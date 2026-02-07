@@ -90,8 +90,8 @@
         </dependency>
     </dependencies>
 
-    <!-- Build -->
     <packaging>jar</packaging>
+
     <build>
         <plugins>
             <plugin>
