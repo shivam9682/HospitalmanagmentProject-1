@@ -368,7 +368,6 @@
         <i class="fas fa-list-alt"></i> View Appointments
     </a>
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('appointmentForm');
@@ -377,10 +376,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const resetBtn = document.getElementById('resetBtn');
     const inputs = document.querySelectorAll('input, textarea, select');
     const container = document.querySelector('.container');
-
-    // Set min date to today
-    const today = new Date();
-    document.getElementById('date').min = today.toISOString().split('T')[0];
 
     // Floating label
     function updateLabel(input) {
@@ -403,7 +398,6 @@ document.addEventListener('DOMContentLoaded', function() {
         input.addEventListener('blur', () => updateLabel(input));
     });
 
-    // Show message
     function showMessage(msg, type = 'success') {
         statusMessage.innerHTML = msg;
         statusMessage.className = 'status-message ' + type;
@@ -433,7 +427,6 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
 
-    // Form submit
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -461,22 +454,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify(appointment)
             });
 
-            let data = {};
-            try { data = await response.json(); } catch {}
+            const data = await response.json();
 
-            if (response.ok) {
-                showMessage('Appointment booked successfully!', 'success');
-                form.reset();
-                inputs.forEach(input => updateLabel(input));
+            // Check backend response for success
+            if (response.ok && data.success) {
+                showMessage(`Appointment booked successfully!<br>Your Appointment ID: ${data.appointmentId}`, 'success');
 
+                // Pulse animation
                 container.style.animation = 'pulse 0.5s';
                 container.addEventListener('animationend', () => container.style.animation = '', { once: true });
+
+                form.reset();
+                inputs.forEach(input => updateLabel(input));
             } else {
-                showMessage('Server error! Appointment might still be stored.', 'error');
+                showMessage('Server error! Appointment was not saved.', 'error');
             }
         } catch (err) {
             console.error(err);
-            showMessage('Network error! Appointment stored locally.', 'warning');
+            showMessage('Network error! Appointment could not be saved.', 'warning');
         } finally {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Book Appointment';
@@ -485,7 +480,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
 </body>
 </html>
+
 
