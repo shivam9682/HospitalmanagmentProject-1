@@ -677,7 +677,7 @@ async function loadData() {
         // Simulate API delay for demo
         await new Promise(resolve => setTimeout(resolve, 1500));
         
-        const res = await fetch(`http://localhost:8080/api/appoitment/doctor/${doctorId}`);
+        const res = await fetch(`https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment/doctor/${doctorId}`);
         const list = await res.json();
 
         if (list.length === 0) {
@@ -743,7 +743,7 @@ async function updateStatus(id, status) {
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        await fetch(`http://localhost:8080/api/appoitment/${id}/status?status=${status}`, {
+        await fetch(`https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment/${id}/status?status=${status}`, {
             method: "PATCH"
         });
         
@@ -762,7 +762,7 @@ async function remove(id) {
         // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 500));
         
-        await fetch(`http://localhost:8080/api/appoitment/${id}`, {
+        await fetch(`https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment/${id}`, {
             method: "DELETE"
         });
         
@@ -830,4 +830,5 @@ window.addEventListener('DOMContentLoaded', createParticles);
 </script>
 
 </body>
+
 </html>
