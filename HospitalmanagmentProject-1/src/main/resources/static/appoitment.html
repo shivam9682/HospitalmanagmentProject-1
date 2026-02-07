@@ -353,147 +353,154 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.getElementById('appointmentForm');
-        const statusMessage = document.getElementById('statusMessage');
-        
-        // Set min date to today
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').min = today;
-        
-        // Add floating label functionality
-        const inputs = document.querySelectorAll('input, textarea, select');
-        inputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                const label = this.nextElementSibling;
-                if (label && label.classList.contains('floating-label')) {
-                    label.style.top = '-10px';
-                    label.style.fontSize = '12px';
-                    label.style.color = '#6a11cb';
-                }
-            });
-            
-            input.addEventListener('blur', function() {
-                const label = this.nextElementSibling;
-                if (label && label.classList.contains('floating-label')) {
-                    if (!this.value) {
-                        label.style.top = '16px';
-                        label.style.fontSize = '15px';
-                        label.style.color = '#95a5a6';
-                    }
-                }
-            });
-            
-            // Initialize labels for pre-filled values
-            if (input.value) {
-                const label = input.nextElementSibling;
-                if (label && label.classList.contains('floating-label')) {
-                    label.style.top = '-10px';
-                    label.style.fontSize = '12px';
-                    label.style.color = '#6a11cb';
-                }
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('appointmentForm');
+    const statusMessage = document.getElementById('statusMessage');
+
+    // Set min date to today
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('date').min = today;
+
+    // Floating label functionality
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            const label = this.nextElementSibling;
+            if (label && label.classList.contains('floating-label')) {
+                label.style.top = '-10px';
+                label.style.fontSize = '12px';
+                label.style.color = '#6a11cb';
             }
         });
 
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-
-            // Show loading state
-            const submitBtn = form.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-            submitBtn.disabled = true;
-
-            const appointment = {
-                fullname: document.getElementById("fullname").value,
-                phone: document.getElementById("phone").value,
-                email: document.getElementById("email").value,
-                age: document.getElementById("age").value,
-                gender: document.getElementById("gender").value,
-                date: document.getElementById("date").value,
-                department: document.getElementById("department").value,
-                doctorId: document.getElementById("doctorId").value,
-                time: document.getElementById("time").value,
-                symptoms: document.getElementById("symptoms").value
-            };
-
-           try {
-    const response = await fetch("https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(appointment)
-    });
-
-    let data = {};
-    try {
-        data = await response.json(); // try parsing JSON
-    } catch(err) {
-        // If body is empty, ignore the error
-        console.warn("Empty response body");
-    }
-
-    // Treat 2xx status as success
-    if (response.status >= 200 && response.status < 300) {
-        showMessage("Appointment booked successfully!", "success");
-        form.reset();
-
-        // Reset floating labels
-        inputs.forEach(input => {
-            const label = input.nextElementSibling;
-            if (label && label.classList.contains('floating-label')) {
+        input.addEventListener('blur', function() {
+            const label = this.nextElementSibling;
+            if (label && label.classList.contains('floating-label') && !this.value) {
                 label.style.top = '16px';
                 label.style.fontSize = '15px';
                 label.style.color = '#95a5a6';
             }
         });
 
-    } else {
-        const msg = data.message || "Server responded with an error";
-        showMessage("Failed to book appointment: " + msg, "error");
-    }
-} catch (error) {
-    console.error("Network or JS error:", error);
-    showMessage("Failed to book appointment. Check your connection.", "error");
-}
- finally {
-                // Restore button state
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-
-        function showMessage(message, type) {
-            statusMessage.textContent = message;
-            statusMessage.className = 'status-message ' + type;
-            
-            // Auto-hide success messages after 5 seconds
-            if (type === 'success') {
-                setTimeout(() => {
-                    statusMessage.style.opacity = '0';
-                    statusMessage.style.transform = 'translateY(-10px)';
-                    setTimeout(() => {
-                        statusMessage.className = 'status-message';
-                        statusMessage.style.opacity = '';
-                        statusMessage.style.transform = '';
-                    }, 300);
-                }, 5000);
+        // Initialize labels for pre-filled values
+        if (input.value) {
+            const label = input.nextElementSibling;
+            if (label && label.classList.contains('floating-label')) {
+                label.style.top = '-10px';
+                label.style.fontSize = '12px';
+                label.style.color = '#6a11cb';
             }
         }
-
-        // Add pulse animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes pulse {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.02); }
-                100% { transform: scale(1); }
-            }
-        `;
-        document.head.appendChild(style);
     });
+
+    // Submit handler
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+
+        // Show spinner
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        submitBtn.disabled = true;
+
+        const appointment = {
+            fullname: document.getElementById("fullname").value,
+            phone: document.getElementById("phone").value,
+            email: document.getElementById("email").value,
+            age: document.getElementById("age").value,
+            gender: document.getElementById("gender").value,
+            date: document.getElementById("date").value,
+            department: document.getElementById("department").value,
+            doctorId: document.getElementById("doctorId").value,
+            time: document.getElementById("time").value,
+            symptoms: document.getElementById("symptoms").value
+        };
+
+        try {
+            console.log("Sending appointment:", appointment);
+
+            const response = await fetch("https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(appointment)
+            });
+
+            let data = {};
+            try {
+                data = await response.json(); // try parsing JSON
+            } catch(err) {
+                console.warn("Empty response body, assuming success");
+            }
+
+            console.log("Response status:", response.status, data);
+
+            // Treat 2xx status as success
+            if (response.status >= 200 && response.status < 300) {
+                showMessage("Appointment booked successfully!", "success");
+                form.reset();
+
+                // Reset floating labels
+                inputs.forEach(input => {
+                    const label = input.nextElementSibling;
+                    if (label && label.classList.contains('floating-label')) {
+                        label.style.top = '16px';
+                        label.style.fontSize = '15px';
+                        label.style.color = '#95a5a6';
+                    }
+                });
+            } else {
+                const msg = data.message || "Server responded with an error";
+                showMessage("Failed to book appointment: " + msg, "error");
+            }
+
+        } catch (error) {
+            console.error("Network or JS error:", error);
+            showMessage("Failed to book appointment. Check your connection.", "error");
+        } finally {
+            // Restore button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Show message function
+    function showMessage(message, type) {
+        statusMessage.textContent = message;
+        statusMessage.className = 'status-message ' + type;
+        statusMessage.style.display = 'block';
+        statusMessage.style.opacity = '1';
+        statusMessage.style.transform = 'translateY(0)';
+
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            statusMessage.style.opacity = '0';
+            statusMessage.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                statusMessage.style.display = 'none';
+                statusMessage.className = 'status-message';
+                statusMessage.style.opacity = '';
+                statusMessage.style.transform = '';
+            }, 300);
+        }, 5000);
+    }
+
+    // Add pulse animation for container
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
+});
 </script>
+
 </body>
 
 </html>
+
 
 
