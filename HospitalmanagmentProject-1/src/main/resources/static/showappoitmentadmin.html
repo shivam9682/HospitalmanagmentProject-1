@@ -220,7 +220,7 @@ tr:nth-child(even) {
 let appointments = [];
 
 async function loadData() {
-    const res = await fetch("http://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment/admin");
+    const res = await fetch("https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment/admin");
     appointments = await res.json();
     updateDashboard();
     renderTable(appointments);
@@ -272,7 +272,7 @@ function applyFilters() {
 }
 
 async function updateStatus(id, status) {
-    await fetch(`http://localhost:8080/api/appoitment/${id}/status?status=${status}`, {
+    await fetch(`https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment/${id}/status?status=${status}`, {
         method:"PATCH"
     });
     loadData();
@@ -280,7 +280,7 @@ async function updateStatus(id, status) {
 
 async function removeAppointment(id) {
     if(confirm("Delete this appointment?")) {
-        await fetch(`http://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment/${id}`, {
+        await fetch(`https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment/${id}`, {
             method:"DELETE"
         });
         loadData();
@@ -307,3 +307,4 @@ loadData();
 </body>
 
 </html>
+
