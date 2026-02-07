@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Appointment</title>
     <style>
-        /* ... (keep all your existing CSS styles exactly as they are) ... */
         * {
             margin: 0;
             padding: 0;
@@ -200,13 +199,6 @@
             display: block;
         }
 
-        .warning {
-            background: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeaa7;
-            display: block;
-        }
-
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -258,237 +250,41 @@
                 flex-direction: column;
             }
         }
-
-        /* Add spinner animation */
-        .spinner {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* New styles for single-page enhancements */
-        .doctor-info {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            display: none;
-            animation: slideIn 0.3s ease;
-        }
-
-        .doctor-info h4 {
-            color: #2d3436;
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-
-        .doctor-info p {
-            color: #636e72;
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .availability-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-
-        .available {
-            background-color: #00b894;
-        }
-
-        .busy {
-            background-color: #e17055;
-        }
-
-        .auto-fill-btn {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: #6a11cb;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 6px 12px;
-            font-size: 12px;
-            cursor: pointer;
-            opacity: 0.8;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .auto-fill-btn:hover {
-            opacity: 1;
-            transform: translateY(-50%) scale(1.05);
-        }
-
-        .summary-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 20px;
-            border-radius: 12px;
-            margin-top: 25px;
-            border: 2px dashed #6a11cb;
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .summary-card h4 {
-            color: #6a11cb;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 18px;
-        }
-
-        .summary-content p {
-            margin-bottom: 8px;
-            color: #2d3436;
-            padding: 5px 0;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .summary-content p:last-child {
-            border-bottom: none;
-        }
-
-        .summary-content strong {
-            color: #6a11cb;
-            min-width: 140px;
-            display: inline-block;
-        }
-
-        .terms-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 20px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-        }
-
-        .terms-checkbox input {
-            width: auto;
-            padding: 0;
-        }
-
-        .terms-checkbox label {
-            color: #636e72;
-            font-size: 14px;
-        }
-
-        .terms-checkbox a {
-            color: #6a11cb;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .terms-checkbox a:hover {
-            text-decoration: underline;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .real-time-validation {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 12px;
-            display: none;
-        }
-
-        .valid {
-            color: #00b894;
-        }
-
-        .invalid {
-            color: #e17055;
-        }
-
-        .form-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .demo-btn {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .demo-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
 <div class="container">
-    <div class="form-header">
-        <h2><i class="fas fa-calendar-check"></i> Book Appointment</h2>
-        <button type="button" class="demo-btn" onclick="fillSampleData()">
-            <i class="fas fa-magic"></i> Demo Fill
-        </button>
-    </div>
+    <h2><i class="fas fa-calendar-check"></i> Book Appointment</h2>
     
     <div id="statusMessage" class="status-message"></div>
 
-    <!-- Doctor Info Display -->
-    <div id="doctorInfo" class="doctor-info">
-        <!-- Dynamic content will be inserted here -->
-    </div>
-
     <form id="appointmentForm">
-        <!-- Personal Information Section -->
         <div class="form-group">
             <i class="fas fa-user icon"></i>
             <input type="text" id="fullname" placeholder="Full Name" required>
             <span class="floating-label">Full Name</span>
-            <span id="nameValidation" class="real-time-validation"></span>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <i class="fas fa-phone icon"></i>
-                <input type="text" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number">
+                <input type="text" id="phone" placeholder="Phone Number" required>
                 <span class="floating-label">Phone</span>
-                <span id="phoneValidation" class="real-time-validation"></span>
             </div>
             <div class="form-group">
                 <i class="fas fa-envelope icon"></i>
                 <input type="email" id="email" placeholder="Email Address" required>
                 <span class="floating-label">Email</span>
-                <span id="emailValidation" class="real-time-validation"></span>
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <i class="fas fa-birthday-cake icon"></i>
-                <input type="number" id="age" placeholder="Age" required min="1" max="120">
+                <input type="number" id="age" placeholder="Age" required>
                 <span class="floating-label">Age</span>
-                <span id="ageValidation" class="real-time-validation"></span>
             </div>
             <div class="form-group">
                 <i class="fas fa-venus-mars icon"></i>
@@ -502,77 +298,50 @@
             </div>
         </div>
 
-        <!-- Appointment Details Section -->
         <div class="form-row">
             <div class="form-group">
                 <i class="fas fa-calendar-day icon"></i>
                 <input type="date" id="date" required>
                 <span class="floating-label">Appointment Date</span>
-                <span id="dateValidation" class="real-time-validation"></span>
             </div>
             <div class="form-group">
                 <i class="fas fa-clock icon"></i>
                 <input type="time" id="time" required>
                 <span class="floating-label">Time</span>
-                <span id="timeValidation" class="real-time-validation"></span>
             </div>
         </div>
 
         <div class="form-group">
             <i class="fas fa-building icon"></i>
-            <select id="department" required>
-                <option value="" disabled selected>Select Department</option>
-                <option value="Cardiology">Cardiology</option>
-                <option value="Neurology">Neurology</option>
-                <option value="Pediatrics">Pediatrics</option>
-                <option value="Orthopedics">Orthopedics</option>
-                <option value="Dermatology">Dermatology</option>
-                <option value="General Medicine">General Medicine</option>
-            </select>
+            <input type="text" id="department" placeholder="Medical Department" required>
             <span class="floating-label">Department</span>
         </div>
 
-        <div class="form-group">
-            <i class="fas fa-user-md icon"></i>
-            <select id="doctorId" required onchange="showDoctorInfo(this.value)">
-                <option value="" disabled selected>Select Doctor</option>
-                <option value="DOC001">Dr. Amit Sharma - Cardiology</option>
-                <option value="DOC002">Dr. Neha Verma - Neurology</option>
-                <option value="DOC003">Dr. Rahul Mehta - Pediatrics</option>
-                <option value="DOC004">Dr. Priya Singh - Orthopedics</option>
-                <option value="DOC005">Dr. Ankit Patel - General Medicine</option>
-            </select>
-            <span class="floating-label">Doctor</span>
-        </div>
+       <div class="form-group">
+    <i class="fas fa-user-md icon"></i>
+    <select id="doctorId" required>
+        <option value="" disabled selected>Select Doctor</option>
+        <option value="DOC001">Dr. Amit Sharma (DOC001)</option>
+        <option value="DOC002">Dr. Neha Verma (DOC002)</option>
+        <option value="DOC003">Dr. Rahul Mehta (DOC003)</option>
+        <option value="DOC004">Dr. Priya Singh (DOC004)</option>
+        <option value="DOC005">Dr. Ankit Patel (DOC005)</option>
+    </select>
+    <span class="floating-label">Doctor</span>
+</div>
+
 
         <div class="form-group">
             <i class="fas fa-stethoscope icon"></i>
-            <textarea id="symptoms" placeholder="Describe your symptoms, concerns, and any specific requests..."></textarea>
-            <span class="floating-label">Symptoms & Concerns</span>
+            <textarea id="symptoms" placeholder="Describe your symptoms..."></textarea>
+            <span class="floating-label">Symptoms (Optional)</span>
         </div>
 
-        <!-- Terms & Conditions -->
-        <div class="terms-checkbox">
-            <input type="checkbox" id="terms" required>
-            <label for="terms">
-                I agree to the <a href="#" onclick="showTerms()">terms and conditions</a> and confirm that all information provided is accurate.
-            </label>
-        </div>
-
-        <!-- Appointment Summary -->
-        <div class="summary-card" id="summaryCard">
-            <h4><i class="fas fa-clipboard-check"></i> Appointment Summary</h4>
-            <div class="summary-content" id="summaryContent">
-                <!-- Dynamic summary content will be inserted here -->
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
         <div class="button-group">
-            <button type="submit" class="btn btn-submit" id="submitBtn">
+            <button type="submit" class="btn btn-submit">
                 <i class="fas fa-paper-plane"></i> Book Appointment
             </button>
-            <button type="reset" class="btn" style="background: #dfe6e9; color: #2d3436;" id="resetBtn">
+            <button type="reset" class="btn" style="background: #dfe6e9; color: #2d3436;">
                 <i class="fas fa-redo"></i> Clear Form
             </button>
         </div>
@@ -584,407 +353,142 @@
 </div>
 
 <script>
-// Doctor information database
-const doctorsInfo = {
-    'DOC001': {
-        name: 'Dr. Amit Sharma',
-        department: 'Cardiology',
-        experience: '15 years',
-        availability: 'Mon-Fri, 9AM-5PM',
-        status: 'available',
-        specializations: ['Heart Surgery', 'Angioplasty', 'ECG Analysis'],
-        rating: '4.8',
-        fee: '₹1500'
-    },
-    'DOC002': {
-        name: 'Dr. Neha Verma',
-        department: 'Neurology',
-        experience: '12 years',
-        availability: 'Tue-Sat, 10AM-6PM',
-        status: 'available',
-        specializations: ['Brain Surgery', 'Epilepsy', 'Stroke Management'],
-        rating: '4.7',
-        fee: '₹1200'
-    },
-    'DOC003': {
-        name: 'Dr. Rahul Mehta',
-        department: 'Pediatrics',
-        experience: '10 years',
-        availability: 'Mon-Sun, 8AM-4PM',
-        status: 'busy',
-        specializations: ['Child Care', 'Vaccination', 'Growth Monitoring'],
-        rating: '4.9',
-        fee: '₹1000'
-    },
-    'DOC004': {
-        name: 'Dr. Priya Singh',
-        department: 'Orthopedics',
-        experience: '18 years',
-        availability: 'Mon-Fri, 11AM-7PM',
-        status: 'available',
-        specializations: ['Joint Replacement', 'Fracture Care', 'Arthroscopy'],
-        rating: '4.6',
-        fee: '₹1800'
-    },
-    'DOC005': {
-        name: 'Dr. Ankit Patel',
-        department: 'General Medicine',
-        experience: '8 years',
-        availability: 'Mon-Sat, 9AM-5PM',
-        status: 'available',
-        specializations: ['General Checkup', 'Diabetes', 'Hypertension'],
-        rating: '4.5',
-        fee: '₹800'
-    }
-};
-
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('appointmentForm');
-    const statusMessage = document.getElementById('statusMessage');
-    const submitBtn = document.getElementById('submitBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const inputs = document.querySelectorAll('input, textarea, select');
-    const container = document.querySelector('.container');
-    const summaryCard = document.getElementById('summaryCard');
-
-    // Set min date to today and max to 3 months from today
-    const today = new Date();
-    const maxDate = new Date();
-    maxDate.setMonth(maxDate.getMonth() + 3);
-    
-    const dateInput = document.getElementById('date');
-    dateInput.min = today.toISOString().split('T')[0];
-    dateInput.max = maxDate.toISOString().split('T')[0];
-
-    // Set default date to tomorrow
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    dateInput.value = tomorrow.toISOString().split('T')[0];
-
-    // Set default time to 10:00 AM (business hours)
-    document.getElementById('time').value = "10:00";
-    document.getElementById('time').min = "09:00";
-    document.getElementById('time').max = "17:00";
-
-    // Initialize real-time validation
-    initializeRealTimeValidation();
-
-    // Floating label functionality
-    function updateLabel(input) {
-        const label = input.nextElementSibling;
-        if (!label || !label.classList.contains('floating-label')) return;
-        if (input.value) {
-            label.style.top = '-10px';
-            label.style.fontSize = '12px';
-            label.style.color = '#6a11cb';
-        } else {
-            label.style.top = '16px';
-            label.style.fontSize = '15px';
-            label.style.color = '#95a5a6';
-        }
-    }
-
-    inputs.forEach(input => {
-        updateLabel(input);
-        input.addEventListener('focus', () => updateLabel(input));
-        input.addEventListener('blur', () => updateLabel(input));
-        input.addEventListener('input', function() {
-            updateLabel(this);
-            validateField(this);
-            updateSummary();
-        });
-    });
-
-    // Initialize real-time validation
-    function initializeRealTimeValidation() {
-        const fields = [
-            { id: 'fullname', validation: validateName },
-            { id: 'phone', validation: validatePhone },
-            { id: 'email', validation: validateEmail },
-            { id: 'age', validation: validateAge },
-            { id: 'date', validation: validateDate }
-        ];
-
-        fields.forEach(field => {
-            const element = document.getElementById(field.id);
-            if (element) {
-                element.addEventListener('input', () => validateField(element));
-                element.addEventListener('blur', () => validateField(element));
-            }
-        });
-    }
-
-    // Validate individual fields
-    function validateField(field) {
-        const validationSpan = document.getElementById(field.id + 'Validation');
-        if (!validationSpan) return;
-
-        let isValid = true;
-        let message = '';
-
-        switch(field.id) {
-            case 'fullname':
-                isValid = field.value.length >= 2;
-                message = isValid ? '✓ Valid' : '✗ Min 2 characters';
-                break;
-            case 'phone':
-                isValid = /^[0-9]{10}$/.test(field.value);
-                message = isValid ? '✓ Valid' : '✗ 10 digits required';
-                break;
-            case 'email':
-                isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
-                message = isValid ? '✓ Valid' : '✗ Invalid email';
-                break;
-            case 'age':
-                isValid = field.value >= 1 && field.value <= 120;
-                message = isValid ? '✓ Valid' : '✗ Age 1-120';
-                break;
-            case 'date':
-                const selectedDate = new Date(field.value);
-                const today = new Date();
-                const maxDate = new Date();
-                maxDate.setMonth(maxDate.getMonth() + 3);
-                isValid = selectedDate >= today && selectedDate <= maxDate;
-                message = isValid ? '✓ Valid' : '✗ Select valid date';
-                break;
-        }
-
-        validationSpan.textContent = message;
-        validationSpan.className = `real-time-validation ${isValid ? 'valid' : 'invalid'}`;
-        validationSpan.style.display = field.value ? 'block' : 'none';
-
-        return isValid;
-    }
-
-    // Show doctor information
-    window.showDoctorInfo = function(doctorId) {
-        const info = doctorsInfo[doctorId];
-        if (!info) {
-            document.getElementById('doctorInfo').style.display = 'none';
-            return;
-        }
-
-        const doctorInfoDiv = document.getElementById('doctorInfo');
-        doctorInfoDiv.innerHTML = `
-            <h4><i class="fas fa-user-md"></i> ${info.name}</h4>
-            <p><strong>Department:</strong> ${info.department}</p>
-            <p><strong>Experience:</strong> ${info.experience}</p>
-            <p><strong>Availability:</strong> ${info.availability}</p>
-            <p><strong>Consultation Fee:</strong> ${info.fee}</p>
-            <p><strong>Rating:</strong> ⭐ ${info.rating}/5.0</p>
-            <p><strong>Status:</strong> 
-                <span class="availability-indicator ${info.status}"></span>
-                ${info.status === 'available' ? 'Available' : 'Busy'}
-            </p>
-            <p><strong>Specializations:</strong> ${info.specializations.join(', ')}</p>
-        `;
-        doctorInfoDiv.style.display = 'block';
-        updateSummary();
-    };
-
-    // Update summary card
-    function updateSummary() {
-        const summary = {
-            fullname: document.getElementById('fullname').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            age: document.getElementById('age').value,
-            gender: document.getElementById('gender').value,
-            date: document.getElementById('date').value,
-            time: document.getElementById('time').value,
-            department: document.getElementById('department').value,
-            doctorId: document.getElementById('doctorId').value,
-            symptoms: document.getElementById('symptoms').value
-        };
-
-        // Show summary only if basic info is filled
-        if (summary.fullname && summary.date && summary.doctorId) {
-            const doctorInfo = doctorsInfo[summary.doctorId] || {};
-            const summaryContent = document.getElementById('summaryContent');
-            
-            summaryContent.innerHTML = `
-                <p><strong>Patient:</strong> ${summary.fullname}</p>
-                <p><strong>Contact:</strong> ${summary.phone || 'Not provided'} | ${summary.email || 'Not provided'}</p>
-                <p><strong>Age/Gender:</strong> ${summary.age || 'Not provided'} / ${summary.gender || 'Not selected'}</p>
-                <p><strong>Date & Time:</strong> ${new Date(summary.date).toLocaleDateString()} at ${summary.time}</p>
-                <p><strong>Department:</strong> ${summary.department || 'Not selected'}</p>
-                <p><strong>Doctor:</strong> ${doctorInfo.name || 'Not selected'}</p>
-                <p><strong>Fee:</strong> ${doctorInfo.fee || '--'}</p>
-                ${summary.symptoms ? `<p><strong>Symptoms:</strong> ${summary.symptoms.substring(0, 100)}${summary.symptoms.length > 100 ? '...' : ''}</p>` : ''}
-            `;
-            
-            summaryCard.style.display = 'block';
-        } else {
-            summaryCard.style.display = 'none';
-        }
-    }
-
-    // Auto-fill sample data
-    window.fillSampleData = function() {
-        const sampleData = {
-            fullname: 'John Doe',
-            phone: '9876543210',
-            email: 'johndoe@example.com',
-            age: '35',
-            gender: 'Male',
-            date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-            time: '10:30',
-            department: 'General Medicine',
-            doctorId: 'DOC005',
-            symptoms: 'Mild fever and headache for 2 days. No allergies.'
-        };
-
-        Object.keys(sampleData).forEach(key => {
-            const element = document.getElementById(key);
-            if (element) {
-                element.value = sampleData[key];
-                updateLabel(element);
-                validateField(element);
-                if (key === 'doctorId') showDoctorInfo(sampleData[key]);
-            }
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('appointmentForm');
+        const statusMessage = document.getElementById('statusMessage');
         
-        document.getElementById('terms').checked = true;
-        updateSummary();
+        // Set min date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').min = today;
         
-        showMessage('Sample data filled successfully! You can modify any field.', 'success');
-        
-        // Scroll to bottom to show summary
-        setTimeout(() => {
-            summaryCard.scrollIntoView({ behavior: 'smooth' });
-        }, 500);
-    };
-
-    // Show terms modal
-    window.showTerms = function() {
-        alert(`Terms and Conditions:\n\n1. All information provided must be accurate.\n2. Appointment can be cancelled up to 24 hours before.\n3. Please arrive 15 minutes before your scheduled time.\n4. Bring valid ID proof for verification.\n5. Emergency cases will be given priority.`);
-        return false;
-    };
-
-    // Show message
-    function showMessage(msg, type = 'success') {
-        statusMessage.innerHTML = msg;
-        statusMessage.className = 'status-message ' + type;
-        statusMessage.style.display = 'block';
-
-        setTimeout(() => {
-            statusMessage.style.opacity = '0';
-            statusMessage.style.transform = 'translateY(-10px)';
-            setTimeout(() => {
-                statusMessage.style.display = 'none';
-                statusMessage.className = 'status-message';
-                statusMessage.style.opacity = '';
-                statusMessage.style.transform = '';
-                statusMessage.innerHTML = '';
-            }, 300);
-        }, 5000);
-    }
-
-    // Form reset
-    resetBtn.addEventListener('click', function() {
-        setTimeout(() => {
-            inputs.forEach(input => {
-                updateLabel(input);
-                const validationSpan = document.getElementById(input.id + 'Validation');
-                if (validationSpan) validationSpan.style.display = 'none';
+        // Add floating label functionality
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                const label = this.nextElementSibling;
+                if (label && label.classList.contains('floating-label')) {
+                    label.style.top = '-10px';
+                    label.style.fontSize = '12px';
+                    label.style.color = '#6a11cb';
+                }
             });
-            document.getElementById('doctorInfo').style.display = 'none';
-            summaryCard.style.display = 'none';
-            document.getElementById('terms').checked = false;
-            showMessage('Form cleared successfully!', 'success');
-        }, 100);
-    });
-
-    // Form submit
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (!document.getElementById('terms').checked) {
-            showMessage('Please accept the terms and conditions', 'error');
-            document.getElementById('terms').focus();
-            return;
-        }
-
-        // Validate all required fields
-        const requiredFields = ['fullname', 'phone', 'email', 'age', 'gender', 'date', 'time', 'department', 'doctorId'];
-        for (const fieldId of requiredFields) {
-            const field = document.getElementById(fieldId);
-            if (!field.value.trim()) {
-                showMessage(`Please fill in ${field.previousElementSibling?.textContent || 'all required fields'}`, 'error');
-                field.focus();
-                return;
-            }
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-        resetBtn.disabled = true;
-
-        const appointment = {
-            fullname: document.getElementById('fullname').value.trim(),
-            phone: document.getElementById('phone').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            age: parseInt(document.getElementById('age').value),
-            gender: document.getElementById('gender').value,
-            date: document.getElementById('date').value,
-            time: document.getElementById('time').value,
-            department: document.getElementById('department').value.trim(),
-            doctorId: document.getElementById('doctorId').value,
-            symptoms: document.getElementById('symptoms').value.trim()
-        };
-
-        try {
-            const response = await fetch('https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(appointment)
+            
+            input.addEventListener('blur', function() {
+                const label = this.nextElementSibling;
+                if (label && label.classList.contains('floating-label')) {
+                    if (!this.value) {
+                        label.style.top = '16px';
+                        label.style.fontSize = '15px';
+                        label.style.color = '#95a5a6';
+                    }
+                }
             });
+            
+            // Initialize labels for pre-filled values
+            if (input.value) {
+                const label = input.nextElementSibling;
+                if (label && label.classList.contains('floating-label')) {
+                    label.style.top = '-10px';
+                    label.style.fontSize = '12px';
+                    label.style.color = '#6a11cb';
+                }
+            }
+        });
 
-            let data = {};
-            try { data = await response.json(); } catch {}
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
 
-            if (response.ok) {
-                showMessage('✅ Appointment booked successfully! Confirmation will be sent to your email.', 'success');
-                
-                // Success animation
-                container.style.animation = 'pulse 0.5s';
-                container.addEventListener('animationend', () => container.style.animation = '', { once: true });
-                
-                // Reset form after successful submission
-                setTimeout(() => {
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitBtn.disabled = true;
+
+            const appointment = {
+                fullname: document.getElementById("fullname").value,
+                phone: document.getElementById("phone").value,
+                email: document.getElementById("email").value,
+                age: document.getElementById("age").value,
+                gender: document.getElementById("gender").value,
+                date: document.getElementById("date").value,
+                department: document.getElementById("department").value,
+                doctorId: document.getElementById("doctorId").value,
+                time: document.getElementById("time").value,
+                symptoms: document.getElementById("symptoms").value
+            };
+
+            try {
+                const response = await fetch("https://hospitalmanagmentproject-1-production-032c.up.railway.app/api/appoitment", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(appointment)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    showMessage("Appointment booked successfully!", "success");
                     form.reset();
-                    inputs.forEach(input => {
-                        updateLabel(input);
-                        const validationSpan = document.getElementById(input.id + 'Validation');
-                        if (validationSpan) validationSpan.style.display = 'none';
-                    });
-                    document.getElementById('doctorInfo').style.display = 'none';
-                    summaryCard.style.display = 'none';
-                    document.getElementById('terms').checked = false;
                     
-                    // Reset date to tomorrow
-                    const tomorrow = new Date();
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
-                    document.getElementById('time').value = "10:00";
-                }, 1500);
-            } else {
-                showMessage('Server error! Please try again.', 'error');
+                    // Reset floating labels
+                    inputs.forEach(input => {
+                        const label = input.nextElementSibling;
+                        if (label && label.classList.contains('floating-label')) {
+                            label.style.top = '16px';
+                            label.style.fontSize = '15px';
+                            label.style.color = '#95a5a6';
+                        }
+                    });
+                    
+                    // Add success animation
+                    const container = document.querySelector('.container');
+                    container.style.animation = 'none';
+                    setTimeout(() => {
+                        container.style.animation = 'pulse 0.5s';
+                    }, 10);
+                } else {
+                    throw new Error('Server responded with error');
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                showMessage("Failed to book appointment. Please try again.", "error");
+            } finally {
+                // Restore button state
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
             }
-        } catch (err) {
-            console.error(err);
-            showMessage('Network error! Please check your connection.', 'error');
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Book Appointment';
-            resetBtn.disabled = false;
+        });
+
+        function showMessage(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = 'status-message ' + type;
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusMessage.style.opacity = '0';
+                    statusMessage.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        statusMessage.className = 'status-message';
+                        statusMessage.style.opacity = '';
+                        statusMessage.style.transform = '';
+                    }, 300);
+                }, 5000);
+            }
         }
+
+        // Add pulse animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
     });
-
-    // Initialize
-    updateSummary();
-});
 </script>
-
 </body>
 </html>
