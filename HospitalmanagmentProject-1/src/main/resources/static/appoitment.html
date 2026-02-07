@@ -269,7 +269,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* New styles for the alternative approach */
+        /* New styles for single-page enhancements */
         .doctor-info {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             padding: 15px;
@@ -321,6 +321,7 @@
             cursor: pointer;
             opacity: 0.8;
             transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
         }
 
         .auto-fill-btn:hover {
@@ -328,56 +329,115 @@
             transform: translateY(-50%) scale(1.05);
         }
 
-        .form-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-
-        .nav-step {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            position: relative;
-        }
-
-        .nav-step.active {
-            color: #6a11cb;
-            font-weight: 600;
-        }
-
-        .nav-step.completed {
-            color: #00b894;
-        }
-
-        .nav-step::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 3px;
-            background: #6a11cb;
-            transition: width 0.3s ease;
-        }
-
-        .nav-step.active::after {
-            width: 100%;
-        }
-
-        .form-step {
+        .summary-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            border: 2px dashed #6a11cb;
             display: none;
             animation: fadeIn 0.5s ease;
         }
 
-        .form-step.active {
-            display: block;
+        .summary-card h4 {
+            color: #6a11cb;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .summary-content p {
+            margin-bottom: 8px;
+            color: #2d3436;
+            padding: 5px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .summary-content p:last-child {
+            border-bottom: none;
+        }
+
+        .summary-content strong {
+            color: #6a11cb;
+            min-width: 140px;
+            display: inline-block;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .terms-checkbox input {
+            width: auto;
+            padding: 0;
+        }
+
+        .terms-checkbox label {
+            color: #636e72;
+            font-size: 14px;
+        }
+
+        .terms-checkbox a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .terms-checkbox a:hover {
+            text-decoration: underline;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .real-time-validation {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            display: none;
+        }
+
+        .valid {
+            color: #00b894;
+        }
+
+        .invalid {
+            color: #e17055;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .demo-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -385,16 +445,14 @@
 <body>
 
 <div class="container">
-    <h2><i class="fas fa-calendar-check"></i> Book Appointment</h2>
+    <div class="form-header">
+        <h2><i class="fas fa-calendar-check"></i> Book Appointment</h2>
+        <button type="button" class="demo-btn" onclick="fillSampleData()">
+            <i class="fas fa-magic"></i> Demo Fill
+        </button>
+    </div>
     
     <div id="statusMessage" class="status-message"></div>
-
-    <!-- Form Navigation -->
-    <div class="form-navigation">
-        <div class="nav-step active" id="step1Nav">1. Personal Info</div>
-        <div class="nav-step" id="step2Nav">2. Appointment Details</div>
-        <div class="nav-step" id="step3Nav">3. Confirmation</div>
-    </div>
 
     <!-- Doctor Info Display -->
     <div id="doctorInfo" class="doctor-info">
@@ -402,140 +460,120 @@
     </div>
 
     <form id="appointmentForm">
-        <!-- Step 1: Personal Information -->
-        <div class="form-step active" id="step1">
+        <!-- Personal Information Section -->
+        <div class="form-group">
+            <i class="fas fa-user icon"></i>
+            <input type="text" id="fullname" placeholder="Full Name" required>
+            <span class="floating-label">Full Name</span>
+            <span id="nameValidation" class="real-time-validation"></span>
+        </div>
+
+        <div class="form-row">
             <div class="form-group">
-                <i class="fas fa-user icon"></i>
-                <input type="text" id="fullname" placeholder="Full Name" required>
-                <span class="floating-label">Full Name</span>
-                <button type="button" class="auto-fill-btn" onclick="fillSampleData()">Demo</button>
+                <i class="fas fa-phone icon"></i>
+                <input type="text" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number">
+                <span class="floating-label">Phone</span>
+                <span id="phoneValidation" class="real-time-validation"></span>
             </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <i class="fas fa-phone icon"></i>
-                    <input type="text" id="phone" placeholder="Phone Number" required pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number">
-                    <span class="floating-label">Phone</span>
-                </div>
-                <div class="form-group">
-                    <i class="fas fa-envelope icon"></i>
-                    <input type="email" id="email" placeholder="Email Address" required>
-                    <span class="floating-label">Email</span>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <i class="fas fa-birthday-cake icon"></i>
-                    <input type="number" id="age" placeholder="Age" required min="1" max="120">
-                    <span class="floating-label">Age</span>
-                </div>
-                <div class="form-group">
-                    <i class="fas fa-venus-mars icon"></i>
-                    <select id="gender" required>
-                        <option value="" disabled selected>Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <span class="floating-label"></span>
-                </div>
+            <div class="form-group">
+                <i class="fas fa-envelope icon"></i>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <span class="floating-label">Email</span>
+                <span id="emailValidation" class="real-time-validation"></span>
             </div>
         </div>
 
-        <!-- Step 2: Appointment Details -->
-        <div class="form-step" id="step2">
-            <div class="form-row">
-                <div class="form-group">
-                    <i class="fas fa-calendar-day icon"></i>
-                    <input type="date" id="date" required>
-                    <span class="floating-label">Appointment Date</span>
-                </div>
-                <div class="form-group">
-                    <i class="fas fa-clock icon"></i>
-                    <input type="time" id="time" required>
-                    <span class="floating-label">Time</span>
-                </div>
-            </div>
-
+        <div class="form-row">
             <div class="form-group">
-                <i class="fas fa-building icon"></i>
-                <select id="department" required>
-                    <option value="" disabled selected>Select Department</option>
-                    <option value="Cardiology">Cardiology</option>
-                    <option value="Neurology">Neurology</option>
-                    <option value="Pediatrics">Pediatrics</option>
-                    <option value="Orthopedics">Orthopedics</option>
-                    <option value="Dermatology">Dermatology</option>
-                    <option value="General Medicine">General Medicine</option>
+                <i class="fas fa-birthday-cake icon"></i>
+                <input type="number" id="age" placeholder="Age" required min="1" max="120">
+                <span class="floating-label">Age</span>
+                <span id="ageValidation" class="real-time-validation"></span>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-venus-mars icon"></i>
+                <select id="gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
                 </select>
-                <span class="floating-label">Department</span>
+                <span class="floating-label"></span>
             </div>
+        </div>
 
+        <!-- Appointment Details Section -->
+        <div class="form-row">
             <div class="form-group">
-                <i class="fas fa-user-md icon"></i>
-                <select id="doctorId" required onchange="showDoctorInfo(this.value)">
-                    <option value="" disabled selected>Select Doctor</option>
-                    <option value="DOC001">Dr. Amit Sharma - Cardiology</option>
-                    <option value="DOC002">Dr. Neha Verma - Neurology</option>
-                    <option value="DOC003">Dr. Rahul Mehta - Pediatrics</option>
-                    <option value="DOC004">Dr. Priya Singh - Orthopedics</option>
-                    <option value="DOC005">Dr. Ankit Patel - General Medicine</option>
-                </select>
-                <span class="floating-label">Doctor</span>
+                <i class="fas fa-calendar-day icon"></i>
+                <input type="date" id="date" required>
+                <span class="floating-label">Appointment Date</span>
+                <span id="dateValidation" class="real-time-validation"></span>
             </div>
-
             <div class="form-group">
-                <i class="fas fa-stethoscope icon"></i>
-                <textarea id="symptoms" placeholder="Describe your symptoms, concerns, and any specific requests..."></textarea>
-                <span class="floating-label">Symptoms & Concerns</span>
+                <i class="fas fa-clock icon"></i>
+                <input type="time" id="time" required>
+                <span class="floating-label">Time</span>
+                <span id="timeValidation" class="real-time-validation"></span>
             </div>
         </div>
 
-        <!-- Step 3: Confirmation -->
-        <div class="form-step" id="step3">
-            <div class="summary-card">
-                <h4 style="color: #6a11cb; margin-bottom: 15px; text-align: center;">
-                    <i class="fas fa-clipboard-check"></i> Appointment Summary
-                </h4>
-                <div id="summaryContent">
-                    <!-- Summary will be dynamically inserted here -->
-                </div>
+        <div class="form-group">
+            <i class="fas fa-building icon"></i>
+            <select id="department" required>
+                <option value="" disabled selected>Select Department</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Neurology">Neurology</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="Orthopedics">Orthopedics</option>
+                <option value="Dermatology">Dermatology</option>
+                <option value="General Medicine">General Medicine</option>
+            </select>
+            <span class="floating-label">Department</span>
+        </div>
+
+        <div class="form-group">
+            <i class="fas fa-user-md icon"></i>
+            <select id="doctorId" required onchange="showDoctorInfo(this.value)">
+                <option value="" disabled selected>Select Doctor</option>
+                <option value="DOC001">Dr. Amit Sharma - Cardiology</option>
+                <option value="DOC002">Dr. Neha Verma - Neurology</option>
+                <option value="DOC003">Dr. Rahul Mehta - Pediatrics</option>
+                <option value="DOC004">Dr. Priya Singh - Orthopedics</option>
+                <option value="DOC005">Dr. Ankit Patel - General Medicine</option>
+            </select>
+            <span class="floating-label">Doctor</span>
+        </div>
+
+        <div class="form-group">
+            <i class="fas fa-stethoscope icon"></i>
+            <textarea id="symptoms" placeholder="Describe your symptoms, concerns, and any specific requests..."></textarea>
+            <span class="floating-label">Symptoms & Concerns</span>
+        </div>
+
+        <!-- Terms & Conditions -->
+        <div class="terms-checkbox">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">
+                I agree to the <a href="#" onclick="showTerms()">terms and conditions</a> and confirm that all information provided is accurate.
+            </label>
+        </div>
+
+        <!-- Appointment Summary -->
+        <div class="summary-card" id="summaryCard">
+            <h4><i class="fas fa-clipboard-check"></i> Appointment Summary</h4>
+            <div class="summary-content" id="summaryContent">
+                <!-- Dynamic summary content will be inserted here -->
             </div>
-            
-            <div class="form-group" style="margin-top: 20px;">
-                <label style="display: flex; align-items: center; gap: 10px; color: #636e72;">
-                    <input type="checkbox" id="terms" required style="width: auto;">
-                    I agree to the terms and conditions
-                </label>
-            </div>
         </div>
 
-        <!-- Navigation Buttons -->
-        <div class="button-group" id="step1Buttons">
-            <button type="button" class="btn btn-submit" onclick="nextStep(2)">
-                <i class="fas fa-arrow-right"></i> Next
-            </button>
-            <button type="button" class="btn" style="background: #dfe6e9; color: #2d3436;" onclick="resetForm()">
-                <i class="fas fa-redo"></i> Reset
-            </button>
-        </div>
-
-        <div class="button-group" id="step2Buttons" style="display: none;">
-            <button type="button" class="btn" style="background: #dfe6e9; color: #2d3436;" onclick="prevStep(1)">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
-            <button type="button" class="btn btn-submit" onclick="nextStep(3)">
-                <i class="fas fa-arrow-right"></i> Next
-            </button>
-        </div>
-
-        <div class="button-group" id="step3Buttons" style="display: none;">
-            <button type="button" class="btn" style="background: #dfe6e9; color: #2d3436;" onclick="prevStep(2)">
-                <i class="fas fa-arrow-left"></i> Back
-            </button>
+        <!-- Action Buttons -->
+        <div class="button-group">
             <button type="submit" class="btn btn-submit" id="submitBtn">
-                <i class="fas fa-paper-plane"></i> Confirm Booking
+                <i class="fas fa-paper-plane"></i> Book Appointment
+            </button>
+            <button type="reset" class="btn" style="background: #dfe6e9; color: #2d3436;" id="resetBtn">
+                <i class="fas fa-redo"></i> Clear Form
             </button>
         </div>
     </form>
@@ -554,7 +592,9 @@ const doctorsInfo = {
         experience: '15 years',
         availability: 'Mon-Fri, 9AM-5PM',
         status: 'available',
-        specializations: ['Heart Surgery', 'Angioplasty', 'ECG Analysis']
+        specializations: ['Heart Surgery', 'Angioplasty', 'ECG Analysis'],
+        rating: '4.8',
+        fee: '₹1500'
     },
     'DOC002': {
         name: 'Dr. Neha Verma',
@@ -562,7 +602,9 @@ const doctorsInfo = {
         experience: '12 years',
         availability: 'Tue-Sat, 10AM-6PM',
         status: 'available',
-        specializations: ['Brain Surgery', 'Epilepsy', 'Stroke Management']
+        specializations: ['Brain Surgery', 'Epilepsy', 'Stroke Management'],
+        rating: '4.7',
+        fee: '₹1200'
     },
     'DOC003': {
         name: 'Dr. Rahul Mehta',
@@ -570,7 +612,9 @@ const doctorsInfo = {
         experience: '10 years',
         availability: 'Mon-Sun, 8AM-4PM',
         status: 'busy',
-        specializations: ['Child Care', 'Vaccination', 'Growth Monitoring']
+        specializations: ['Child Care', 'Vaccination', 'Growth Monitoring'],
+        rating: '4.9',
+        fee: '₹1000'
     },
     'DOC004': {
         name: 'Dr. Priya Singh',
@@ -578,7 +622,9 @@ const doctorsInfo = {
         experience: '18 years',
         availability: 'Mon-Fri, 11AM-7PM',
         status: 'available',
-        specializations: ['Joint Replacement', 'Fracture Care', 'Arthroscopy']
+        specializations: ['Joint Replacement', 'Fracture Care', 'Arthroscopy'],
+        rating: '4.6',
+        fee: '₹1800'
     },
     'DOC005': {
         name: 'Dr. Ankit Patel',
@@ -586,18 +632,20 @@ const doctorsInfo = {
         experience: '8 years',
         availability: 'Mon-Sat, 9AM-5PM',
         status: 'available',
-        specializations: ['General Checkup', 'Diabetes', 'Hypertension']
+        specializations: ['General Checkup', 'Diabetes', 'Hypertension'],
+        rating: '4.5',
+        fee: '₹800'
     }
 };
-
-let currentStep = 1;
 
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('appointmentForm');
     const statusMessage = document.getElementById('statusMessage');
     const submitBtn = document.getElementById('submitBtn');
+    const resetBtn = document.getElementById('resetBtn');
     const inputs = document.querySelectorAll('input, textarea, select');
     const container = document.querySelector('.container');
+    const summaryCard = document.getElementById('summaryCard');
 
     // Set min date to today and max to 3 months from today
     const today = new Date();
@@ -608,9 +656,18 @@ document.addEventListener('DOMContentLoaded', function() {
     dateInput.min = today.toISOString().split('T')[0];
     dateInput.max = maxDate.toISOString().split('T')[0];
 
-    // Initialize time input with business hours (9AM to 5PM)
+    // Set default date to tomorrow
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    dateInput.value = tomorrow.toISOString().split('T')[0];
+
+    // Set default time to 10:00 AM (business hours)
+    document.getElementById('time').value = "10:00";
     document.getElementById('time').min = "09:00";
     document.getElementById('time').max = "17:00";
+
+    // Initialize real-time validation
+    initializeRealTimeValidation();
 
     // Floating label functionality
     function updateLabel(input) {
@@ -631,8 +688,178 @@ document.addEventListener('DOMContentLoaded', function() {
         updateLabel(input);
         input.addEventListener('focus', () => updateLabel(input));
         input.addEventListener('blur', () => updateLabel(input));
-        input.addEventListener('input', () => updateLabel(input));
+        input.addEventListener('input', function() {
+            updateLabel(this);
+            validateField(this);
+            updateSummary();
+        });
     });
+
+    // Initialize real-time validation
+    function initializeRealTimeValidation() {
+        const fields = [
+            { id: 'fullname', validation: validateName },
+            { id: 'phone', validation: validatePhone },
+            { id: 'email', validation: validateEmail },
+            { id: 'age', validation: validateAge },
+            { id: 'date', validation: validateDate }
+        ];
+
+        fields.forEach(field => {
+            const element = document.getElementById(field.id);
+            if (element) {
+                element.addEventListener('input', () => validateField(element));
+                element.addEventListener('blur', () => validateField(element));
+            }
+        });
+    }
+
+    // Validate individual fields
+    function validateField(field) {
+        const validationSpan = document.getElementById(field.id + 'Validation');
+        if (!validationSpan) return;
+
+        let isValid = true;
+        let message = '';
+
+        switch(field.id) {
+            case 'fullname':
+                isValid = field.value.length >= 2;
+                message = isValid ? '✓ Valid' : '✗ Min 2 characters';
+                break;
+            case 'phone':
+                isValid = /^[0-9]{10}$/.test(field.value);
+                message = isValid ? '✓ Valid' : '✗ 10 digits required';
+                break;
+            case 'email':
+                isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value);
+                message = isValid ? '✓ Valid' : '✗ Invalid email';
+                break;
+            case 'age':
+                isValid = field.value >= 1 && field.value <= 120;
+                message = isValid ? '✓ Valid' : '✗ Age 1-120';
+                break;
+            case 'date':
+                const selectedDate = new Date(field.value);
+                const today = new Date();
+                const maxDate = new Date();
+                maxDate.setMonth(maxDate.getMonth() + 3);
+                isValid = selectedDate >= today && selectedDate <= maxDate;
+                message = isValid ? '✓ Valid' : '✗ Select valid date';
+                break;
+        }
+
+        validationSpan.textContent = message;
+        validationSpan.className = `real-time-validation ${isValid ? 'valid' : 'invalid'}`;
+        validationSpan.style.display = field.value ? 'block' : 'none';
+
+        return isValid;
+    }
+
+    // Show doctor information
+    window.showDoctorInfo = function(doctorId) {
+        const info = doctorsInfo[doctorId];
+        if (!info) {
+            document.getElementById('doctorInfo').style.display = 'none';
+            return;
+        }
+
+        const doctorInfoDiv = document.getElementById('doctorInfo');
+        doctorInfoDiv.innerHTML = `
+            <h4><i class="fas fa-user-md"></i> ${info.name}</h4>
+            <p><strong>Department:</strong> ${info.department}</p>
+            <p><strong>Experience:</strong> ${info.experience}</p>
+            <p><strong>Availability:</strong> ${info.availability}</p>
+            <p><strong>Consultation Fee:</strong> ${info.fee}</p>
+            <p><strong>Rating:</strong> ⭐ ${info.rating}/5.0</p>
+            <p><strong>Status:</strong> 
+                <span class="availability-indicator ${info.status}"></span>
+                ${info.status === 'available' ? 'Available' : 'Busy'}
+            </p>
+            <p><strong>Specializations:</strong> ${info.specializations.join(', ')}</p>
+        `;
+        doctorInfoDiv.style.display = 'block';
+        updateSummary();
+    };
+
+    // Update summary card
+    function updateSummary() {
+        const summary = {
+            fullname: document.getElementById('fullname').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            age: document.getElementById('age').value,
+            gender: document.getElementById('gender').value,
+            date: document.getElementById('date').value,
+            time: document.getElementById('time').value,
+            department: document.getElementById('department').value,
+            doctorId: document.getElementById('doctorId').value,
+            symptoms: document.getElementById('symptoms').value
+        };
+
+        // Show summary only if basic info is filled
+        if (summary.fullname && summary.date && summary.doctorId) {
+            const doctorInfo = doctorsInfo[summary.doctorId] || {};
+            const summaryContent = document.getElementById('summaryContent');
+            
+            summaryContent.innerHTML = `
+                <p><strong>Patient:</strong> ${summary.fullname}</p>
+                <p><strong>Contact:</strong> ${summary.phone || 'Not provided'} | ${summary.email || 'Not provided'}</p>
+                <p><strong>Age/Gender:</strong> ${summary.age || 'Not provided'} / ${summary.gender || 'Not selected'}</p>
+                <p><strong>Date & Time:</strong> ${new Date(summary.date).toLocaleDateString()} at ${summary.time}</p>
+                <p><strong>Department:</strong> ${summary.department || 'Not selected'}</p>
+                <p><strong>Doctor:</strong> ${doctorInfo.name || 'Not selected'}</p>
+                <p><strong>Fee:</strong> ${doctorInfo.fee || '--'}</p>
+                ${summary.symptoms ? `<p><strong>Symptoms:</strong> ${summary.symptoms.substring(0, 100)}${summary.symptoms.length > 100 ? '...' : ''}</p>` : ''}
+            `;
+            
+            summaryCard.style.display = 'block';
+        } else {
+            summaryCard.style.display = 'none';
+        }
+    }
+
+    // Auto-fill sample data
+    window.fillSampleData = function() {
+        const sampleData = {
+            fullname: 'John Doe',
+            phone: '9876543210',
+            email: 'johndoe@example.com',
+            age: '35',
+            gender: 'Male',
+            date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
+            time: '10:30',
+            department: 'General Medicine',
+            doctorId: 'DOC005',
+            symptoms: 'Mild fever and headache for 2 days. No allergies.'
+        };
+
+        Object.keys(sampleData).forEach(key => {
+            const element = document.getElementById(key);
+            if (element) {
+                element.value = sampleData[key];
+                updateLabel(element);
+                validateField(element);
+                if (key === 'doctorId') showDoctorInfo(sampleData[key]);
+            }
+        });
+        
+        document.getElementById('terms').checked = true;
+        updateSummary();
+        
+        showMessage('Sample data filled successfully! You can modify any field.', 'success');
+        
+        // Scroll to bottom to show summary
+        setTimeout(() => {
+            summaryCard.scrollIntoView({ behavior: 'smooth' });
+        }, 500);
+    };
+
+    // Show terms modal
+    window.showTerms = function() {
+        alert(`Terms and Conditions:\n\n1. All information provided must be accurate.\n2. Appointment can be cancelled up to 24 hours before.\n3. Please arrive 15 minutes before your scheduled time.\n4. Bring valid ID proof for verification.\n5. Emergency cases will be given priority.`);
+        return false;
+    };
 
     // Show message
     function showMessage(msg, type = 'success') {
@@ -653,169 +880,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
 
-    // Form step navigation
-    window.nextStep = function(step) {
-        if (step === 2 && !validateStep1()) {
-            showMessage('Please fill all required fields correctly', 'error');
-            return;
-        }
-        if (step === 3 && !validateStep2()) {
-            showMessage('Please complete appointment details', 'error');
-            return;
-        }
-
-        document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.button-group').forEach(b => b.style.display = 'none');
-        document.querySelectorAll('.nav-step').forEach(n => {
-            n.classList.remove('active', 'completed');
-        });
-
-        document.getElementById(`step${step}`).classList.add('active');
-        document.getElementById(`step${step}Buttons`).style.display = 'flex';
-        document.getElementById(`step${step}Nav`).classList.add('active');
-
-        for (let i = 1; i < step; i++) {
-            document.getElementById(`step${i}Nav`).classList.add('completed');
-        }
-
-        if (step === 3) {
-            generateSummary();
-        }
-
-        currentStep = step;
-    };
-
-    window.prevStep = function(step) {
-        document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.button-group').forEach(b => b.style.display = 'none');
-        document.querySelectorAll('.nav-step').forEach(n => n.classList.remove('active'));
-
-        document.getElementById(`step${step}`).classList.add('active');
-        document.getElementById(`step${step}Buttons`).style.display = 'flex';
-        document.getElementById(`step${step}Nav`).classList.add('active');
-
-        currentStep = step;
-    };
-
-    function validateStep1() {
-        const required = ['fullname', 'phone', 'email', 'age', 'gender'];
-        for (const field of required) {
-            const element = document.getElementById(field);
-            if (!element.value.trim()) return false;
-        }
-        return true;
-    }
-
-    function validateStep2() {
-        const required = ['date', 'time', 'department', 'doctorId'];
-        for (const field of required) {
-            const element = document.getElementById(field);
-            if (!element.value.trim()) return false;
-        }
-        return true;
-    }
-
-    // Show doctor information
-    window.showDoctorInfo = function(doctorId) {
-        const info = doctorsInfo[doctorId];
-        if (!info) {
+    // Form reset
+    resetBtn.addEventListener('click', function() {
+        setTimeout(() => {
+            inputs.forEach(input => {
+                updateLabel(input);
+                const validationSpan = document.getElementById(input.id + 'Validation');
+                if (validationSpan) validationSpan.style.display = 'none';
+            });
             document.getElementById('doctorInfo').style.display = 'none';
-            return;
-        }
-
-        const doctorInfoDiv = document.getElementById('doctorInfo');
-        doctorInfoDiv.innerHTML = `
-            <h4><i class="fas fa-user-md"></i> ${info.name}</h4>
-            <p><strong>Department:</strong> ${info.department}</p>
-            <p><strong>Experience:</strong> ${info.experience}</p>
-            <p><strong>Availability:</strong> ${info.availability}</p>
-            <p><strong>Status:</strong> 
-                <span class="availability-indicator ${info.status}"></span>
-                ${info.status === 'available' ? 'Available' : 'Busy'}
-            </p>
-            <p><strong>Specializations:</strong> ${info.specializations.join(', ')}</p>
-        `;
-        doctorInfoDiv.style.display = 'block';
-    };
-
-    // Generate appointment summary
-    function generateSummary() {
-        const summary = {
-            fullname: document.getElementById('fullname').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            age: document.getElementById('age').value,
-            gender: document.getElementById('gender').value,
-            date: document.getElementById('date').value,
-            time: document.getElementById('time').value,
-            department: document.getElementById('department').value,
-            doctorId: document.getElementById('doctorId').value,
-            symptoms: document.getElementById('symptoms').value
-        };
-
-        const doctorInfo = doctorsInfo[summary.doctorId] || {};
-        
-        const summaryContent = document.getElementById('summaryContent');
-        summaryContent.innerHTML = `
-            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
-                <p><strong>Patient Name:</strong> ${summary.fullname}</p>
-                <p><strong>Contact:</strong> ${summary.phone} | ${summary.email}</p>
-                <p><strong>Age/Gender:</strong> ${summary.age} / ${summary.gender}</p>
-                <hr style="margin: 10px 0;">
-                <p><strong>Appointment Date:</strong> ${new Date(summary.date).toLocaleDateString()}</p>
-                <p><strong>Time:</strong> ${summary.time}</p>
-                <p><strong>Department:</strong> ${summary.department}</p>
-                <p><strong>Doctor:</strong> ${doctorInfo.name || 'Selected Doctor'}</p>
-                <hr style="margin: 10px 0;">
-                <p><strong>Symptoms/Concerns:</strong></p>
-                <p>${summary.symptoms || 'None specified'}</p>
-            </div>
-        `;
-    }
-
-    // Auto-fill sample data
-    window.fillSampleData = function() {
-        const sampleData = {
-            fullname: 'John Doe',
-            phone: '9876543210',
-            email: 'johndoe@example.com',
-            age: '35',
-            gender: 'Male',
-            date: new Date(Date.now() + 86400000).toISOString().split('T')[0],
-            time: '14:00',
-            department: 'General Medicine',
-            doctorId: 'DOC005',
-            symptoms: 'Mild fever and headache for 2 days'
-        };
-
-        Object.keys(sampleData).forEach(key => {
-            const element = document.getElementById(key);
-            if (element) {
-                element.value = sampleData[key];
-                updateLabel(element);
-                if (key === 'doctorId') showDoctorInfo(sampleData[key]);
-            }
-        });
-        
-        showMessage('Sample data filled. You can modify as needed.', 'success');
-    };
-
-    // Reset form
-    window.resetForm = function() {
-        form.reset();
-        document.getElementById('doctorInfo').style.display = 'none';
-        inputs.forEach(input => updateLabel(input));
-        document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.button-group').forEach(b => b.style.display = 'none');
-        document.querySelectorAll('.nav-step').forEach(n => n.classList.remove('active', 'completed'));
-        
-        document.getElementById('step1').classList.add('active');
-        document.getElementById('step1Buttons').style.display = 'flex';
-        document.getElementById('step1Nav').classList.add('active');
-        
-        currentStep = 1;
-        showMessage('Form reset successfully', 'success');
-    };
+            summaryCard.style.display = 'none';
+            document.getElementById('terms').checked = false;
+            showMessage('Form cleared successfully!', 'success');
+        }, 100);
+    });
 
     // Form submit
     form.addEventListener('submit', async (e) => {
@@ -823,11 +901,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (!document.getElementById('terms').checked) {
             showMessage('Please accept the terms and conditions', 'error');
+            document.getElementById('terms').focus();
             return;
+        }
+
+        // Validate all required fields
+        const requiredFields = ['fullname', 'phone', 'email', 'age', 'gender', 'date', 'time', 'department', 'doctorId'];
+        for (const fieldId of requiredFields) {
+            const field = document.getElementById(fieldId);
+            if (!field.value.trim()) {
+                showMessage(`Please fill in ${field.previousElementSibling?.textContent || 'all required fields'}`, 'error');
+                field.focus();
+                return;
+            }
         }
 
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        resetBtn.disabled = true;
 
         const appointment = {
             fullname: document.getElementById('fullname').value.trim(),
@@ -853,7 +944,7 @@ document.addEventListener('DOMContentLoaded', function() {
             try { data = await response.json(); } catch {}
 
             if (response.ok) {
-                showMessage('Appointment booked successfully! You will receive a confirmation email shortly.', 'success');
+                showMessage('✅ Appointment booked successfully! Confirmation will be sent to your email.', 'success');
                 
                 // Success animation
                 container.style.animation = 'pulse 0.5s';
@@ -861,9 +952,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Reset form after successful submission
                 setTimeout(() => {
-                    resetForm();
+                    form.reset();
+                    inputs.forEach(input => {
+                        updateLabel(input);
+                        const validationSpan = document.getElementById(input.id + 'Validation');
+                        if (validationSpan) validationSpan.style.display = 'none';
+                    });
+                    document.getElementById('doctorInfo').style.display = 'none';
+                    summaryCard.style.display = 'none';
                     document.getElementById('terms').checked = false;
-                }, 2000);
+                    
+                    // Reset date to tomorrow
+                    const tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate() + 1);
+                    document.getElementById('date').value = tomorrow.toISOString().split('T')[0];
+                    document.getElementById('time').value = "10:00";
+                }, 1500);
             } else {
                 showMessage('Server error! Please try again.', 'error');
             }
@@ -872,9 +976,13 @@ document.addEventListener('DOMContentLoaded', function() {
             showMessage('Network error! Please check your connection.', 'error');
         } finally {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Confirm Booking';
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Book Appointment';
+            resetBtn.disabled = false;
         }
     });
+
+    // Initialize
+    updateSummary();
 });
 </script>
 
