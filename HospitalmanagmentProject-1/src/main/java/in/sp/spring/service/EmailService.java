@@ -1,39 +1,58 @@
 package in.sp.spring.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
 
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
+import java.util.*;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    @Value("${BREVO_API_KEY}")
+    private String apiKey;
 
     public boolean sendEmail(String subject, String message, String to) {
 
         try {
-            MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+            String url = "https://api.brevo.com/v3/smtp/email";
 
-            helper.setFrom("a1e431001@smtp-brevo.com");
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(message, true); // HTML enable
+            RestTemplate restTemplate = new RestTemplate();
 
-            mailSender.send(mimeMessage);
+            Map<String, Object> body = new HashMap<>();
 
-            System.out.println("EMAIL SENT SUCCESS");
-            return true;
+            Map<String, String> sender = new HashMap<>();
+            sender.put("email", "ssivamyadav0123@gmail.com"); // verified email
+            sender.put("name", "Hospital");
 
-        } catch (MessagingException e) {
+            List<Map<String, String>> toList = new ArrayList<>();
+            Map<String, String> toMap = new HashMap<>();
+            toMap.put("email", to);
+            toList.add(toMap);
+
+            body.put("sender", sender);
+            body.put("to", toList);
+            body.put("subject", subject);
+            body.put("htmlContent", message);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.set("api-key", apiKey);
+
+            HttpEntity<Map<String, Object>> request =
+                    new HttpEntity<>(body, headers);
+
+            ResponseEntity<String> response =
+                    restTemplate.postForEntity(url, request, String.class);
+
+            System.out.println(response.getBody());
+
+            return response.getStatusCodeValue() == 201;
+
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 }
-
