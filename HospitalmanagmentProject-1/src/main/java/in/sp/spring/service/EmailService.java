@@ -22,7 +22,7 @@ public class EmailService {
             // true = HTML allowed
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-            helper.setFrom("ssivamyadav0123@gmail.com");
+            helper.setFrom("Hospital App <a1e431001@smtp-brevo.com>");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(message, true);
@@ -39,3 +39,4 @@ public class EmailService {
         }
     }
 }
+
