@@ -20,7 +20,7 @@ public class EmailService {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-            helper.setFrom("ssivamyadav0123@gmail.com");
+            helper.setFrom("a1e431001@smtp-brevo.com");
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(message, true); // HTML enable
@@ -36,3 +36,4 @@ public class EmailService {
         }
     }
 }
+
