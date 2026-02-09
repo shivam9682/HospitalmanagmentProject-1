@@ -1,56 +1,39 @@
 package in.sp.spring.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 @Service
 public class EmailService {
 
-    @Value("${BREVO_API_KEY}")
-    private String apiKey;
+    @Autowired
+    private JavaMailSender mailSender;
 
     public boolean sendEmail(String subject, String message, String to) {
 
         try {
-            String url = "https://api.brevo.com/v3/smtp/email";
+            // create message
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
 
-            RestTemplate restTemplate = new RestTemplate();
+            // true = HTML allowed
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-            Map<String, Object> body = new HashMap<>();
+            helper.setFrom("ssivamyadav0123@gmail.com");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(message, true);
 
-            Map<String, String> sender = new HashMap<>();
-            sender.put("email", "ssivamyadav0123@gmail.com"); // verified email
-            sender.put("name", "Hospital");
+            mailSender.send(mimeMessage);
 
-            List<Map<String, String>> toList = new ArrayList<>();
-            Map<String, String> toMap = new HashMap<>();
-            toMap.put("email", to);
-            toList.add(toMap);
-
-            body.put("sender", sender);
-            body.put("to", toList);
-            body.put("subject", subject);
-            body.put("htmlContent", message);
-
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("api-key", apiKey);
-
-            HttpEntity<Map<String, Object>> request =
-                    new HttpEntity<>(body, headers);
-
-            ResponseEntity<String> response =
-                    restTemplate.postForEntity(url, request, String.class);
-
-            System.out.println(response.getBody());
-
-            return response.getStatusCodeValue() == 201;
+            System.out.println("EMAIL SENT SUCCESS");
+            return true;
 
         } catch (Exception e) {
+            System.out.println("EMAIL ERROR");
             e.printStackTrace();
             return false;
         }
