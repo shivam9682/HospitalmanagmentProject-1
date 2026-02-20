@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -250,6 +251,124 @@
                 flex-direction: column;
             }
         }
+
+
+
+
+
+
+         .custom-select {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.select-selected {
+    padding: 16px 45px;
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.select-items {
+    position: absolute;
+    background: white;
+    width: 100%;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 999;
+}
+
+.select-items div {
+    padding: 12px 15px;
+    cursor: pointer;
+}
+
+.select-items div:hover {
+    background: #f1f1f1;
+}
+
+.custom-select.active .select-items {
+    display: block;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+    .select-items {
+        max-height: 180px;
+    }
+}
+
+
+
+.form-group {
+    position: relative;
+    width: 100%;
+}
+
+.icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.custom-select {
+    position: relative;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.selected {
+    padding: 12px 15px 12px 40px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #fff;
+}
+
+.options {
+    position: absolute;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    display: none;
+    z-index: 10;
+}
+
+.options div {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.options div:hover {
+    background: #f2f2f2;
+}
+
+/* Mobile safe */
+@media (max-width: 600px) {
+    .custom-select,
+    .selected,
+    .options {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+
+
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -286,16 +405,28 @@
                 <input type="number" id="age" placeholder="Age" required>
                 <span class="floating-label">Age</span>
             </div>
-            <div class="form-group">
-                <i class="fas fa-venus-mars icon"></i>
-                <select id="gender" required>
-                    <option value="" disabled selected>Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                </select>
-                <span class="floating-label"></span>
-            </div>
+       
+
+
+<div class="form-group">
+    <i class="fas fa-venus-mars icon"></i>
+
+    <div class="custom-select" id="genderSelect">
+         
+        <i class="fas fa-venus-mars icon"></i>
+         
+        <div class="selected">Select Gender</div>
+        <div class="options">
+            <div value="Male">Male</div>
+            <div value="Female">Female</div>
+            <div value="Other">Other</div>
+        </div>
+    </div>
+
+    <input type="hidden" id="gender" required>
+</div>
+
+
         </div>
 
         <div class="form-row">
@@ -317,7 +448,7 @@
             <span class="floating-label">Department</span>
         </div>
 
-       <div class="form-group">
+       <!--<div class="form-group">
     <i class="fas fa-user-md icon"></i>
     <select id="doctorId" required>
         <option value="" disabled selected>Select Doctor</option>
@@ -328,7 +459,22 @@
         <option value="DOC005">Dr. Ankit Patel (DOC005)</option>
     </select>
     <span class="floating-label">Doctor</span>
+</div> -->
+
+
+          <div class="custom-select" id="doctorSelect">
+             <i class="fas fa-user-md icon"></i>
+    <div class="select-selected">Select Doctor</div>
+    <div class="select-items">
+        <div value="DOC001">Dr. Amit Sharma (DOC001)</div>
+        <div value="DOC002">Dr. Neha Verma (DOC002)</div>
+        <div value="DOC003">Dr. Rahul Mehta (DOC003)</div>
+        <div value="DOC004">Dr. Priya Singh (DOC004)</div>
+        <div value="DOC005">Dr. Ankit Patel (DOC005)</div>
+    </div>
 </div>
+
+<input type="hidden" id="doctorId" required>
 
 
         <div class="form-group">
@@ -489,6 +635,60 @@
         `;
         document.head.appendChild(style);
     });
+
+
+
+    const customSelect = document.getElementById("doctorSelect");
+const selected = customSelect.querySelector(".select-selected");
+const items = customSelect.querySelector(".select-items");
+const hiddenInput = document.getElementById("doctorId");
+
+selected.addEventListener("click", function () {
+    customSelect.classList.toggle("active");
+});
+
+items.querySelectorAll("div").forEach(option => {
+    option.addEventListener("click", function () {
+        selected.textContent = this.textContent;
+        hiddenInput.value = this.getAttribute("data-value");
+        customSelect.classList.remove("active");
+    });
+});
+
+document.addEventListener("click", function (e) {
+    if (!customSelect.contains(e.target)) {
+        customSelect.classList.remove("active");
+    }
+});
+
+
+
+
+
+const select = document.getElementById("genderSelect");
+const selecte = select.querySelector(".selected");
+const options = select.querySelector(".options");
+const hiddenInpu = document.getElementById("gender");
+
+selecte.addEventListener("click", () => {
+    options.style.display =
+        options.style.display === "block" ? "none" : "block";
+});
+
+options.querySelectorAll("div").forEach(option => {
+    option.addEventListener("click", () => {
+        selecte.textContent = option.textContent;
+        hiddenInpu.value = option.getAttribute("data-value");
+        options.style.display = "none";
+    });
+});
+
+document.addEventListener("click", (e) => {
+    if (!select.contains(e.target)) {
+        options.style.display = "none";
+    }
+});
+
 </script>
 </body>
 </html>
